@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Prof Lingo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/content_it.js" defer></script>
+</head>
+
+<body>
+  <script>document.body.style.background = 'red'; setTimeout(() => document.body.style.background = '', 500);</script>
+  
+  <!-- LANGUAGE SELECT screen -->
+  <main id="screen-language-select" class="screen screen-language-select hidden">
+    <div class="lang-select-content">
+      <div class="lang-icon-3d">🌍</div>
+      <h2 class="lang-title">Öğrenmek istediğin dili seç</h2>
+      <p class="lang-sub">Birlikte yeni dünyalar fethedelim!</p>
+      
+      <div class="lang-grid">
+        <button class="lang-card" onclick="window.selectLanguage('en')">
+          <div class="lang-flag">🇬🇧</div>
+          <div class="lang-name-wrap">
+            <div class="lang-name">English</div>
+            <div class="lang-level">Prof Lingo Orijinal</div>
+          </div>
+          <div class="lang-check">✓</div>
+        </button>
+        
+        <button class="lang-card" onclick="window.selectLanguage('it')">
+          <div class="lang-flag">🇮🇹</div>
+          <div class="lang-name-wrap">
+            <div class="lang-name">Italiano</div>
+            <div class="lang-level">Yeni Başlayanlar</div>
+          </div>
+          <div class="lang-check">✓</div>
+        </button>
+      </div>
+      
+      <div class="lang-footer">
+        <p>Görsel ve profesyonel dil öğrenimi tek tıkla!</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- SPLASH -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-content">
+      <div class="splash-orb"></div>
+      <div class="splash-logo-wrap">
+        <img src="images/brand/logo.png" class="splash-logo" alt="Prof Lingo Logo">
+        <h1 class="splash-title">Prof <span>Lingo</span></h1>
+      </div>
+      <p class="splash-tagline">Dil öğreniminizi basit ve etkili oyunlarla profesyonel seviyeye çıkarmak</p>
+      <div class="splash-loader">
+        <div class="splash-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toast-heart" class="toast toast-heart"></div>
+  <div id="toast-xp" class="toast toast-xp hidden"></div>
+
+  <!-- APP -->
+  <div id="app" class="app hidden">
+
+    <!-- ══ ONBOARDING ══ -->
+    <main id="screen-onboarding" class="screen screen-onboarding hidden">
+      <button id="btn-skip" class="btn-skip">Geç</button>
+
+      <div class="slides-wrapper" id="slides-wrapper">
+        <div class="slide">
+          <div class="slide-art art1">
+            <div class="art-blob b1"></div>
+            <div class="art-blob b2"></div>
+            <div class="art-emoji">👁️</div>
+          </div>
+          <h2>Görselle Öğren</h2>
+          <p>Çeviri yok. Sadece resimler ve kelimeler. Beyninin doğal yolunu kullan.</p>
+        </div>
+        <div class="slide">
+          <div class="slide-art art2">
+            <div class="art-card-stack"
+              style="display: flex; gap: 10px; align-items: center; justify-content: center; width: 100%;">
+              <div class="art-fc" style="transform: rotate(-10deg);">🎨</div>
+              <div class="art-fc sm" style="transform: rotate(10deg); background: #E8F5E9; border: 2px solid #4CAF50;">✅
+              </div>
+            </div>
+          </div>
+          <h2>Oyunla Pekiştir</h2>
+          <p>Mini quizler ile öğrendiklerini test et. Her doğru cevap seni ileriye taşır.</p>
+        </div>
+        <div class="slide">
+          <div class="slide-art art3">
+            <div class="art-flame">🔥</div>
+            <div class="art-badge">🏆</div>
+          </div>
+          <h2>Serilini Koru</h2>
+          <p>Her gün biraz pratik yap. Rozetler ve ödüller seni bekliyor!</p>
+        </div>
+      </div>
+
+      <div class="slide-dots" id="slide-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+
+      <button id="btn-slide-next" class="btn btn-primary btn-full">İleri →</button>
+    </main>
+
+    <!-- ══ AUTH ══ -->
+    <main id="screen-auth" class="screen screen-auth hidden">
+      <div class="auth-bg-blob"></div>
+      <div class="auth-card">
+        <button id="btn-close-auth" class="auth-close-btn">&times;</button>
+        <div class="auth-brand">
+          <div class="auth-badge">ÜCRETSİZ KAYNAK</div>
+          <h1 class="auth-app-title">Prof <span>Lingo</span></h1>
+          <p class="auth-app-sub">Dil öğreniminizi profesyonel seviyeye çıkarın</p>
+        </div>
+
+        <div id="form-login" class="auth-form">
+          <h2 class="form-heading">Giriş Yap</h2>
+          <div class="field">
+            <label>E-posta Adresiniz</label>
+            <input type="email" id="login-email" placeholder="ornek@mail.com" autocomplete="email">
+          </div>
+          <div class="field">
+            <label>Şifreniz</label>
+            <div class="input-wrap">
+              <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+              <button class="toggle-pw" data-target="login-password" type="button">👁</button>
+            </div>
+          </div>
+          <p id="login-error" class="form-error hidden"></p>
+          <button id="btn-login" class="btn btn-primary btn-full">Hemen Giriş Yap</button>
+          <p class="auth-switch">Hesabın yok mu? <button id="go-register" class="link-btn">Kayıt Ol</button></p>
+          <p class="auth-footer-tagline">Hesabınızla saniyeler içinde kaldığınız yerden devam edin.</p>
+        </div>
+
+        <div id="form-register" class="auth-form hidden">
+          <h2 class="form-heading">Hesap Oluştur</h2>
+          <div class="field">
+            <label>Adınız Soyadınız</label>
+            <input type="text" id="reg-name" placeholder="Adınız Soyadınız" autocomplete="name">
+          </div>
+          <div class="field">
+            <label>E-posta Adresiniz</label>
+            <input type="email" id="reg-email" placeholder="ornek@mail.com" autocomplete="email">
+          </div>
+          <div class="field">
+            <label>Şifreniz</label>
+            <div class="input-wrap">
+              <input type="password" id="reg-password" placeholder="En az 6 karakter" autocomplete="new-password">
+              <button class="toggle-pw" data-target="reg-password" type="button">👁</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Telefon Numaranız</label>
+            <input type="tel" id="reg-phone" placeholder="05XX XXX XX XX" autocomplete="tel">
+          </div>
+          <div class="field checkbox-field">
+            <input type="checkbox" id="reg-kvkk">
+            <label for="reg-kvkk">Aydınlatma Metni, <a href="#" class="link-btn">KVKK</a> ve <a href="#" class="link-btn">Gizlilik Politikası</a>'nı okudum, onaylıyorum.</label>
+          </div>
+          <p id="reg-error" class="form-error hidden"></p>
+          <button id="btn-register" class="btn btn-primary btn-full">Hemen Hesap Oluştur</button>
+          <p class="auth-switch">Hesabın var mı? <button id="go-login" class="link-btn">Giriş Yap</button></p>
+
+          <!-- Verification Form -->
+          <div id="form-verify" class="auth-form hidden">
+            <h2 class="form-heading">Email Doğrulama</h2>
+            <p class="form-subtext" style="text-align: center; font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-light);">Mail adresinize gönderilen <strong>6 haneli onay kodunu</strong> aşağıya giriniz.</p>
+            <div class="field">
+              <label>Onay Kodu</label>
+              <input type="text" id="verify-code" placeholder="123456" maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 5px; font-weight: 800; border-radius: 12px; border: 2px solid var(--primary-lt);">
+            </div>
+            <p id="verify-error" class="form-error hidden"></p>
+            <button id="btn-verify-confirm" class="btn btn-primary btn-full">Hesabı Onayla</button>
+            <p class="auth-switch">Kod gelmedi mi? <button id="btn-resend-code" class="link-btn">Tekrar Gönder</button></p>
+          </div>
+          <p class="auth-footer-tagline">Kaydınız saniyeler içinde tamamlanacak.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- ══ SHARED HEADER ══ -->
+    <header id="app-header" class="app-header hidden">
+      <button id="btn-back" class="btn-icon hidden" aria-label="Geri">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <div class="header-center">
+        <img src="images/brand/logo.png" class="header-logo" alt="Prof Lingo Logo">
+        <span class="header-brand">Prof <span>Lingo</span></span>
+      </div>
+      <div class="header-right">
+        <div class="hbadge streak-hbadge">🔥 <span id="h-streak">0</span></div>
+        <div id="hearts-display" class="hbadge hearts-hbadge"></div>
+        <!-- BGM Toggle Button -->
+        <button id="btn-toggle-bgm" class="btn-icon" aria-label="Müzik Aç/Kapat" style="margin-right:0.5rem;"
+          title="Müziği Kapat">
+          🎵
+        </button>
+        <!-- Avatar Button (opens drawer) -->
+        <button id="btn-avatar" class="header-avatar" aria-label="Profil Menüsü">
+          👤
+        </button>
+      </div>
+    </header>
+
+    <div id="progress-bar-container" class="progress-bar-container hidden">
+      <div class="progress-bar">
+        <div id="progress-bar-fill" class="progress-bar-fill" style="width:0%"></div>
+      </div>
+      <div id="speed-timer-bar" class="speed-timer-bar hidden">
+        <div id="speed-timer-fill" class="speed-timer-fill" style="width:100%"></div>
+      </div>
+      <span id="progress-text" class="progress-text">0/0</span>
+    </div>
+    <div id="phase-indicator" class="phase-indicator hidden"></div>
+
+    <!-- ══ HOME ══ -->
+    <main id="screen-home" class="screen screen-home hidden">
+      <div class="home-top">
+        <div>
+          <p class="home-hi">Merhaba 👋</p>
+          <h2 id="greeting-name" class="home-name">Kullanıcı</h2>
+        </div>
+        <div class="xp-pill">⭐ <span id="home-xp">0</span> XP</div>
+      </div>
+
+      <div class="streak-banner">
+        <div class="sb-left">
+          <span class="sb-fire">🔥</span>
+          <div>
+            <p class="sb-num" id="home-streak">0</p>
+            <p class="sb-label">günlük seri</p>
+          </div>
+        </div>
+        <p class="sb-msg">Bugün ders yap!</p>
+      </div>
+
+      <h3 class="section-title">Yolculuğun</h3>
+      <div class="journey-map-container" id="journey">
+        <!-- SVG Yolu (Background Path) -->
+        <svg class="journey-path-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M 20 90 Q 50 80 80 60 T 30 30 T 70 10" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="4"
+            stroke-dasharray="6,4" />
+        </svg>
+      </div>
+    </main>
+
+    <!-- ══ LEARN ══ -->
+    <main id="screen-learn" class="screen screen-learn hidden">
+      <div class="flashcard-static" style="position: relative;">
+        <div id="flashcard-visual-static" class="color-visual"></div>
+        <div id="flashcard-word-static" class="flashcard-word-label"></div>
+        <button id="btn-speak-word" class="btn btn-secondary speak-btn"
+          style="position: absolute; bottom: 15px; right: 15px; font-size: 1rem; padding: 10px 20px; border-radius: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 2px solid var(--primary); color: var(--primary); font-weight: 700; background: white;"
+          aria-label="Repeat">Repeat 🔊</button>
+      </div>
+      <div id="card-counter" class="card-counter">1 / 4</div>
+      <div class="learn-controls">
+        <button id="btn-prev-card" class="btn btn-secondary">← Geri</button>
+        <button id="btn-next-card" class="btn btn-primary">İleri →</button>
+      </div>
+    </main>
+
+    <!-- ══ QUIZ ══ -->
+    <main id="screen-quiz" class="screen screen-quiz hidden">
+      <p class="quiz-prompt" id="quiz-prompt">What is this?</p>
+
+      <div id="quiz-choose-word" class="quiz-section hidden">
+        <div class="quiz-stimulus">
+          <div id="quiz-stimulus-circle" class="quiz-color-circle"></div>
+        </div>
+        <div id="quiz-word-options" class="quiz-word-options"></div>
+      </div>
+
+      <div id="quiz-choose-image" class="quiz-section hidden">
+        <div class="quiz-stimulus">
+          <div id="quiz-word-stimulus" class="quiz-word-big"></div>
+        </div>
+        <div id="quiz-image-options" class="quiz-image-options"></div>
+      </div>
+
+      <div id="quiz-listen-choice" class="quiz-section hidden">
+        <div class="quiz-stimulus">
+          <button id="btn-quiz-listen" class="btn-icon speak-btn"
+            style="font-size: 3rem; background: #E8EAF6; padding: 20px; border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"
+            aria-label="Dinle">🔊</button>
+        </div>
+        <div id="quiz-listen-options" class="quiz-image-options"></div>
+      </div>
+
+      <div id="quiz-match-pairs" class="quiz-section hidden">
+        <div class="match-container">
+          <!-- Sol kolon: Sürüklenecek objeler (Draggables) -->
+          <div id="match-draggables" class="match-column draggables-col"></div>
+          <!-- Sağ kolon: Hedefler (Drop Targets) -->
+          <div id="match-targets" class="match-column targets-col"></div>
+        </div>
+      </div>
+
+      <div id="quiz-speak-word" class="quiz-section hidden">
+        <p id="speak-prompt-text" class="speak-instructions"
+          style="text-align:center; font-weight:bold; color:var(--text2); margin-bottom: 1rem;">Can you name it?</p>
+        <p id="speak-word-hint" class="hidden"
+          style="text-align:center; font-size:1.4rem; font-weight:800; color:var(--primary); margin-bottom:0.5rem; letter-spacing:1px;">
+        </p>
+        <div class="quiz-stimulus">
+          <div id="speak-visual" class="quiz-color-circle" style="width: 140px; height: 140px;"></div>
+        </div>
+        <div class="speak-controls">
+          <button id="btn-speak-mic" class="btn-icon speak-btn"
+            style="font-size: 3rem; background: var(--surface2); padding: 25px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 4px solid var(--border); transition: all 0.3s;"
+            aria-label="Konuş">🎤</button>
+          <p id="speak-result-text"
+            style="font-size: 1.1rem; font-weight: bold; color: var(--text2); min-height: 25px;">Press mic and speak</p>
+          
+          <button id="btn-speak-repeat" class="btn btn-secondary"
+            style="margin-top: 0.5rem; padding: 10px 30px; font-size: 1rem;">🔊 Repeat</button>
+
+          <button id="btn-speak-skip" class="btn btn-secondary hidden"
+            style="margin-top: 0.5rem; padding: 10px 30px; font-size: 1rem;">Geç →</button>
+        </div>
+      </div>
+
+      <div id="quiz-word-ordering" class="quiz-section hidden">
+        <div id="ordering-visual-container" class="ordering-visual-container hidden">
+          <div id="ordering-visual" class="ordering-visual"></div>
+        </div>
+        <div id="ordering-slots" class="ordering-slots"></div>
+        <div id="ordering-options" class="ordering-options"></div>
+      </div>
+
+      <!-- NEW REVIEW MODES (inside screen-quiz) -->
+      <section id="quiz-memory-match" class="quiz-section hidden">
+        <h2 id="memory-match-instruction" class="quiz-title">Match the pairs!</h2>
+        <div id="memory-grid" class="memory-grid"></div>
+        <div id="memory-words-pool" class="memory-words-pool"></div>
+      </section>
+
+      <section id="quiz-falling-visuals" class="quiz-section hidden">
+        <div class="falling-header">
+          <h2 id="falling-instruction" class="quiz-title">Click the: [Target]</h2>
+          <div id="falling-progress" class="falling-progress">Sets: 0/5</div>
+        </div>
+        <div id="falling-area" class="falling-area"></div>
+      </section>
+
+      <section id="quiz-drag-drop-scene" class="quiz-section hidden">
+        <h2 id="scene-instruction" class="quiz-title">Complete the scene!</h2>
+        <div class="scene-container">
+          <div id="scene-background" class="scene-bg"></div>
+          <div id="scene-parts" class="scene-parts-sidebar"></div>
+        </div>
+      </section>
+
+      <section id="quiz-matching-list" class="quiz-section hidden">
+        <h2 class="quiz-title">Match the pairs! 🧩</h2>
+        <div id="matching-list-content" class="matching-list-container">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <div id="correct-hint" class="correct-hint hidden"></div>
+    </main>
+
+    <!-- ══ MEMORY MATCH GAME ══ -->
+    <main id="screen-memory" class="screen screen-memory hidden">
+      <div class="memory-header">
+        <h2 class="memory-title">🧠 Hafıza Oyunu</h2>
+        <p class="memory-subtitle">Kartları aç ve doğru kelimeyle eşleştir!</p>
+        <div class="memory-score">
+          <span>✅ <strong id="memory-correct">0</strong></span>
+          <span>❌ <strong id="memory-wrong">0</strong></span>
+          <span>🎯 <strong id="memory-remaining">8</strong> kaldı</span>
+        </div>
+      </div>
+      <div id="memory-cards" class="memory-cards-grid"></div>
+      <div class="memory-divider">👇 Kelimeyi seç</div>
+      <div id="memory-words" class="memory-words-grid"></div>
+    </main>
+
+    <!-- ══ FEVER MODE ══ -->
+    <main id="screen-fever" class="screen screen-fever hidden">
+      <div class="fever-header">
+        <div class="fever-title">🔥 FEVER MODE 🔥</div>
+        <div id="fever-timer" class="fever-timer">5.0</div>
+        <div class="fever-subtitle">Eşleştir & 2X Puan Kazan!</div>
+      </div>
+      <div id="fever-board" class="fever-board">
+        <!-- Rastegele kelimeler ve görseller JS ile basılacak -->
+      </div>
+    </main>
+
+    <!-- ══ MYSTERY CARDS (Ch7 Game 1) ══ -->
+    <main id="screen-mystery" class="screen screen-mystery hidden">
+      <div class="mystery-header">
+        <h2 class="mystery-title">🃏 Gizemli Kartlar</h2>
+        <p class="mystery-subtitle">Kartı aç, doğru kelimeyle eşleştir!</p>
+        <div class="mystery-score">
+          <span>✅ <strong id="mystery-correct">0</strong></span>
+          <span>❌ <strong id="mystery-wrong">0</strong></span>
+          <span>🎯 <strong id="mystery-remaining">9</strong> kaldı</span>
+        </div>
+      </div>
+      <div id="mystery-grid" class="mystery-grid"></div>
+      <div class="mystery-divider">👇 Kelimeyi seç</div>
+      <div id="mystery-words" class="mystery-words-grid"></div>
+    </main>
+
+    <!-- ══ FALLING OBJECTS (Ch7 Game 2) ══ -->
+    <main id="screen-falling" class="screen screen-falling hidden">
+      <div class="falling-hud">
+        <div class="falling-target">
+          <span class="falling-target-label">Bul:</span>
+          <span id="falling-word" class="falling-target-word">Lemon</span>
+        </div>
+        <div class="falling-score-row">
+          <span>✅ <strong id="falling-hit">0</strong>/3</span>
+          <span>🎯 Tur: <strong id="falling-round">1</strong>/<strong id="falling-total-rounds">5</strong></span>
+        </div>
+      </div>
+      <div id="falling-area-standalone" class="falling-area"></div>
+    </main>
+
+    <!-- ══ ROAD TRIP (Ch14 Game 3 Replacement) ══ -->
+    <main id="screen-roadtrip" class="screen screen-roadtrip hidden">
+      <div class="roadtrip-header">
+        <h2 class="roadtrip-title">🚗 Family Road Trip</h2>
+        <p id="roadtrip-instruction" class="roadtrip-subtitle">Drag passengers into the car seats and set the destination.</p>
+        <div class="roadtrip-progress"><span>✅ <strong id="roadtrip-correct">0</strong></span> | <span>🎯 <strong id="roadtrip-remaining">0</strong> to place</span></div>
+      </div>
+      <div class="roadtrip-stage">
+        <div class="roadtrip-base">
+          <div class="roadtrip-vehicle"></div>
+          <div class="roadtrip-zone" data-zone="driver"><span class="zone-label">Driver</span></div>
+          <div class="roadtrip-zone" data-zone="seat1"><span class="zone-label">Seat 1</span></div>
+          <div class="roadtrip-zone" data-zone="seat2"><span class="zone-label">Seat 2</span></div>
+          <div class="roadtrip-zone destination" data-zone="destination"><span class="zone-label">Destination</span></div>
+        </div>
+        <div id="roadtrip-items" class="roadtrip-items"></div>
+      </div>
+    </main>
+
+    <!-- ══ DRESS UP (Ch7 Game 3) ══ -->
+    <main id="screen-dressup" class="screen screen-dressup hidden">
+      <div class="dressup-header">
+        <h2 class="dressup-title">👗 Giydir!</h2>
+        <p class="dressup-subtitle">Kıyafet kelimesini sürükleyip doğru yere bırak</p>
+        <div class="dressup-score">
+          <span>✅ <strong id="dressup-correct">0</strong></span>
+          <span>🎯 <strong id="dressup-remaining">6</strong> kaldı</span>
+        </div>
+      </div>
+      <div class="dressup-body">
+        <div class="dressup-character" id="dressup-character">
+          <div class="dressup-zone" data-zone="hat" data-top="2%" data-height="18%">
+            <span class="zone-label">🎩</span>
+          </div>
+          <div class="dressup-zone" data-zone="shirt" data-top="20%" data-height="20%">
+            <span class="zone-label">👕</span>
+          </div>
+          <div class="dressup-zone" data-zone="jacket" data-top="20%" data-height="20%">
+            <span class="zone-label">🧥</span>
+          </div>
+          <div class="dressup-zone" data-zone="pants" data-top="40%" data-height="25%">
+            <span class="zone-label">👖</span>
+          </div>
+          <div class="dressup-zone" data-zone="skirt" data-top="40%" data-height="25%">
+            <span class="zone-label">👗</span>
+          </div>
+          <div class="dressup-zone" data-zone="socks" data-top="70%" data-height="12%">
+            <span class="zone-label">🧦</span>
+          </div>
+          <div class="dressup-zone" data-zone="shoes" data-top="82%" data-height="18%">
+            <span class="zone-label">👟</span>
+          </div>
+        </div>
+        <div id="dressup-labels" class="dressup-labels"></div>
+      </div>
+    </main>
+
+    <!-- ══ TRANSITION ══ -->
+    <main id="screen-transition" class="screen screen-transition hidden">
+      <div class="transition-card">
+        <div id="transition-icon" class="t-icon">🎉</div>
+        <h2 id="transition-title">Mini Quiz Tamam!</h2>
+        <p id="transition-subtitle">Harika gidiyorsun!</p>
+        <div id="transition-score" class="t-score"></div>
+        <button id="btn-continue-transition" class="btn btn-primary btn-full">Devam Et →</button>
+      </div>
+    </main>
+
+
+
+      <!-- WINNER MODE screen -->
+      <main id="screen-winner-mode" class="screen screen-winner-mode hidden">
+        <div class="winner-overlay">
+          <div class="winner-header">
+            <div class="winner-title-wrap">
+              <span class="winner-badge">HIZLI EŞLEŞTİRME</span>
+              <h2 class="winner-title">Winner Mode! 👑</h2>
+            </div>
+            <div class="winner-timer-wrap">
+              <div id="winner-timer-bar" class="winner-timer-bar"></div>
+              <span id="winner-timer-text">8s</span>
+            </div>
+          </div>
+          <div id="winner-match-container" class="winner-content">
+            <!-- Matching list injected here -->
+          </div>
+          <div class="winner-footer">
+            <p>Tümünü eşleştir, <strong>+100 XP Bonus</strong> kazan!</p>
+          </div>
+        </div>
+      </main>
+
+      <!-- MARKET screen -->
+      <main id="screen-market" class="screen screen-market hidden">
+        <div class="market-header">
+          <button id="btn-market-back" class="btn-icon">←</button>
+          <h2>Ödül Marketi</h2>
+          <div class="market-xp"><span id="m-xp">0</span> XP</div>
+        </div>
+        <div class="market-scroll">
+          <div id="market-items" class="market-grid">
+            <!-- Items injected by ui.js -->
+          </div>
+        </div>
+      </main>
+
+      <!-- RESULTS screen -->
+    <main id="screen-results" class="screen screen-results hidden">
+      <div class="results-scroll">
+        <div class="results-card">
+          <div id="results-icon" class="results-icon">🏆</div>
+          <h2 id="results-title" class="results-title">Mükemmel!</h2>
+          <p id="results-subtitle" class="results-subtitle">Tüm renkleri tamamladın!</p>
+          <div class="results-ring-row">
+            <div class="stat-circle">
+              <svg viewBox="0 0 120 120" class="stat-ring">
+                <circle cx="60" cy="60" r="52" class="stat-ring-bg" />
+                <circle cx="60" cy="60" r="52" class="stat-ring-fill" id="stat-ring-fill" />
+              </svg>
+              <div class="stat-value" id="stat-percentage">0%</div>
+            </div>
+            <div class="stat-details">
+              <div class="stat-row"><span class="stat-label">✅ Doğru</span><strong id="stat-correct">0</strong></div>
+              <div class="stat-row"><span class="stat-label">❌ Yanlış</span><strong id="stat-wrong">0</strong></div>
+              <div class="stat-row"><span class="stat-label">📝 Toplam</span><strong id="stat-total">0</strong></div>
+            </div>
+          </div>
+          <div id="results-unlock" class="results-unlock hidden">🔓 Bölüm 1 tamamlandı!</div>
+          <div class="results-actions">
+            <button id="btn-retry" class="btn btn-secondary">Tekrar 🔄</button>
+            <button id="btn-go-home" class="btn btn-primary">Ana Sayfa 🏠</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ══ LIMIT screen ══ -->
+    <main id="screen-limit" class="screen screen-limit hidden">
+      <div class="limit-scroll">
+        <div class="limit-card">
+          <div class="limit-icon">⌛</div>
+          <h1 class="limit-title">Günlük Limite Ulaştın!</h1>
+          <p class="limit-subtitle">Bugünkü 30 dakikalık hedefini tamamladın. Harika bir iş çıkardın!</p>
+          <div class="limit-stats">
+            <div class="limit-stat"><strong>30</strong><span>Dakika</span></div>
+            <div class="limit-stat"><strong>%100</strong><span>Hedef</span></div>
+          </div>
+          <p class="limit-info">Yarın yeni derslerle kaldığın yerden devam edebilirsin.</p>
+          <button id="btn-limit-close" class="btn btn-primary btn-full">Tamam 👍</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ══ PROFILE DRAWER ══ -->
+    <div id="drawer-overlay" class="drawer-overlay hidden"></div>
+    <div id="profile-drawer" class="profile-drawer hidden">
+      <div class="drawer-top">
+        <button id="btn-close-drawer" class="btn-icon">✕</button>
+        <h3>Profil</h3>
+      </div>
+      <div class="drawer-body">
+        <div class="drawer-avatar-wrap">
+          <div class="drawer-avatar"><span id="drawer-initial">?</span></div>
+          <p id="drawer-name" class="drawer-user-name">Kullanıcı</p>
+          <p id="drawer-email" class="drawer-user-email">-</p>
+        </div>
+        <div class="drawer-stats">
+          <div class="ds"><span>⭐</span><strong id="d-xp">0</strong><small>XP</small></div>
+          <div class="ds"><span>🔥</span><strong id="d-streak">0</strong><small>Seri</small></div>
+          <div class="ds"><span>❤️</span><strong id="d-hearts">5</strong><small>Can</small></div>
+        </div>
+        <button id="btn-open-market" class="btn btn-primary btn-full" style="margin-bottom: 0.5rem;">Markete Git 🛒</button>
+        <button id="btn-logout" class="btn btn-secondary btn-full">Çıkış Yap 👋</button>
+    </div><!-- /drawers -->
+
+    <footer class="app-footer">
+      <div class="footer-links">
+        <a href="#" class="footer-link">Çerez Politikası</a>
+        <a href="#" class="footer-link">Kullanım Koşulları</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Prof Lingo. Tüm hakları saklıdır.</p>
+    </footer>
+
+  </div><!-- /app -->
+
+  <!-- Core Scripts -->
+  <script src="js/content.js"></script>
+  <script src="js/usage.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    // Global error handler
+    window.onerror = function(msg, url, lineNo, columnNo, error) {
+      console.error('Global Error:', msg, 'at', url, ':', lineNo);
+      return false;
+    };
+  </script>
+</body>
+</html>

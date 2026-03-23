@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>LinguaVisual – Results Subtitle Test</title>
+  <!-- Make relative asset paths resolve from repo root -->
+  <base href="../">
+  <style>
+    body { font-family: sans-serif; padding: 16px; }
+    code { background: #f5f5f5; padding: 2px 4px; border-radius: 4px; }
+    .case { margin-bottom: 14px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+    .ok { color: green; font-weight: 600; }
+    .warn { color: #b36b00; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1>Results Subtitle Smoke Test</h1>
+  <p>Bu sayfa <code>showFinalResults()</code> fonksiyonunun dinamik altyazı üretimini hızlıca doğrular.</p>
+  <div id="cases"></div>
+
+  <!-- Minimal DOM hedefleri (showFinalResults'in kullandıkları) -->
+  <div id="stat-percentage"></div>
+  <div id="stat-correct"></div>
+  <div id="stat-wrong"></div>
+  <div id="stat-total"></div>
+  <div id="results-icon"></div>
+  <div id="results-title"></div>
+  <div id="results-subtitle"></div>
+  <div id="results-unlock" class="hidden"></div>
+  <svg width="0" height="0"><circle id="stat-ring-fill" r="52" /></svg>
+
+  <script src="js/app.js.legacy"></script>
+  <script>
+    // Basit yardımcı: vaka çalıştır ve DOM/console çıktısı üret
+    function runCase({ chapterId, correct, wrong, expectContains }) {
+      resetGameState();
+      S.chapterId = chapterId;
+      S.allCorrect = correct;
+      S.allWrong = wrong;
+      showFinalResults();
+
+      const subtitle = document.getElementById('results-subtitle').textContent;
+      const passed = subtitle.includes(expectContains);
+
+      const caseBox = document.createElement('div');
+      caseBox.className = 'case';
+      caseBox.innerHTML = `
+        <div><strong>Bölüm:</strong> ${CHAPTER_DATA[chapterId].name}</div>
+        <div><strong>Skor:</strong> ${correct}/${correct + wrong}</div>
+        <div><strong>Altyazı:</strong> "${subtitle}"</div>
+        <div class="${passed ? 'ok' : 'warn'}">${passed ? '✅ Beklenen metin bulundu' : '⚠️ Beklenen ifade yok'}</div>
+      `;
+      document.getElementById('cases').appendChild(caseBox);
+
+      console.log(`[subtitle-test] chapter ${chapterId} -> ${subtitle}`);
+      if (!passed) console.warn(`Beklenen içerik bulunamadı: ${expectContains}`);
+    }
+
+    // Vaka seti
+    runCase({ chapterId: 1, correct: 9, wrong: 1, expectContains: '"Colors"' });
+    runCase({ chapterId: 5, correct: 6, wrong: 4, expectContains: '"Clothing"' });
+    runCase({ chapterId: 15, correct: 3, wrong: 7, expectContains: '"Basic Sentences"' });
+  </script>
+</body>
+</html>

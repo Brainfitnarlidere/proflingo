@@ -1,0 +1,13 @@
+{
+  "name": "lingua-visual",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:subtitle": "playwright test tests/results-subtitle.spec.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.0",
+    "playwright": "^1.42.0"
+  }
+}
