@@ -1,5 +1,5 @@
 'use strict';
-// Security Hardening Version: 1.0.1 - Input Sanitization Active
+// Security Hardening Version: 1.0.2 - Sync Active Test
 
 window.authLogin = function(email, password) {
   const users = window.getUsers();
