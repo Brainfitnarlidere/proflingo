@@ -22,9 +22,9 @@ window.authRegister = function(name, email, phone, password, kvkk) {
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   
   const pendingUser = { 
-    name: name.trim(), 
-    email: email.trim().toLowerCase(), 
-    phone: phone.trim(),
+    name: window.sanitizeHTML(name.trim()), 
+    email: window.sanitizeHTML(email.trim().toLowerCase()), 
+    phone: window.sanitizeHTML(phone.trim()),
     password, 
     code,
     timestamp: Date.now()
