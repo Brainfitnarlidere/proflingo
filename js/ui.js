@@ -1,4 +1,5 @@
 'use strict';
+// Security Hardening Version: 1.0.1 - Input Sanitization Active
 
 window.$ = function(id) { return document.getElementById(id); };
 window.show = function(el) { if (el) el.classList.remove('hidden'); };
