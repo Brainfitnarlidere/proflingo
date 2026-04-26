@@ -23,8 +23,8 @@ window.initEvents = function() {
   on('go-register', 'click', window.showRegisterForm);
   on('go-login', 'click', window.showLoginForm);
   on('btn-close-auth', 'click', () => {
-    window.showError('login-error', 'Devam etmek için giriş yapmalısınız.');
-    window.SOUNDS.wrong.play().catch(() => {});
+    window.showLoginForm();
+    window.showToast('toast-heart', 'Lütfen devam etmek için giriş yapın.');
   });
 
   on('btn-login', 'click', async () => {
@@ -55,8 +55,13 @@ window.initEvents = function() {
     const pass = window.$('reg-password').value;
     const kvkk = window.$('reg-kvkk').checked;
     
+    const cleanPhone = phone.replace(/\s/g, '');
     if (!name || !email || !pass) {
         window.showError('reg-error', 'Lütfen tüm alanları doldurun.');
+        return;
+    }
+    if (cleanPhone.length !== 11) {
+        window.showError('reg-error', 'Telefon numarası 11 haneli olmalıdır.');
         return;
     }
 
@@ -108,6 +113,39 @@ window.initEvents = function() {
       window.$('btn-verify-confirm').disabled = false;
     }
   });
+
+  // --- Phone Mask Logic ---
+  const phoneInput = window.$('reg-phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('focus', () => {
+      if (!phoneInput.value) phoneInput.value = '05';
+    });
+
+    phoneInput.addEventListener('input', (e) => {
+      let value = e.target.value.replace(/\D/g, ''); // Only digits
+      
+      // Force start with 05
+      if (!value.startsWith('05')) {
+          value = '05' + value;
+      }
+      
+      // Limit to 11 digits
+      value = value.substring(0, 11);
+      
+      // Format: 05XX XXX XX XX
+      let formatted = '';
+      for (let i = 0; i < value.length; i++) {
+        if (i === 4 || i === 7 || i === 9) formatted += ' ';
+        formatted += value[i];
+      }
+      
+      e.target.value = formatted.trim();
+    });
+
+    phoneInput.addEventListener('blur', () => {
+        if (phoneInput.value === '05') phoneInput.value = '';
+    });
+  }
 
   on('btn-resend-code', 'click', async () => {
     const res = await window.authResendCode();
