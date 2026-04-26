@@ -793,36 +793,25 @@ window.renderSpeakWord = function(q) {
   }
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    txtResult.textContent = "Ses tanıma desteklenmiyor. Lütfen kelimeyi yazın:";
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.className = 'quiz-option-word';
-    input.style.marginTop = '1rem';
-    input.style.width = '100%';
-    input.style.textAlign = 'center';
-    input.placeholder = 'Buraya yazın ve Enter\'a basın...';
+    txtResult.innerHTML = '<div style="background: var(--primary-lt); color: var(--primary); padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 10px;">' +
+                          'Tarayıcınız ses tanımayı desteklemiyor. Lütfen kelimeyi yüksek sesle tekrar edin ve aşağıdaki butona basın.' +
+                          '</div>';
     btnMic.style.display = 'none';
     const container = btnMic.parentElement;
-    const oldInput = container.querySelector('.speak-fallback-input');
-    if (oldInput) oldInput.remove();
-    input.classList.add('speak-fallback-input');
-    container.insertBefore(input, txtResult);
-    input.focus();
-    input.onkeydown = (e) => {
-      if (e.key === 'Enter') {
-        const val = input.value.trim();
-        const targetText = window.CHAPTER_DATA[window.gameState.chapterId].isQAMode ? d.sentence : d.word;
-        if (window.isLenientMatch(targetText, val)) {
-          txtResult.style.color = "var(--success)";
-          txtResult.textContent = `Doğru: "${targetText}"`;
-          window.correctAns(null, 'word');
-        } else {
-          txtResult.style.color = "var(--wrong)";
-          txtResult.textContent = window.buildMismatchHint(targetText, val);
-          window.loseHeart();
-          window.gameState.firstTry = false;
-        }
-      }
+    const oldBtn = container.querySelector('.speak-fallback-btn');
+    if (oldBtn) oldBtn.remove();
+    
+    const confirmBtn = document.createElement('button');
+    confirmBtn.className = 'btn btn-primary btn-full speak-fallback-btn';
+    confirmBtn.textContent = 'Tekrar Ettim (Devam Et)';
+    confirmBtn.style.marginTop = '1rem';
+    container.insertBefore(confirmBtn, txtResult.nextSibling);
+    
+    confirmBtn.onclick = () => {
+      confirmBtn.remove();
+      txtResult.style.color = "var(--success)";
+      txtResult.textContent = "Harika! Bir sonraki kelimeye geçelim.";
+      window.correctAns(null, 'word');
     };
     return;
   }
