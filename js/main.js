@@ -55,43 +55,61 @@ window.initEvents = function() {
     const pass = window.$('reg-password').value;
     const kvkk = window.$('reg-kvkk').checked;
     
+    if (!name || !email || !pass) {
+        window.showError('reg-error', 'Lütfen tüm alanları doldurun.');
+        return;
+    }
+
     window.$('btn-register').textContent = 'Kayıt olunuyor...';
     window.$('btn-register').disabled = true;
 
-    const res = await window.authRegister(name, email, phone, pass, kvkk);
-
-    window.$('btn-register').textContent = 'Kayıt Ol';
-    window.$('btn-register').disabled = false;
-
-    if (res.error) {
-      window.showError('reg-error', res.error);
-      return;
-    }
-    
-    if (res.pending) {
-      window.showVerifyForm();
-      const msg = res.message || '📧 Onay kodu mail adresinize gönderildi.';
-      window.showToast('toast-heart', msg);
+    try {
+      const res = await window.authRegister(name, email, phone, pass, kvkk);
+      if (res.error) {
+        window.showError('reg-error', res.error);
+      } else if (res.pending) {
+        window.showVerifyForm();
+        const msg = res.message || '📧 Onay kodu mail adresinize gönderildi.';
+        window.showToast('toast-heart', msg);
+      } else if (res.user) {
+         window.showToast('toast-heart', '✅ Kayıt başarılı!');
+         window.showLoginForm();
+      }
+    } catch (e) {
+      console.error('Registration error:', e);
+      window.showError('reg-error', 'Bir bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+    } finally {
+      window.$('btn-register').textContent = 'Hemen Hesap Oluştur';
+      window.$('btn-register').disabled = false;
     }
   });
 
-  on('btn-verify-confirm', async () => {
+  on('btn-verify-confirm', 'click', async () => {
     window.clearErrors();
     const code = window.$('verify-code').value.trim();
     if (!code) return window.showError('verify-error', 'Lütfen onay kodunu giriniz.');
     
-    const res = await window.authVerifyCode(code);
-    if (res.error) {
-      window.showError('verify-error', res.error);
-      return;
+    window.$('btn-verify-confirm').textContent = 'Onaylanıyor...';
+    window.$('btn-verify-confirm').disabled = true;
+
+    try {
+      const res = await window.authVerifyCode(code);
+      if (res.error) {
+        window.showError('verify-error', res.error);
+      } else {
+        window.showToast('toast-heart', '✅ Hesabınız onaylandı! Hoş geldiniz.');
+        window.updateUserUI(res.user);
+        window.renderHome(res.user, window.gameState, window.startChapter);
+      }
+    } catch (e) {
+      window.showError('verify-error', 'Doğrulama sırasında bir hata oluştu.');
+    } finally {
+      window.$('btn-verify-confirm').textContent = 'Hesabı Onayla';
+      window.$('btn-verify-confirm').disabled = false;
     }
-    
-    window.showToast('toast-heart', '✅ Hesabınız onaylandı! Hoş geldiniz.');
-    window.updateUserUI(res.user);
-    window.renderHome(res.user, window.gameState, window.startChapter);
   });
 
-  on('btn-resend-code', async () => {
+  on('btn-resend-code', 'click', async () => {
     const res = await window.authResendCode();
     if (res.error) {
       window.showToast('toast-heart', '❌ ' + res.error);
