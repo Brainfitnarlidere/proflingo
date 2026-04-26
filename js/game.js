@@ -894,7 +894,7 @@ window.correctAns = function(btn, mode) {
     return; // Stop normal progression
   }
   if (btn) btn.classList.add(mode === 'word' ? 'option-correct' : 'option-correct-color');
-  setTimeout(() => {
+  setTimeout(async () => {
     window.gameState.qIndex++;
     window.clearStyles();
     window.renderQuestion();
@@ -951,7 +951,7 @@ window.loseHeart = function() {
   window.showToast('toast-heart', window.gameState.hearts === 0 ? '💔 Can kalmadı!' : `💔 -1 Can! ${window.gameState.hearts} kaldı`);
 };
 
-window.onQuizDone = function() {
+window.onQuizDone = async function() {
   window.gameState.allCorrect += window.gameState.quizCorrect;
   window.gameState.allWrong += window.gameState.quizWrong;
   const ch = window.CHAPTER_DATA[window.gameState.chapterId];
@@ -978,8 +978,8 @@ window.onQuizDone = function() {
       if (pct >= 80 && !user.completedChapters.includes(window.gameState.chapterId)) {
         user.completedChapters.push(window.gameState.chapterId);
       }
-      window.updateUser(user);
-      window.updateStreak();
+      await window.updateUser(user);
+      await window.updateStreak();
     }
     window.showFinalResults(window.gameState);
   }
@@ -1426,7 +1426,7 @@ window.startWinnerMode = function() {
     }
   }, 1000);
 
-  const endWinnerMode = (won) => {
+  const endWinnerMode = async (won) => {
     clearInterval(feverInterval);
     
     // Rule: Winner Mode ends with 0 hearts (High Risk)
@@ -1442,7 +1442,7 @@ window.startWinnerMode = function() {
       const user = window.getCurrentUser();
       if (user) {
         user.xp = (user.xp || 0) + bonus;
-        window.updateUser(user);
+        await window.updateUser(user);
         window.updateUserUI(user);
       }
       if (window.SOUNDS.perfect) window.SOUNDS.perfect.play().catch(() => {});
