@@ -1,8 +1,14 @@
 'use strict';
+// Security Hardening Version: 1.0.2 - Sync Active Test
 
 window.$ = function(id) { return document.getElementById(id); };
 window.show = function(el) { if (el) el.classList.remove('hidden'); };
 window.hide = function(el) { if (el) el.classList.add('hidden'); };
+window.sanitizeHTML = function(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+};
 
 window.showScreen = function(name) {
   const screens = document.querySelectorAll('.screen');

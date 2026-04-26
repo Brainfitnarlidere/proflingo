@@ -27,19 +27,27 @@ window.initEvents = function() {
     window.SOUNDS.wrong.play().catch(() => {});
   });
 
-  on('btn-login', 'click', () => {
+  on('btn-login', 'click', async () => {
     window.clearErrors();
     const email = window.$('login-email').value.trim();
     const pass = window.$('login-password').value;
     if (!email) { window.$('login-email').classList.add('invalid'); return window.showError('login-error', 'E-posta boş olamaz.'); }
     if (!pass) { window.$('login-password').classList.add('invalid'); return window.showError('login-error', 'Şifre boş olamaz.'); }
-    const res = window.authLogin(email, pass);
+    
+    window.$('btn-login').textContent = 'Giriş yapılıyor...';
+    window.$('btn-login').disabled = true;
+
+    const res = await window.authLogin(email, pass);
+    
+    window.$('btn-login').textContent = 'Giriş Yap';
+    window.$('btn-login').disabled = false;
+
     if (res.error) { window.showError('login-error', res.error); return; }
     window.updateUserUI(res.user);
     window.renderHome(res.user, window.gameState, window.startChapter);
   });
 
-  on('btn-register', () => {
+  on('btn-register', 'click', async () => {
     window.clearErrors();
     const name = window.$('reg-name').value;
     const email = window.$('reg-email').value;
@@ -47,7 +55,14 @@ window.initEvents = function() {
     const pass = window.$('reg-password').value;
     const kvkk = window.$('reg-kvkk').checked;
     
-    const res = window.authRegister(name, email, phone, pass, kvkk);
+    window.$('btn-register').textContent = 'Kayıt olunuyor...';
+    window.$('btn-register').disabled = true;
+
+    const res = await window.authRegister(name, email, phone, pass, kvkk);
+
+    window.$('btn-register').textContent = 'Kayıt Ol';
+    window.$('btn-register').disabled = false;
+
     if (res.error) {
       window.showError('reg-error', res.error);
       return;
@@ -55,16 +70,17 @@ window.initEvents = function() {
     
     if (res.pending) {
       window.showVerifyForm();
-      window.showToast('toast-heart', '📧 Onay kodu mail adresinize gönderildi.');
+      const msg = res.message || '📧 Onay kodu mail adresinize gönderildi.';
+      window.showToast('toast-heart', msg);
     }
   });
 
-  on('btn-verify-confirm', () => {
+  on('btn-verify-confirm', async () => {
     window.clearErrors();
     const code = window.$('verify-code').value.trim();
     if (!code) return window.showError('verify-error', 'Lütfen onay kodunu giriniz.');
     
-    const res = window.authVerifyCode(code);
+    const res = await window.authVerifyCode(code);
     if (res.error) {
       window.showError('verify-error', res.error);
       return;
@@ -75,12 +91,12 @@ window.initEvents = function() {
     window.renderHome(res.user, window.gameState, window.startChapter);
   });
 
-  on('btn-resend-code', () => {
-    const res = window.authResendCode();
+  on('btn-resend-code', async () => {
+    const res = await window.authResendCode();
     if (res.error) {
       window.showToast('toast-heart', '❌ ' + res.error);
     } else {
-      window.showToast('toast-heart', '📧 Yeni kod gönderildi.');
+      window.showToast('toast-heart', '📧 Onay maili tekrar gönderildi.');
     }
   });
 
@@ -96,7 +112,8 @@ window.initEvents = function() {
   on('btn-close-drawer', 'click', window.closeDrawer);
   on('drawer-overlay', 'click', window.closeDrawer);
   
-  on('btn-logout', 'click', () => {
+  on('btn-logout', 'click', async () => {
+    await window.supabase.auth.signOut();
     window.clearCurrentUser();
     window.hide(window.$('app-header'));
     window.closeDrawer();

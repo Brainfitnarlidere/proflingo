@@ -1,94 +1,91 @@
 'use strict';
 
-window.authLogin = function(email, password) {
-  const users = window.getUsers();
-  const user = users.find(u => u.email === email.trim().toLowerCase() && u.password === password);
-  if (!user) return { error: 'E-posta veya şifre hatalı.' };
+/**
+ * Supabase Auth Integration
+ */
+
+window.authLogin = async function(email, password) {
+  const { data, error } = await window.supabase.auth.signInWithPassword({
+    email: email.trim().toLowerCase(),
+    password: password
+  });
+
+  if (error) return { error: error.message };
+
+  // Fetch profile data
+  const { data: profile, error: profError } = await window.supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', data.user.id)
+    .single();
+
+  if (profError && profError.code !== 'PGRST116') {
+      console.error('Profile fetch error:', profError);
+  }
+
+  const user = {
+    id: data.user.id,
+    email: data.user.email,
+    name: profile?.name || data.user.user_metadata.full_name || 'Kullanıcı',
+    xp: profile?.xp || 0,
+    streak: profile?.streak || 0,
+    rewards: profile?.rewards || [],
+    completedChapters: profile?.completed_chapters || [],
+    lastPracticeDate: profile?.last_practice_date
+  };
+
   window.saveCurrentUser(user);
   return { user };
 };
 
-window.authRegister = function(name, email, phone, password, kvkk) {
+window.authRegister = async function(name, email, phone, password, kvkk) {
   if (!name.trim()) return { error: 'Ad Soyad zorunludur.' };
   if (!email.includes('@')) return { error: 'Geçerli bir e-posta girin.' };
   if (!phone.trim()) return { error: 'Telefon numarası zorunludur.' };
   if (password.length < 6) return { error: 'Şifre en az 6 karakter olmalı.' };
   if (!kvkk) return { error: 'Lütfen KVKK ve Gizlilik Politikası\'nı onaylayın.' };
-  
-  const users = window.getUsers();
-  if (users.find(u => u.email === email.trim().toLowerCase())) return { error: 'Bu e-posta zaten kayıtlı.' };
 
-  // Generate 6-digit code
-  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  const { data, error } = await window.supabase.auth.signUp({
+    email: email.trim().toLowerCase(),
+    password: password,
+    options: {
+      data: {
+        full_name: name.trim(),
+        phone: phone.trim()
+      }
+    }
+  });
+
+  if (error) return { error: error.message };
+
+  // Note: Supabase sends a confirmation email by default.
+  // We can still show the "pending" state in our UI.
   
-  const pendingUser = { 
-    name: name.trim(), 
-    email: email.trim().toLowerCase(), 
-    phone: phone.trim(),
-    password, 
-    code,
-    timestamp: Date.now()
-  };
-  
-  localStorage.setItem('pending_user', JSON.stringify(pendingUser));
-  
-  // Sync to N8N for email delivery
-  if (window.syncToN8N) {
-    window.syncToN8N({
-      event: 'registration_verification',
-      email: pendingUser.email,
-      name: pendingUser.name,
-      code: pendingUser.code
-    });
+  if (data.user && data.session === null) {
+      // Confirmation required
+      return { pending: true, message: 'Lütfen e-posta adresinize gönderilen onay linkine tıklayın.' };
   }
-  
-  return { pending: true };
+
+  return { user: data.user };
 };
 
-window.authVerifyCode = function(inputCode) {
-  const pending = JSON.parse(localStorage.getItem('pending_user'));
-  if (!pending) return { error: 'Doğrulama süreci bulunamadı. Lütfen tekrar kayıt olun.' };
-  
-  if (inputCode === pending.code) {
-    const users = window.getUsers();
-    const newUser = {
-      id: Date.now(),
-      name: pending.name,
-      email: pending.email,
-      phone: pending.phone,
-      password: pending.password,
-      xp: 0,
-      streak: 0,
-      rewards: [],
-      completedChapters: [],
-      lastPracticeDate: null
-    };
-    
-    users.push(newUser);
-    window.saveUsers(users);
-    window.saveCurrentUser(newUser);
-    localStorage.removeItem('pending_user');
-    return { user: newUser };
-  } else {
-    return { error: 'Yanlış doğrulama kodu.' };
-  }
+// Supabase handle's verification via email link by default.
+// This function can be kept for compatibility or updated if using OTP.
+window.authVerifyCode = async function(inputCode) {
+    // If you enable Email OTP in Supabase, you can use:
+    // const { data, error } = await supabase.auth.verifyOtp({ email, token: inputCode, type: 'signup' })
+    return { error: 'Supabase artık e-postanıza bir onay linki gönderiyor. Lütfen mailinizi kontrol edin.' };
 };
 
-window.authResendCode = function() {
+window.authResendCode = async function() {
   const pending = JSON.parse(localStorage.getItem('pending_user'));
-  if (!pending) return { error: 'Doğrulama süreci bulunamadı.' };
+  if (!pending) return { error: 'Bekleyen kayıt bulunamadı.' };
   
-  const newCode = Math.floor(100000 + Math.random() * 900000).toString();
-  pending.code = newCode;
-  localStorage.setItem('pending_user', JSON.stringify(pending));
+  const { error } = await window.supabase.auth.resend({
+    type: 'signup',
+    email: pending.email
+  });
   
-  if (window.syncToN8N) {
-    window.syncToN8N({
-      event: 'registration_verification',
-      email: pending.email,
-      name: pending.name,
-      code: pending.code
-    });
-  }
+  if (error) return { error: error.message };
   return { success: true };
 };

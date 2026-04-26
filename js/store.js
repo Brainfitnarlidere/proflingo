@@ -49,16 +49,36 @@ window.saveCurrentUser = function(user) {
   }
 };
 
-window.updateUser = function(updatedUser) {
-  const users = window.getUsers();
-  const idx = users.findIndex(u => String(u.id) === String(updatedUser.id));
-  if (idx !== -1) {
-    users[idx] = updatedUser;
-    window.saveUsers(users);
+window.updateUser = async function(updatedUser) {
+  // Save locally first for responsiveness
+  const currentId = localStorage.getItem(window.STORAGE.CURRENT_USER);
+  if (currentId && String(currentId) === String(updatedUser.id)) {
+      // We don't have all users anymore, just the current one in a real DB setup.
+      // But we can store a local record if needed.
+  }
+
+  // Update Supabase
+  if (window.supabase && updatedUser.id) {
+    const { error } = await window.supabase
+      .from('profiles')
+      .upsert({
+        id: updatedUser.id,
+        name: updatedUser.name,
+        phone: updatedUser.phone,
+        xp: updatedUser.xp,
+        streak: updatedUser.streak,
+        completed_chapters: updatedUser.completedChapters || [],
+        rewards: updatedUser.rewards || [],
+        last_practice_date: updatedUser.lastPracticeDate
+      });
+
+    if (error) {
+      console.error('Supabase profile update error:', error);
+    }
   }
 };
 
-window.updateStreak = function() {
+window.updateStreak = async function() {
   const user = window.getCurrentUser();
   if (!user) return;
   
@@ -79,10 +99,10 @@ window.updateStreak = function() {
   }
   
   user.lastPracticeDate = today;
-  window.updateUser(user);
+  await window.updateUser(user);
 };
 
-window.redeemReward = function(reward) {
+window.redeemReward = async function(reward) {
   const user = window.getCurrentUser();
   if (!user || (user.xp || 0) < reward.price) return false;
   
@@ -94,7 +114,7 @@ window.redeemReward = function(reward) {
     name: reward.name
   });
   
-  window.updateUser(user);
+  await window.updateUser(user);
   return true;
 };
 
