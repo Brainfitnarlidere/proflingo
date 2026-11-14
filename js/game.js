@@ -429,13 +429,21 @@ window.renderQuestion = function() {
   else if (q.type === 'drag-drop-scene') window.renderDragDropScene(q);
   else if (q.type === 'matching-list-10') window.renderMatchingList10(q);
 
-  if (q.type === 'listen-choice') {
-    window.playTTS(window.CHAPTER_DATA[window.gameState.chapterId].items[q.key].word);
-  } else {
-    // Skip reading prompt for dual-voice QA speak tasks because renderSpeakWord handles it
-    const isDualQA = [33, 34, 40, 41, 42].includes(window.gameState.chapterId);
-    if (!(q.type === 'speak' && isDualQA)) {
-      window.playTTS(q.prompt);
+  const ch = window.CHAPTER_DATA[window.gameState.chapterId];
+  const d_target = ch.items[q.key];
+  const isDualQA = [33, 34, 40, 41, 42].includes(window.gameState.chapterId);
+
+  if (d_target && window.playTTS) {
+    if (q.type === 'listen-choice') {
+      window.playTTS(d_target.word);
+    } else if (q.type === 'word-choice') {
+      window.playTTS(ch.isQAMode ? d_target.word : d_target.word);
+    } else if (q.type === 'image-choice') {
+      window.playTTS(ch.isQAMode ? d_target.sentence : d_target.word);
+    } else if (q.type === 'word-ordering') {
+      if (window.playSlow) window.playSlow(d_target.word);
+    } else if (q.type === 'speak' && !isDualQA) {
+      window.playTTS(ch.isQAMode ? d_target.sentence : d_target.word);
     }
   }
 };
@@ -490,7 +498,7 @@ window.renderImageChoice = function(q) {
     const stim = window.$('quiz-choose-image').querySelector('.quiz-stimulus');
     if (stim) window.hide(stim);
   }
-  if (window.playTTS) window.playTTS(ch.isQAMode ? d_target.sentence : d_target.word);
+  // Play target language TTS is handled in renderQuestion
 
   const grid = window.$('quiz-image-options');
   if (grid) {

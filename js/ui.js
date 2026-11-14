@@ -169,7 +169,8 @@ window.renderHome = function(user, state, onStartChapter) {
   const currentChapters = window.CHAPTERS.slice(startIndex, endIndex);
 
   currentChapters.forEach((ch, i) => {
-    const isUnlocked = true; // All chapters unlocked for now as per user request
+    const globalIdx = startIndex + i;
+    const isUnlocked = (globalIdx === 0) || completed.includes(window.CHAPTERS[globalIdx - 1].id);
     const isCompleted = completed.includes(ch.id);
     const isActive = isUnlocked && !isCompleted;
     const isLocked = !isUnlocked;
@@ -351,6 +352,7 @@ window.renderLearnCard = function(state) {
     vis.textContent = '';
     vis.innerHTML = '';
   } else {
+    vis.innerHTML = '';
     vis.style.backgroundImage = 'none';
     vis.style.backgroundColor = data.color || '#F5F5F5';
     vis.style.border = '4px solid rgba(0,0,0,.04)';
@@ -359,7 +361,6 @@ window.renderLearnCard = function(state) {
     vis.style.alignItems = 'center';
     vis.style.justifyContent = 'center';
     vis.style.fontSize = '80px';
-    vis.innerHTML = '';
   }
   const wordEl = window.$('flashcard-word-static');
   const counterEl = window.$('card-counter');
@@ -463,14 +464,14 @@ window.showFinalResults = function(state) {
 };
 
 window.openDrawer = function() {
-  const d = window.$('screen-profile-drawer');
+  const d = window.$('profile-drawer');
   if (d) {
     d.classList.add('open');
     d.classList.remove('hidden');
   }
 };
 window.closeDrawer = function() {
-  const d = window.$('screen-profile-drawer');
+  const d = window.$('profile-drawer');
   if (d) {
     d.classList.remove('open');
     d.classList.add('hidden');

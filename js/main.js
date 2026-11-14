@@ -22,6 +22,7 @@ window.initEvents = function() {
 
   on('go-register', 'click', window.showRegisterForm);
   on('go-login', 'click', window.showLoginForm);
+  on('verify-back-login', 'click', window.showLoginForm);
   on('btn-close-auth', 'click', () => {
     window.showLoginForm();
     window.showToast('toast-heart', 'Lütfen devam etmek için giriş yapın.');
@@ -43,6 +44,11 @@ window.initEvents = function() {
     window.$('btn-login').disabled = false;
 
     if (res.error) { window.showError('login-error', res.error); return; }
+    if (res.pending) {
+      window.showVerifyForm();
+      window.showToast('toast-heart', res.message || '📧 Lütfen hesabınızı onaylayın.');
+      return;
+    }
     window.updateUserUI(res.user);
     window.renderHome(res.user, window.gameState, window.startChapter);
   });
@@ -74,11 +80,11 @@ window.initEvents = function() {
         window.showError('reg-error', res.error);
       } else if (res.pending) {
         window.showVerifyForm();
-        const msg = res.message || '📧 Onay kodu mail adresinize gönderildi.';
-        window.showToast('toast-heart', msg);
+        window.showToast('toast-heart', res.message || '📧 Onay kodu mail adresinize gönderildi.');
       } else if (res.user) {
          window.showToast('toast-heart', '✅ Kayıt başarılı!');
-         window.showLoginForm();
+         window.updateUserUI(res.user);
+         window.renderHome(res.user, window.gameState, window.startChapter);
       }
     } catch (e) {
       console.error('Registration error:', e);
@@ -169,7 +175,11 @@ window.initEvents = function() {
   on('drawer-overlay', 'click', window.closeDrawer);
   
   on('btn-logout', 'click', async () => {
-    await window.supabase.auth.signOut();
+    try {
+      if (window.supabase && window.supabase.auth) {
+        await window.supabase.auth.signOut();
+      }
+    } catch(e) {}
     window.clearCurrentUser();
     window.hide(window.$('app-header'));
     window.closeDrawer();
@@ -228,7 +238,7 @@ window.init = function() {
   window.__ORIGINAL_EN_DATA = window.CHAPTER_DATA;
   window.__ORIGINAL_EN_CHAPTERS = window.CHAPTERS;
 
-  setTimeout(() => {
+  setTimeout(async () => {
     if (appEl) {
       appEl.classList.remove('hidden');
       appEl.style.display = 'flex';
@@ -250,7 +260,9 @@ window.init = function() {
       window.CHAPTERS = window.CHAPTERS_IT;
     }
 
-    const user = window.getCurrentUser();
+    const user = window.authRestoreSession
+      ? await window.authRestoreSession()
+      : null;
     if (user) {
       window.updateUserUI(user);
       window.showHeader();
@@ -259,7 +271,8 @@ window.init = function() {
       const seen = localStorage.getItem(window.STORAGE.ONBOARD);
       if (seen) {
         window.showScreen('auth');
-        window.showLoginForm();
+        if (window.authHasPending && window.authHasPending()) window.showVerifyForm();
+        else window.showLoginForm();
       } else {
         window.showOnboarding();
       }

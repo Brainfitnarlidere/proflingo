@@ -27,10 +27,8 @@ window.saveUsers = function(users) {
 
 window.getCurrentUser = function() {
   try {
-    const userId = localStorage.getItem(window.STORAGE.CURRENT_USER);
-    if (!userId) return null;
-    const users = window.getUsers();
-    return users.find(u => String(u.id) === String(userId)) || null;
+    const data = localStorage.getItem(window.STORAGE.CURRENT_USER);
+    return data ? JSON.parse(data) : null;
   } catch (e) {
     console.error('getCurrentUser error:', e);
     return null;
@@ -40,7 +38,7 @@ window.getCurrentUser = function() {
 window.saveCurrentUser = function(user) {
   try {
     if (user && user.id) {
-      localStorage.setItem(window.STORAGE.CURRENT_USER, String(user.id));
+      localStorage.setItem(window.STORAGE.CURRENT_USER, JSON.stringify(user));
     } else {
       localStorage.removeItem(window.STORAGE.CURRENT_USER);
     }
@@ -51,11 +49,7 @@ window.saveCurrentUser = function(user) {
 
 window.updateUser = async function(updatedUser) {
   // Save locally first for responsiveness
-  const currentId = localStorage.getItem(window.STORAGE.CURRENT_USER);
-  if (currentId && String(currentId) === String(updatedUser.id)) {
-      // We don't have all users anymore, just the current one in a real DB setup.
-      // But we can store a local record if needed.
-  }
+  window.saveCurrentUser(updatedUser);
 
   // Update Supabase
   if (window.supabase && updatedUser.id) {

@@ -16,7 +16,6 @@
 </head>
 
 <body>
-  <script>document.body.style.background = 'red'; setTimeout(() => document.body.style.background = '', 500);</script>
   
   <!-- LANGUAGE SELECT screen -->
   <main id="screen-language-select" class="screen screen-language-select hidden">
@@ -176,46 +175,26 @@
           <p id="reg-error" class="form-error hidden"></p>
           <button id="btn-register" class="btn btn-primary btn-full">Hemen Hesap Oluştur</button>
           <p class="auth-switch">Hesabın var mı? <button id="go-login" class="link-btn">Giriş Yap</button></p>
-
-          <!-- Verification Form -->
-          <div id="form-verify" class="auth-form hidden">
-            <h2 class="form-heading">Son Bir Adım! 🚀</h2>
-            
-            <div class="verify-benefits">
-              <div class="benefit-item">
-                <span class="benefit-icon">👁️</span>
-                <div class="benefit-text">
-                  <h4>Görsel Odaklı Öğrenme</h4>
-                  <p>Beyniniz görselleri metinlerden 60.000 kat daha hızlı işler.</p>
-                </div>
-              </div>
-              <div class="benefit-item">
-                <span class="benefit-icon">🧠</span>
-                <div class="benefit-text">
-                  <h4>Doğal Kazanım</h4>
-                  <p>Çeviri yapmadan, çocukların dil öğrendiği gibi doğal bir süreç.</p>
-                </div>
-              </div>
-              <div class="benefit-item">
-                <span class="benefit-icon">📈</span>
-                <div class="benefit-text">
-                  <h4>Bilimsel Kanıt</h4>
-                  <p>Görselleştirme tekniği kalıcı hafızayı %78 oranında artırır.</p>
-                </div>
-              </div>
-            </div>
-
-            <p class="form-subtext" style="text-align: center; font-size: 0.95rem; margin: 1.5rem 0; color: var(--text-main); font-weight: 500;">
-              Lütfen mail adresinize gönderilen <strong>onay linkine</strong> tıklayın.
-            </p>
-
-            <button id="btn-verify-refresh" class="btn btn-primary btn-full" onclick="location.reload()">Onayladım, Devam Et</button>
-            <p id="verify-error" class="form-error hidden"></p>
-            
-            <p class="auth-switch">Mail gelmedi mi? <button id="btn-resend-code" class="link-btn">Tekrar Gönder</button></p>
-          </div>
           <p class="auth-footer-tagline">Kaydınız saniyeler içinde tamamlanacak.</p>
         </div>
+
+        <!-- Verification Form (kayıt formunun DIŞINDA olmalı) -->
+        <div id="form-verify" class="auth-form hidden">
+          <h2 class="form-heading">Son Bir Adım! 🚀</h2>
+          <p class="form-subtext" style="text-align: center; font-size: 0.95rem; margin: 1rem 0; color: var(--text-main); font-weight: 500;">
+            E-posta adresinize gönderilen <strong>6 haneli kodu</strong> girin.<br>
+            <span style="font-weight: 400; font-size: 0.85rem;">(Mailde bir onay linki varsa ona tıklamanız da yeterli.)</span>
+          </p>
+          <div class="field">
+            <label>Onay Kodu</label>
+            <input type="text" id="verify-code" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="one-time-code">
+          </div>
+          <p id="verify-error" class="form-error hidden"></p>
+          <button id="btn-verify-confirm" class="btn btn-primary btn-full">Hesabı Onayla</button>
+          <p class="auth-switch">Mail gelmedi mi? <button id="btn-resend-code" class="link-btn">Tekrar Gönder</button></p>
+          <p class="auth-switch"><button id="verify-back-login" class="link-btn">Giriş ekranına dön</button></p>
+        </div>
+
       </div>
     </main>
 
