@@ -4,7 +4,7 @@ window.UsageManager = {
   LIMIT_MINUTES: 30,
   TRACK_INTERVAL_MS: 30000, 
   SYNC_INTERVAL_MS: 300000, // Sync heartbeats every 5 mins
-  N8N_WEBHOOK_URL: 'https://n8n.brainfitnarlidere.com/webhook/lv-usage-sync', // Placeholder for user
+  N8N_WEBHOOK_URL: 'https://n8n.brainfitnarlidere.com/webhook/lv-usage-sync',
   
   init() {
     this.checkDayReset();
@@ -65,6 +65,15 @@ window.UsageManager = {
     // Use window.getCurrentUser if available
     const user = typeof window.getCurrentUser === 'function' ? window.getCurrentUser() : null;
     if (!user) return;
+
+    // n8n bu anahtarı Supabase'e sorarak isteğin gerçekten bu kullanıcıdan geldiğini
+    // doğrular (bkz. supabase/n8n_dogrulama.md). Oturum yoksa gönderme.
+    let token = null;
+    try {
+      const { data } = await window.supabase.auth.getSession();
+      token = data && data.session && data.session.access_token;
+    } catch (e) {}
+    if (!token) return;
     
     const payload = {
       email: user.email,
@@ -77,7 +86,7 @@ window.UsageManager = {
     try {
       await fetch(this.N8N_WEBHOOK_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify(payload)
       });
       console.log(`[Usage] Synced ${event} to n8n`);

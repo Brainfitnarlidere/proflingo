@@ -45,13 +45,21 @@ async function loadOrCreateProfile(authUser) {
     .eq('id', authUser.id)
     .maybeSingle();
 
-  if (error) console.error('Profile fetch error:', error);
+  if (error) {
+    // Ağ/izin hatası: profil yok sanıp sıfır XP ile devam edersek bir sonraki
+    // kayıtta gerçek XP'nin üzerine yazarız. Önbellekteki kaydı kullan.
+    console.error('Profile fetch error:', error);
+    const cached = window.getCurrentUser && window.getCurrentUser();
+    if (cached && String(cached.id) === String(authUser.id)) return cached;
+    throw new Error('Profil yüklenemedi. İnternet bağlantınızı kontrol edip tekrar deneyin.');
+  }
 
   if (!profile) {
     // Normalde veritabanı tetikleyicisi oluşturur; yoksa burada oluşturuyoruz.
+    // Sadece insert: tarayıcının profil satırını güncelleme yetkisi kısıtlıdır.
     const res = await window.supabase
       .from('profiles')
-      .upsert({
+      .insert({
         id: authUser.id,
         email: normEmail(authUser.email),
         name: meta.full_name || null,
@@ -63,9 +71,15 @@ async function loadOrCreateProfile(authUser) {
     profile = res.data;
   }
 
+  return window.profileToUser(profile, authUser);
+}
+
+// Veritabanı satırını uygulamanın kullanıcı nesnesine çevirir.
+window.profileToUser = function(profile, authUser) {
+  const meta = (authUser && authUser.user_metadata) || {};
   return {
-    id: authUser.id,
-    email: authUser.email,
+    id: profile?.id || authUser?.id,
+    email: authUser?.email || profile?.email || '',
     name: profile?.name || meta.full_name || 'Kullanıcı',
     phone: profile?.phone || meta.phone || '',
     xp: profile?.xp || 0,
@@ -74,7 +88,7 @@ async function loadOrCreateProfile(authUser) {
     completedChapters: profile?.completed_chapters || [],
     lastPracticeDate: profile?.last_practice_date || null
   };
-}
+};
 
 async function finishLogin(authUser) {
   const user = await loadOrCreateProfile(authUser);
@@ -98,7 +112,11 @@ window.authLogin = async function(email, password) {
     return { error: trError(error) };
   }
 
-  return { user: await finishLogin(data.user) };
+  try {
+    return { user: await finishLogin(data.user) };
+  } catch (e) {
+    return { error: e.message };
+  }
 };
 
 window.authRegister = async function(name, email, phone, password, kvkk) {
@@ -132,7 +150,11 @@ window.authRegister = async function(name, email, phone, password, kvkk) {
 
   if (data.session && data.user) {
     // E-posta onayı kapalıysa doğrudan giriş yapılır.
-    return { user: await finishLogin(data.user) };
+    try {
+      return { user: await finishLogin(data.user) };
+    } catch (e) {
+      return { error: e.message };
+    }
   }
 
   setPending(email);
@@ -155,7 +177,11 @@ window.authVerifyCode = async function(inputCode) {
   if (error) return { error: trError(error) };
   if (!data.user) return { error: 'Doğrulama tamamlanamadı. Lütfen tekrar deneyin.' };
 
-  return { user: await finishLogin(data.user) };
+  try {
+    return { user: await finishLogin(data.user) };
+  } catch (e) {
+    return { error: e.message };
+  }
 };
 
 window.authResendCode = async function() {

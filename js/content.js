@@ -113,16 +113,16 @@ window.HOMOPHONES = {
 window.CHAPTER_DATA = {
   1: {
     items: {
-      red: { word: 'Red', image: 'images/colors/color_red.png' },
-      blue: { word: 'Blue', image: 'images/colors/color_blue.png' },
-      green: { word: 'Green', image: 'images/colors/color_green.png' },
-      yellow: { word: 'Yellow', image: 'images/colors/color_yellow.png' },
-      orange: { word: 'Orange', image: 'images/colors/color_orange.png' },
-      purple: { word: 'Purple', image: 'images/colors/color_purple.png' },
-      pink: { word: 'Pink', image: 'images/colors/color_pink.png' },
-      black: { word: 'Black', image: 'images/colors/color_black.png' },
-      white: { word: 'White', image: 'images/colors/color_white.png', border: true },
-      brown: { word: 'Brown', image: 'images/colors/color_brown.png' },
+      red: { word: 'Red', image: 'images/colors/color_red.webp' },
+      blue: { word: 'Blue', image: 'images/colors/color_blue.webp' },
+      green: { word: 'Green', image: 'images/colors/color_green.webp' },
+      yellow: { word: 'Yellow', image: 'images/colors/color_yellow.webp' },
+      orange: { word: 'Orange', image: 'images/colors/color_orange.webp' },
+      purple: { word: 'Purple', image: 'images/colors/color_purple.webp' },
+      pink: { word: 'Pink', image: 'images/colors/color_pink.webp' },
+      black: { word: 'Black', image: 'images/colors/color_black.webp' },
+      white: { word: 'White', image: 'images/colors/color_white.webp', border: true },
+      brown: { word: 'Brown', image: 'images/colors/color_brown.webp' },
     },
     batches: [
       ['red', 'blue', 'green', 'yellow'],
@@ -169,16 +169,16 @@ window.CHAPTER_DATA = {
   },
   3: {
     items: {
-      apple: { word: 'Apple', image: 'images/fruits/apple.png', border: true },
-      banana: { word: 'Banana', image: 'images/fruits/banana.png', border: true },
-      orange: { word: 'Orange', image: 'images/fruits/orange.png', border: true },
-      strawberry: { word: 'Strawberry', image: 'images/fruits/strawberry.png', border: true },
-      grapes: { word: 'Grapes', image: 'images/fruits/grapes.png', border: false },
-      watermelon: { word: 'Watermelon', image: 'images/fruits/watermelon.png', border: false },
-      lemon: { word: 'Lemon', image: 'images/fruits/lemon.png', border: false },
-      cherry: { word: 'Cherry', image: 'images/fruits/cherry.png', border: false },
-      pineapple: { word: 'Pineapple', image: 'images/fruits/pineapple.png', border: false },
-      carrot: { word: 'Carrot', image: 'images/fruits/carrot.png', border: false }
+      apple: { word: 'Apple', image: 'images/fruits/apple.webp', border: true },
+      banana: { word: 'Banana', image: 'images/fruits/banana.webp', border: true },
+      orange: { word: 'Orange', image: 'images/fruits/orange.webp', border: true },
+      strawberry: { word: 'Strawberry', image: 'images/fruits/strawberry.webp', border: true },
+      grapes: { word: 'Grapes', image: 'images/fruits/grapes.webp', border: false },
+      watermelon: { word: 'Watermelon', image: 'images/fruits/watermelon.webp', border: false },
+      lemon: { word: 'Lemon', image: 'images/fruits/lemon.webp', border: false },
+      cherry: { word: 'Cherry', image: 'images/fruits/cherry.webp', border: false },
+      pineapple: { word: 'Pineapple', image: 'images/fruits/pineapple.webp', border: false },
+      carrot: { word: 'Carrot', image: 'images/fruits/carrot.webp', border: false }
     },
     batches: [
       ['apple', 'banana', 'orange'],
@@ -197,16 +197,16 @@ window.CHAPTER_DATA = {
   },
   4: {
     items: {
-      cat: { word: 'Cat', image: 'images/animals/cat.png', border: false },
-      dog: { word: 'Dog', image: 'images/animals/dog.png', border: false },
-      bird: { word: 'Bird', image: 'images/animals/bird.png', border: false },
-      fish: { word: 'Fish', image: 'images/animals/fish.png', border: false },
-      rabbit: { word: 'Rabbit', image: 'images/animals/rabbit.png', border: false },
-      mouse: { word: 'Mouse', image: 'images/animals/mouse.png', border: false },
-      turtle: { word: 'Turtle', image: 'images/animals/turtle.png', border: false },
-      horse: { word: 'Horse', image: 'images/animals/horse.png', border: false },
-      cow: { word: 'Cow', image: 'images/animals/cow.png', border: false },
-      pig: { word: 'Pig', image: 'images/animals/pig.png', border: false }
+      cat: { word: 'Cat', image: 'images/animals/cat.webp', border: false },
+      dog: { word: 'Dog', image: 'images/animals/dog.webp', border: false },
+      bird: { word: 'Bird', image: 'images/animals/bird.webp', border: false },
+      fish: { word: 'Fish', image: 'images/animals/fish.webp', border: false },
+      rabbit: { word: 'Rabbit', image: 'images/animals/rabbit.webp', border: false },
+      mouse: { word: 'Mouse', image: 'images/animals/mouse.webp', border: false },
+      turtle: { word: 'Turtle', image: 'images/animals/turtle.webp', border: false },
+      horse: { word: 'Horse', image: 'images/animals/horse.webp', border: false },
+      cow: { word: 'Cow', image: 'images/animals/cow.webp', border: false },
+      pig: { word: 'Pig', image: 'images/animals/pig.webp', border: false }
     },
     batches: [
       ['cat', 'dog', 'bird'],
@@ -225,16 +225,16 @@ window.CHAPTER_DATA = {
   },
   5: {
     items: {
-      shirt: { word: 'Shirt', image: 'images/clothing/shirt.png', border: false },
-      pants: { word: 'Pants', image: 'images/clothing/pants.png', border: false },
-      shoes: { word: 'Shoes', image: 'images/clothing/shoes.png', border: false },
-      hat: { word: 'Hat', image: 'images/clothing/hat.png', border: false },
-      dress: { word: 'Dress', image: 'images/clothing/dress.png', border: false },
-      socks: { word: 'Socks', image: 'images/clothing/socks.png', border: false },
-      jacket: { word: 'Jacket', image: 'images/clothing/jacket.png', border: false },
-      skirt: { word: 'Skirt', image: 'images/clothing/skirt.png', border: false },
-      scarf: { word: 'Scarf', image: 'images/clothing/scarf.png', border: false },
-      gloves: { word: 'Gloves', image: 'images/clothing/gloves.png', border: false }
+      shirt: { word: 'Shirt', image: 'images/clothing/shirt.webp', border: false },
+      pants: { word: 'Pants', image: 'images/clothing/pants.webp', border: false },
+      shoes: { word: 'Shoes', image: 'images/clothing/shoes.webp', border: false },
+      hat: { word: 'Hat', image: 'images/clothing/hat.webp', border: false },
+      dress: { word: 'Dress', image: 'images/clothing/dress.webp', border: false },
+      socks: { word: 'Socks', image: 'images/clothing/socks.webp', border: false },
+      jacket: { word: 'Jacket', image: 'images/clothing/jacket.webp', border: false },
+      skirt: { word: 'Skirt', image: 'images/clothing/skirt.webp', border: false },
+      scarf: { word: 'Scarf', image: 'images/clothing/scarf.webp', border: false },
+      gloves: { word: 'Gloves', image: 'images/clothing/gloves.webp', border: false }
     },
     batches: [
       ['shirt', 'pants', 'shoes'],
@@ -253,16 +253,16 @@ window.CHAPTER_DATA = {
   },
   6: {
     items: {
-      head: { word: 'Head', image: 'images/bodyparts/head.png', border: false },
-      hand: { word: 'Hand', image: 'images/bodyparts/hand.png', border: false },
-      eye: { word: 'Eye', image: 'images/bodyparts/eye.png', border: false },
-      ear: { word: 'Ear', image: 'images/bodyparts/ear.png', border: false },
-      nose: { word: 'Nose', image: 'images/bodyparts/nose.png', border: false },
-      mouth: { word: 'Mouth', image: 'images/bodyparts/mouth.png', border: false },
-      leg: { word: 'Leg', image: 'images/bodyparts/leg.png', border: false },
-      foot: { word: 'Foot', image: 'images/bodyparts/foot.png', border: false },
-      arm: { word: 'Arm', image: 'images/bodyparts/arm.png', border: false },
-      finger: { word: 'Finger', image: 'images/bodyparts/finger.png', border: false }
+      head: { word: 'Head', image: 'images/bodyparts/head.webp', border: false },
+      hand: { word: 'Hand', image: 'images/bodyparts/hand.webp', border: false },
+      eye: { word: 'Eye', image: 'images/bodyparts/eye.webp', border: false },
+      ear: { word: 'Ear', image: 'images/bodyparts/ear.webp', border: false },
+      nose: { word: 'Nose', image: 'images/bodyparts/nose.webp', border: false },
+      mouth: { word: 'Mouth', image: 'images/bodyparts/mouth.webp', border: false },
+      leg: { word: 'Leg', image: 'images/bodyparts/leg.webp', border: false },
+      foot: { word: 'Foot', image: 'images/bodyparts/foot.webp', border: false },
+      arm: { word: 'Arm', image: 'images/bodyparts/arm.webp', border: false },
+      finger: { word: 'Finger', image: 'images/bodyparts/finger.webp', border: false }
     },
     batches: [
       ['head', 'hand', 'eye'],
@@ -304,16 +304,16 @@ window.CHAPTER_DATA = {
   },
   8: {
     items: {
-      bread: { word: 'Bread', image: 'images/food/food_bread_1773075723895.png', border: false },
-      water: { word: 'Water', image: 'images/food/food_water_1773075740123.png', border: false },
-      pizza: { word: 'Pizza', image: 'images/food/food_pizza_1773075757350.png', border: false },
-      milk: { word: 'Milk', image: 'images/food/food_milk_1773075771555.png', border: false },
-      cheese: { word: 'Cheese', image: 'images/food/food_cheese_1773075785909.png', border: false },
-      egg: { word: 'Egg', image: 'images/food/food_egg_1773075814569.png', border: false },
-      meat: { word: 'Meat', image: 'images/food/food_meat_1773075829044.png', border: false },
-      soup: { word: 'Soup', image: 'images/food/food_soup_1773075848167.png', border: false },
-      rice: { word: 'Rice', image: 'images/food/food_rice_1773075860734.png', border: false },
-      salad: { word: 'Salad', image: 'images/food/food_salad_1773075874436.png', border: false }
+      bread: { word: 'Bread', image: 'images/food/food_bread_1773075723895.webp', border: false },
+      water: { word: 'Water', image: 'images/food/food_water_1773075740123.webp', border: false },
+      pizza: { word: 'Pizza', image: 'images/food/food_pizza_1773075757350.webp', border: false },
+      milk: { word: 'Milk', image: 'images/food/food_milk_1773075771555.webp', border: false },
+      cheese: { word: 'Cheese', image: 'images/food/food_cheese_1773075785909.webp', border: false },
+      egg: { word: 'Egg', image: 'images/food/food_egg_1773075814569.webp', border: false },
+      meat: { word: 'Meat', image: 'images/food/food_meat_1773075829044.webp', border: false },
+      soup: { word: 'Soup', image: 'images/food/food_soup_1773075848167.webp', border: false },
+      rice: { word: 'Rice', image: 'images/food/food_rice_1773075860734.webp', border: false },
+      salad: { word: 'Salad', image: 'images/food/food_salad_1773075874436.webp', border: false }
     },
     batches: [
       ['bread', 'water', 'pizza', 'milk'],
@@ -332,13 +332,13 @@ window.CHAPTER_DATA = {
   },
   9: {
     items: {
-      mother: { word: 'Mother', image: 'images/family/family_mother_1773075997792.png', border: false },
-      father: { word: 'Father', image: 'images/family/family_father_1773076012290.png', border: false },
-      brother: { word: 'Brother', image: 'images/family/family_brother_1773076028376.png', border: false },
-      sister: { word: 'Sister', image: 'images/family/family_sister_v2.png', border: false },
-      grandmother: { word: 'Grandmother', image: 'images/family/family_grandmother_1773076099611.png', border: false },
-      grandfather: { word: 'Grandfather', image: 'images/family/family_grandfather_1773076117483.png', border: false },
-      baby: { word: 'Baby', image: 'images/family/family_baby_1773076057187.png', border: false }
+      mother: { word: 'Mother', image: 'images/family/family_mother_1773075997792.webp', border: false },
+      father: { word: 'Father', image: 'images/family/family_father_1773076012290.webp', border: false },
+      brother: { word: 'Brother', image: 'images/family/family_brother_1773076028376.webp', border: false },
+      sister: { word: 'Sister', image: 'images/family/family_sister_v2.webp', border: false },
+      grandmother: { word: 'Grandmother', image: 'images/family/family_grandmother_1773076099611.webp', border: false },
+      grandfather: { word: 'Grandfather', image: 'images/family/family_grandfather_1773076117483.webp', border: false },
+      baby: { word: 'Baby', image: 'images/family/family_baby_1773076057187.webp', border: false }
     },
     batches: [
       ['mother', 'father', 'brother', 'sister'],
@@ -355,16 +355,16 @@ window.CHAPTER_DATA = {
   },
   10: {
     items: {
-      bed: { word: 'Bed', image: 'images/houseitems/bed.png', border: false },
-      table: { word: 'Table', image: 'images/houseitems/table.png', border: false },
-      chair: { word: 'Chair', image: 'images/houseitems/chair.png', border: false },
-      wardrobe: { word: 'Wardrobe', image: 'images/houseitems/wardrobe.png', border: false },
-      door: { word: 'Door', image: 'images/houseitems/door.png', border: false },
-      window: { word: 'Window', image: 'images/houseitems/window.png', border: false },
-      clock: { word: 'Clock', image: 'images/houseitems/clock.png', border: false },
-      lamp: { word: 'Lamp', image: 'images/houseitems/lamp.png', border: false },
-      mirror: { word: 'Mirror', image: 'images/houseitems/mirror.png', border: false },
-      sofa: { word: 'Sofa', image: 'images/houseitems/sofa.png', border: false }
+      bed: { word: 'Bed', image: 'images/houseitems/bed.webp', border: false },
+      table: { word: 'Table', image: 'images/houseitems/table.webp', border: false },
+      chair: { word: 'Chair', image: 'images/houseitems/chair.webp', border: false },
+      wardrobe: { word: 'Wardrobe', image: 'images/houseitems/wardrobe.webp', border: false },
+      door: { word: 'Door', image: 'images/houseitems/door.webp', border: false },
+      window: { word: 'Window', image: 'images/houseitems/window.webp', border: false },
+      clock: { word: 'Clock', image: 'images/houseitems/clock.webp', border: false },
+      lamp: { word: 'Lamp', image: 'images/houseitems/lamp.webp', border: false },
+      mirror: { word: 'Mirror', image: 'images/houseitems/mirror.webp', border: false },
+      sofa: { word: 'Sofa', image: 'images/houseitems/sofa.webp', border: false }
     },
     batches: [
       ['bed', 'table', 'chair'],
@@ -383,16 +383,16 @@ window.CHAPTER_DATA = {
   },
   11: {
     items: {
-      car: { word: 'Car', image: 'images/vehicles/car.png', border: false },
-      bus: { word: 'Bus', image: 'images/vehicles/bus.png', border: false },
-      train: { word: 'Train', image: 'images/vehicles/train.png', border: false },
-      airplane: { word: 'Airplane', image: 'images/vehicles/airplane.png', border: false },
-      bicycle: { word: 'Bicycle', image: 'images/vehicles/bicycle.png', border: false },
-      boat: { word: 'Boat', image: 'images/vehicles/boat.png', border: false },
-      motorcycle: { word: 'Motorcycle', image: 'images/vehicles/motorcycle.png', border: false },
-      truck: { word: 'Truck', image: 'images/vehicles/truck.png', border: false },
-      helicopter: { word: 'Helicopter', image: 'images/vehicles/helicopter.png', border: false },
-      scooter: { word: 'Scooter', image: 'images/vehicles/scooter.png', border: false }
+      car: { word: 'Car', image: 'images/vehicles/car.webp', border: false },
+      bus: { word: 'Bus', image: 'images/vehicles/bus.webp', border: false },
+      train: { word: 'Train', image: 'images/vehicles/train.webp', border: false },
+      airplane: { word: 'Airplane', image: 'images/vehicles/airplane.webp', border: false },
+      bicycle: { word: 'Bicycle', image: 'images/vehicles/bicycle.webp', border: false },
+      boat: { word: 'Boat', image: 'images/vehicles/boat.webp', border: false },
+      motorcycle: { word: 'Motorcycle', image: 'images/vehicles/motorcycle.webp', border: false },
+      truck: { word: 'Truck', image: 'images/vehicles/truck.webp', border: false },
+      helicopter: { word: 'Helicopter', image: 'images/vehicles/helicopter.webp', border: false },
+      scooter: { word: 'Scooter', image: 'images/vehicles/scooter.webp', border: false }
     },
     batches: [
       ['car', 'bus', 'train', 'airplane'],
@@ -411,16 +411,16 @@ window.CHAPTER_DATA = {
   },
   12: {
     items: {
-      school: { word: 'School', image: 'images/places/school.png', border: false },
-      park: { word: 'Park', image: 'images/places/park.png', border: false },
-      hospital: { word: 'Hospital', image: 'images/places/hospital.png', border: false },
-      market: { word: 'Market', image: 'images/places/market.png', border: false },
-      house: { word: 'House', image: 'images/places/house.png', border: false },
-      restaurant: { word: 'Restaurant', image: 'images/places/restaurant.png', border: false },
-      library: { word: 'Library', image: 'images/places/library.png', border: false },
-      beach: { word: 'Beach', image: 'images/places/beach.png', border: false },
-      bank: { word: 'Bank', image: 'images/places/bank.png', border: false },
-      museum: { word: 'Museum', image: 'images/places/museum.png', border: false }
+      school: { word: 'School', image: 'images/places/school.webp', border: false },
+      park: { word: 'Park', image: 'images/places/park.webp', border: false },
+      hospital: { word: 'Hospital', image: 'images/places/hospital.webp', border: false },
+      market: { word: 'Market', image: 'images/places/market.webp', border: false },
+      house: { word: 'House', image: 'images/places/house.webp', border: false },
+      restaurant: { word: 'Restaurant', image: 'images/places/restaurant.webp', border: false },
+      library: { word: 'Library', image: 'images/places/library.webp', border: false },
+      beach: { word: 'Beach', image: 'images/places/beach.webp', border: false },
+      bank: { word: 'Bank', image: 'images/places/bank.webp', border: false },
+      museum: { word: 'Museum', image: 'images/places/museum.webp', border: false }
     },
     batches: [
       ['school', 'park', 'hospital', 'market', 'house'],
@@ -439,16 +439,16 @@ window.CHAPTER_DATA = {
   },
   13: {
     items: {
-      doctor: { word: 'Doctor', image: 'images/occupations/doctor.png', border: false },
-      teacher: { word: 'Teacher', image: 'images/occupations/teacher.png', border: false },
-      police: { word: 'Police Officer', image: 'images/occupations/policeman.png', border: false },
-      farmer: { word: 'Farmer', image: 'images/occupations/farmer.png', border: false },
-      firefighter: { word: 'Firefighter', image: 'images/occupations/fireman.png', border: false },
-      cook: { word: 'Cook', image: 'images/occupations/cook.png', border: false },
-      driver: { word: 'Driver', image: 'images/occupations/driver.png', border: false },
-      artist: { word: 'Artist', image: 'images/occupations/artist.png', border: false },
-      student: { word: 'Student', image: 'images/occupations/student.png', border: false },
-      pilot: { word: 'Pilot', image: 'images/occupations/pilot.png', border: false }
+      doctor: { word: 'Doctor', image: 'images/occupations/doctor.webp', border: false },
+      teacher: { word: 'Teacher', image: 'images/occupations/teacher.webp', border: false },
+      police: { word: 'Police Officer', image: 'images/occupations/policeman.webp', border: false },
+      farmer: { word: 'Farmer', image: 'images/occupations/farmer.webp', border: false },
+      firefighter: { word: 'Firefighter', image: 'images/occupations/fireman.webp', border: false },
+      cook: { word: 'Cook', image: 'images/occupations/cook.webp', border: false },
+      driver: { word: 'Driver', image: 'images/occupations/driver.webp', border: false },
+      artist: { word: 'Artist', image: 'images/occupations/artist.webp', border: false },
+      student: { word: 'Student', image: 'images/occupations/student.webp', border: false },
+      pilot: { word: 'Pilot', image: 'images/occupations/pilot.webp', border: false }
     },
     batches: [
       ['doctor', 'teacher', 'police', 'farmer'],
@@ -490,34 +490,34 @@ window.CHAPTER_DATA = {
   15: {
     isRepeatMode: true,
     items: {
-      hungry: { word: 'I am hungry', sentence: 'I am hungry', image: 'images/food/ch15_hungry_v1.png' },
-      doctor_visit: { word: 'I see a doctor', sentence: 'I see a doctor', image: 'images/occupations/ch15_doctor_visit_v1.png' },
-      go_school: { word: 'I go to school', sentence: 'I go to school', image: 'images/places/go_school.png' },
-      drive_car: { word: 'I drive a car', sentence: 'I drive a car', image: 'images/vehicles/ch15_drive_car_v1.png' },
-      my_mother: { word: 'This is my mother', sentence: 'This is my mother', image: 'images/family/family_mother_1773075997792.png' },
-      apple_red: { word: 'The apple is red', sentence: 'The apple is red', image: 'images/fruits/ch15_apple_red_v1.png' },
-      cat_item: { word: 'This is a cat', sentence: 'This is a cat', image: 'images/animals/cat.png' },
-      teacher_item: { word: 'I am a teacher', sentence: 'I am a teacher', image: 'images/occupations/ch15_teacher_item_v1.png' },
-      eat_bread: { word: 'I eat bread', sentence: 'I eat bread', image: 'images/food/food_bread_1773075723895.png' },
-      bus_blue: { word: 'The bus is yellow', sentence: 'The bus is yellow', image: 'images/vehicles/ch15_bus_yellow_v1.png' },
-      dog_sleep: { word: 'The dog is sleeping', sentence: 'The dog is sleeping', image: 'images/animals/dog_sleeping.png' },
-      eat_apple: { word: 'I eat an apple', sentence: 'I eat an apple', image: 'images/verbs/verb_i_v2_eat_apple_bite_v2_1773652468439.png' },
-      drink_water: { word: 'I drink water', sentence: 'I drink water', image: 'images/verbs/verb_i_v2_drink_water_mirror_v2_1773652485146.png' },
-      big_house: { word: 'The house is big', sentence: 'The house is big', image: 'images/places/place_house_v2_big_small_arrow_v2_1773652502094.png' },
-      red_shirt: { word: 'I wear a red shirt', sentence: 'I wear a red shirt', image: 'images/clothing/ch15_red_shirt_v1.png' },
-      father_work: { word: 'My father is at work', sentence: 'My father is at work', image: 'images/family/family_father_v2_at_work_v2_1773652518794.png' },
-      see_bird: { word: 'I see a bird', sentence: 'I see a bird', image: 'images/animals/ch15_see_bird_v1.png' },
-      blue_eyes: { word: 'The eyes are blue', sentence: 'The eyes are blue', image: 'images/bodyparts/eye.png' },
-      ride_bicycle: { word: 'I ride a bicycle', sentence: 'I ride a bicycle', image: 'images/vehicles/ch15_ride_bicycle_v1.png' },
-      good_student: { word: 'He is a good student', sentence: 'He is a good student', image: 'images/occupations/student.png' },
-      hat_yellow21: { word: 'The hat is yellow', sentence: 'The hat is yellow', image: 'images/colourfull_things/hat_yellow_21_1773353338523.png' },
-      socks_white21: { word: 'The socks are white', sentence: 'The socks are white', image: 'images/colourfull_things/socks_white_21_1773353353754.png' },
-      jacket_brown21: { word: 'The jacket is brown', sentence: 'The jacket is brown', image: 'images/colourfull_things/jacket_brown_21_1773353370271.png' },
-      shoes_blue21: { word: 'The shoes are blue', sentence: 'The shoes are blue', image: 'images/colourfull_things/shoes_blue_21_1773353388726.png' },
-      scarf_pink21: { word: 'The scarf is pink', sentence: 'The scarf is pink', image: 'images/colourfull_things/scarf_pink_21_1773353402563.png' },
-      banana_yellow21: { word: 'The banana is yellow', sentence: 'The banana is yellow', image: 'images/colourfull_things/banana_yellow21.png' },
-      grapes_purple21: { word: 'The grapes are purple', sentence: 'The grapes are purple', image: 'images/colourfull_things/grapes_purple21.png' },
-      lemon_green21: { word: 'The lemon is green', sentence: 'The lemon is green', image: 'images/colourfull_things/lemon_green_21_1773353420502.png' }
+      hungry: { word: 'I am hungry', sentence: 'I am hungry', image: 'images/food/ch15_hungry_v1.webp' },
+      doctor_visit: { word: 'I see a doctor', sentence: 'I see a doctor', image: 'images/occupations/ch15_doctor_visit_v1.webp' },
+      go_school: { word: 'I go to school', sentence: 'I go to school', image: 'images/places/go_school.webp' },
+      drive_car: { word: 'I drive a car', sentence: 'I drive a car', image: 'images/vehicles/ch15_drive_car_v1.webp' },
+      my_mother: { word: 'This is my mother', sentence: 'This is my mother', image: 'images/family/family_mother_1773075997792.webp' },
+      apple_red: { word: 'The apple is red', sentence: 'The apple is red', image: 'images/fruits/ch15_apple_red_v1.webp' },
+      cat_item: { word: 'This is a cat', sentence: 'This is a cat', image: 'images/animals/cat.webp' },
+      teacher_item: { word: 'I am a teacher', sentence: 'I am a teacher', image: 'images/occupations/ch15_teacher_item_v1.webp' },
+      eat_bread: { word: 'I eat bread', sentence: 'I eat bread', image: 'images/food/food_bread_1773075723895.webp' },
+      bus_blue: { word: 'The bus is yellow', sentence: 'The bus is yellow', image: 'images/vehicles/ch15_bus_yellow_v1.webp' },
+      dog_sleep: { word: 'The dog is sleeping', sentence: 'The dog is sleeping', image: 'images/animals/dog_sleeping.webp' },
+      eat_apple: { word: 'I eat an apple', sentence: 'I eat an apple', image: 'images/verbs/verb_i_v2_eat_apple_bite_v2_1773652468439.webp' },
+      drink_water: { word: 'I drink water', sentence: 'I drink water', image: 'images/verbs/verb_i_v2_drink_water_mirror_v2_1773652485146.webp' },
+      big_house: { word: 'The house is big', sentence: 'The house is big', image: 'images/places/place_house_v2_big_small_arrow_v2_1773652502094.webp' },
+      red_shirt: { word: 'I wear a red shirt', sentence: 'I wear a red shirt', image: 'images/clothing/ch15_red_shirt_v1.webp' },
+      father_work: { word: 'My father is at work', sentence: 'My father is at work', image: 'images/family/family_father_v2_at_work_v2_1773652518794.webp' },
+      see_bird: { word: 'I see a bird', sentence: 'I see a bird', image: 'images/animals/ch15_see_bird_v1.webp' },
+      blue_eyes: { word: 'The eyes are blue', sentence: 'The eyes are blue', image: 'images/bodyparts/eye.webp' },
+      ride_bicycle: { word: 'I ride a bicycle', sentence: 'I ride a bicycle', image: 'images/vehicles/ch15_ride_bicycle_v1.webp' },
+      good_student: { word: 'He is a good student', sentence: 'He is a good student', image: 'images/occupations/student.webp' },
+      hat_yellow21: { word: 'The hat is yellow', sentence: 'The hat is yellow', image: 'images/colourfull_things/hat_yellow_21_1773353338523.webp' },
+      socks_white21: { word: 'The socks are white', sentence: 'The socks are white', image: 'images/colourfull_things/socks_white_21_1773353353754.webp' },
+      jacket_brown21: { word: 'The jacket is brown', sentence: 'The jacket is brown', image: 'images/colourfull_things/jacket_brown_21_1773353370271.webp' },
+      shoes_blue21: { word: 'The shoes are blue', sentence: 'The shoes are blue', image: 'images/colourfull_things/shoes_blue_21_1773353388726.webp' },
+      scarf_pink21: { word: 'The scarf is pink', sentence: 'The scarf is pink', image: 'images/colourfull_things/scarf_pink_21_1773353402563.webp' },
+      banana_yellow21: { word: 'The banana is yellow', sentence: 'The banana is yellow', image: 'images/colourfull_things/banana_yellow21.webp' },
+      grapes_purple21: { word: 'The grapes are purple', sentence: 'The grapes are purple', image: 'images/colourfull_things/grapes_purple21.webp' },
+      lemon_green21: { word: 'The lemon is green', sentence: 'The lemon is green', image: 'images/colourfull_things/lemon_green_21_1773353420502.webp' }
     },
     batches: [
       ['hungry', 'doctor_visit', 'go_school', 'drive_car', 'my_mother'],
@@ -543,12 +543,12 @@ window.CHAPTER_DATA = {
   16: {
     isRepeatMode: true,
     items: {
-      bus_trip: { word: 'I am on the bus', sentence: 'I am on the bus', image: 'images/vehicles/bus.png' },
-      family_car: { word: 'Mother and father are in the car', sentence: 'Mother and father are in the car', image: 'images/vehicles/car.png' },
-      go_hospital: { word: 'We go to the hospital', sentence: 'We go to the hospital', image: 'images/places/go_hospital.png' },
-      grand_meal: { word: 'Grandfather and grandmother eat bread', sentence: 'Grandfather and grandmother eat bread', image: 'images/food/food_bread_1773075723895.png' },
-      driver_market: { word: 'The driver is at the market', sentence: 'The driver is at the market', image: 'images/places/market.png' },
-      baby_water: { word: 'The baby drinks water', sentence: 'The baby drinks water', image: 'images/food/food_water_1773075740123.png' }
+      bus_trip: { word: 'I am on the bus', sentence: 'I am on the bus', image: 'images/vehicles/bus.webp' },
+      family_car: { word: 'Mother and father are in the car', sentence: 'Mother and father are in the car', image: 'images/vehicles/car.webp' },
+      go_hospital: { word: 'We go to the hospital', sentence: 'We go to the hospital', image: 'images/places/go_hospital.webp' },
+      grand_meal: { word: 'Grandfather and grandmother eat bread', sentence: 'Grandfather and grandmother eat bread', image: 'images/food/food_bread_1773075723895.webp' },
+      driver_market: { word: 'The driver is at the market', sentence: 'The driver is at the market', image: 'images/places/market.webp' },
+      baby_water: { word: 'The baby drinks water', sentence: 'The baby drinks water', image: 'images/food/food_water_1773075740123.webp' }
     },
     batches: [['bus_trip', 'family_car', 'go_hospital', 'grand_meal', 'driver_market', 'baby_water']],
     transitions: [
@@ -559,16 +559,16 @@ window.CHAPTER_DATA = {
   },
   17: {
     items: {
-      eat_bread17: { word: 'I eat bread', sentence: 'I eat [bread]', options: ['bread', 'rice', 'cheese'], image: 'images/food/food_bread_1773075723895.png' },
-      drink_water17: { word: 'I drink water', sentence: 'I drink [water]', options: ['water', 'milk', 'soup'], image: 'images/food/food_water_1773075740123.png' },
-      red_car17: { word: 'The car is green', sentence: 'The car is [green]', options: ['green', 'red', 'blue'], image: 'images/vehicles/car.png' },
-      bus_school17: { word: 'We take the bus to school', sentence: 'We take the bus to [school]', options: ['school', 'park', 'market'], image: 'images/places/school.png' },
-      father_market17: { word: 'Father goes to the market', sentence: 'Father goes to the [market]', options: ['market', 'hospital', 'park'], image: 'images/places/market.png' },
-      mother_kitchen17: { word: 'Mother cooks rice', sentence: 'Mother cooks [rice]', options: ['rice', 'bread', 'soup'], image: 'images/food/food_rice_1773075860734.png' },
-      blue_shirt17: { word: 'The shirt is blue', sentence: 'The shirt is [blue]', options: ['blue', 'red', 'yellow'], image: 'images/clothing/shirt.png' },
-      doctor_hospital17: { word: 'The doctor is at the hospital', sentence: 'The doctor is at the [hospital]', options: ['hospital', 'school', 'market'], image: 'images/places/hospital.png' },
-      children_park17: { word: 'The children play in the park', sentence: 'The children play in the [park]', options: ['park', 'house', 'school'], image: 'images/places/children_park.png' },
-      baby_milk17: { word: 'The baby drinks milk', sentence: 'The baby drinks [milk]', options: ['milk', 'water', 'juice'], image: 'images/food/food_milk_1773075771555.png' }
+      eat_bread17: { word: 'I eat bread', sentence: 'I eat [bread]', options: ['bread', 'rice', 'cheese'], image: 'images/food/food_bread_1773075723895.webp' },
+      drink_water17: { word: 'I drink water', sentence: 'I drink [water]', options: ['water', 'milk', 'soup'], image: 'images/food/food_water_1773075740123.webp' },
+      red_car17: { word: 'The car is green', sentence: 'The car is [green]', options: ['green', 'red', 'blue'], image: 'images/vehicles/car.webp' },
+      bus_school17: { word: 'We take the bus to school', sentence: 'We take the bus to [school]', options: ['school', 'park', 'market'], image: 'images/places/school.webp' },
+      father_market17: { word: 'Father goes to the market', sentence: 'Father goes to the [market]', options: ['market', 'hospital', 'park'], image: 'images/places/market.webp' },
+      mother_kitchen17: { word: 'Mother cooks rice', sentence: 'Mother cooks [rice]', options: ['rice', 'bread', 'soup'], image: 'images/food/food_rice_1773075860734.webp' },
+      blue_shirt17: { word: 'The shirt is blue', sentence: 'The shirt is [blue]', options: ['blue', 'red', 'yellow'], image: 'images/clothing/shirt.webp' },
+      doctor_hospital17: { word: 'The doctor is at the hospital', sentence: 'The doctor is at the [hospital]', options: ['hospital', 'school', 'market'], image: 'images/places/hospital.webp' },
+      children_park17: { word: 'The children play in the park', sentence: 'The children play in the [park]', options: ['park', 'house', 'school'], image: 'images/places/children_park.webp' },
+      baby_milk17: { word: 'The baby drinks milk', sentence: 'The baby drinks [milk]', options: ['milk', 'water', 'juice'], image: 'images/food/food_milk_1773075771555.webp' }
     },
     batches: [
       ['eat_bread17', 'drink_water17', 'red_car17', 'bus_school17', 'father_market17'],
@@ -586,19 +586,19 @@ window.CHAPTER_DATA = {
   18: {
     isRepeatMode: true,
     items: {
-      cat_apple: { word: 'The cat eats a red apple', sentence: 'The cat eats a red apple', image: 'images/animals/cat_apple.png' },
-      bird_tree: { word: 'A green bird sits on a tree', sentence: 'A green bird sits on a tree', image: 'images/animals/bird_tree.png' },
-      rabbit_carrot: { word: 'The rabbit eats a carrot', sentence: 'The rabbit eats a carrot', image: 'images/animals/rabbit_carrot.png' },
-      yellow_bus: { word: 'I see a yellow bus', sentence: 'I see a yellow bus', image: 'images/vehicles/bus_yellow.png' },
-      dog_hat: { word: 'The dog sits and smiles', sentence: 'The dog sits and smiles', image: 'images/animals/dog_sits_smiles.png' },
-      two_fish: { word: 'I see one fish', sentence: 'I see one fish', image: 'images/animals/one_fish.png' },
-      fish_swim: { word: 'The fish swims fast', sentence: 'The fish swims fast', image: 'images/animals/fish_swims.png' },
-      cat_sleep: { word: 'The cat is sleeping', sentence: 'The cat is sleeping', image: 'images/animals/cat_sleeping_new.png' },
-      dog_run: { word: 'The dog runs fast', sentence: 'The dog runs fast', image: 'images/animals/dog_runs.png' },
-      bird_fly: { word: 'The bird flies high', sentence: 'The bird flies high', image: 'images/animals/bird_flies.png' },
-      cat_jump: { word: 'The cat jumps high', sentence: 'The cat jumps high', image: 'images/animals/cat_jumps.png' },
-      dog_happy: { word: 'The dog is happy', sentence: 'The dog is happy', image: 'images/animals/dog_happy.png' },
-      bird_blue: { word: 'The bird is blue', sentence: 'The bird is blue', image: 'images/animals/bird_blue.png' }
+      cat_apple: { word: 'The cat eats a red apple', sentence: 'The cat eats a red apple', image: 'images/animals/cat_apple.webp' },
+      bird_tree: { word: 'A green bird sits on a tree', sentence: 'A green bird sits on a tree', image: 'images/animals/bird_tree.webp' },
+      rabbit_carrot: { word: 'The rabbit eats a carrot', sentence: 'The rabbit eats a carrot', image: 'images/animals/rabbit_carrot.webp' },
+      yellow_bus: { word: 'I see a yellow bus', sentence: 'I see a yellow bus', image: 'images/vehicles/bus_yellow.webp' },
+      dog_hat: { word: 'The dog sits and smiles', sentence: 'The dog sits and smiles', image: 'images/animals/dog_sits_smiles.webp' },
+      two_fish: { word: 'I see one fish', sentence: 'I see one fish', image: 'images/animals/one_fish.webp' },
+      fish_swim: { word: 'The fish swims fast', sentence: 'The fish swims fast', image: 'images/animals/fish_swims.webp' },
+      cat_sleep: { word: 'The cat is sleeping', sentence: 'The cat is sleeping', image: 'images/animals/cat_sleeping_new.webp' },
+      dog_run: { word: 'The dog runs fast', sentence: 'The dog runs fast', image: 'images/animals/dog_runs.webp' },
+      bird_fly: { word: 'The bird flies high', sentence: 'The bird flies high', image: 'images/animals/bird_flies.webp' },
+      cat_jump: { word: 'The cat jumps high', sentence: 'The cat jumps high', image: 'images/animals/cat_jumps.webp' },
+      dog_happy: { word: 'The dog is happy', sentence: 'The dog is happy', image: 'images/animals/dog_happy.webp' },
+      bird_blue: { word: 'The bird is blue', sentence: 'The bird is blue', image: 'images/animals/bird_blue.webp' }
     },
     batches: [
       ['cat_apple', 'bird_tree', 'rabbit_carrot', 'yellow_bus', 'dog_hat', 'cat_jump'],
@@ -611,18 +611,18 @@ window.CHAPTER_DATA = {
   19: {
     isRepeatMode: true,
     items: {
-      mother_kitchen: { word: 'Mother is in the kitchen', sentence: 'Mother is in the kitchen', image: 'images/family/mother_kitchen.png' },
-      father_car: { word: 'Father drives a blue car', sentence: 'Father drives a blue car', image: 'images/family/father_car.png' },
-      grandma_park: { word: 'Grandmother walks in the park', sentence: 'Grandmother walks in the park', image: 'images/family/grandmother_park.png' },
-      brother_school: { word: 'Brother goes to school', sentence: 'Brother goes to school', image: 'images/family/brother_school.png' },
-      sister_milk: { word: 'Sister drinks milk', sentence: 'Sister drinks milk', image: 'images/family/sister_milk.png' },
-      family_home: { word: 'We are at home', sentence: 'We are at home', image: 'images/family/family_home.png' },
-      mother_read: { word: 'Mother reads a book', sentence: 'Mother reads a book', image: 'images/family/mother_reading.png' },
-      father_cooks: { word: 'Father cooks dinner', sentence: 'Father cooks dinner', image: 'images/family/father_cooking.png' },
-      sister_smiles: { word: 'Sister smiles happily', sentence: 'Sister smiles happily', image: 'images/family/sister_smiles.png' },
-      baby_happy: { word: 'The baby is happy', sentence: 'The baby is happy', image: 'images/family/family_baby_1773076057187.png' },
-      grandpa_reads: { word: 'Grandfather reads a book', sentence: 'Grandfather reads a book', image: 'images/family/family_grandfather_1773076117483.png' },
-      family_park: { word: 'The family plays in the park', sentence: 'The family plays in the park', image: 'images/places/park.png' }
+      mother_kitchen: { word: 'Mother is in the kitchen', sentence: 'Mother is in the kitchen', image: 'images/family/mother_kitchen.webp' },
+      father_car: { word: 'Father drives a blue car', sentence: 'Father drives a blue car', image: 'images/family/father_car.webp' },
+      grandma_park: { word: 'Grandmother walks in the park', sentence: 'Grandmother walks in the park', image: 'images/family/grandmother_park.webp' },
+      brother_school: { word: 'Brother goes to school', sentence: 'Brother goes to school', image: 'images/family/brother_school.webp' },
+      sister_milk: { word: 'Sister drinks milk', sentence: 'Sister drinks milk', image: 'images/family/sister_milk.webp' },
+      family_home: { word: 'We are at home', sentence: 'We are at home', image: 'images/family/family_home.webp' },
+      mother_read: { word: 'Mother reads a book', sentence: 'Mother reads a book', image: 'images/family/mother_reading.webp' },
+      father_cooks: { word: 'Father cooks dinner', sentence: 'Father cooks dinner', image: 'images/family/father_cooking.webp' },
+      sister_smiles: { word: 'Sister smiles happily', sentence: 'Sister smiles happily', image: 'images/family/sister_smiles.webp' },
+      baby_happy: { word: 'The baby is happy', sentence: 'The baby is happy', image: 'images/family/family_baby_1773076057187.webp' },
+      grandpa_reads: { word: 'Grandfather reads a book', sentence: 'Grandfather reads a book', image: 'images/family/family_grandfather_1773076117483.webp' },
+      family_park: { word: 'The family plays in the park', sentence: 'The family plays in the park', image: 'images/places/park.webp' }
     },
     batches: [
       ['mother_kitchen', 'father_car', 'grandma_park', 'brother_school', 'sister_milk', 'grandpa_reads'],
@@ -635,14 +635,14 @@ window.CHAPTER_DATA = {
   20: {
     isRepeatMode: true,
     items: {
-      open_door20: { word: 'The door is open', sentence: 'The door is open', image: 'images/home_items/door_open_20_1773353180045.png' },
-      sit_chair20: { word: 'Sit on the chair', sentence: 'Sit on the chair', image: 'images/home_items/sit_chair.png' },
-      lamp_bright20: { word: 'The lamp is bright', sentence: 'The lamp is bright', image: 'images/home_items/lamp_bright_20_1773353209893.png' },
-      window_open20: { word: 'The window is open', sentence: 'The window is open', image: 'images/home_items/window_open_20_1773353226258.png' },
-      sofa_soft20: { word: 'The sofa is soft', sentence: 'The sofa is soft', image: 'images/home_items/sofa_soft_20_1773353242220.png' },
-      mirror_clean20: { word: 'The mirror is clean', sentence: 'The mirror is clean', image: 'images/home_items/mirror_clean_20_1773353260023.png' },
-      eat_table20: { word: 'The table is big', sentence: 'The table is big', image: 'images/home_items/table_big_20_1773353277095.png' },
-      sleep_bed20: { word: 'I sleep in the bed', sentence: 'I sleep in the bed', image: 'images/home_items/bed_sleep_20_1773353292508.png' }
+      open_door20: { word: 'The door is open', sentence: 'The door is open', image: 'images/home_items/door_open_20_1773353180045.webp' },
+      sit_chair20: { word: 'Sit on the chair', sentence: 'Sit on the chair', image: 'images/home_items/sit_chair.webp' },
+      lamp_bright20: { word: 'The lamp is bright', sentence: 'The lamp is bright', image: 'images/home_items/lamp_bright_20_1773353209893.webp' },
+      window_open20: { word: 'The window is open', sentence: 'The window is open', image: 'images/home_items/window_open_20_1773353226258.webp' },
+      sofa_soft20: { word: 'The sofa is soft', sentence: 'The sofa is soft', image: 'images/home_items/sofa_soft_20_1773353242220.webp' },
+      mirror_clean20: { word: 'The mirror is clean', sentence: 'The mirror is clean', image: 'images/home_items/mirror_clean_20_1773353260023.webp' },
+      eat_table20: { word: 'The table is big', sentence: 'The table is big', image: 'images/home_items/table_big_20_1773353277095.webp' },
+      sleep_bed20: { word: 'I sleep in the bed', sentence: 'I sleep in the bed', image: 'images/home_items/bed_sleep_20_1773353292508.webp' }
     },
     batches: [
       ['open_door20', 'sit_chair20', 'lamp_bright20', 'window_open20'],
@@ -684,22 +684,22 @@ window.CHAPTER_DATA = {
   },
   22: {
     items: {
-      pron_he: { word: 'he', image: 'images/pronouns/pron_he.png' },
-      pron_she: { word: 'she', image: 'images/family/family_mother_1773075997792.png' },
-      pron_it: { word: 'it', image: 'images/animals/dog.png' },
-      pron_they: { word: 'they', image: 'images/family/family_home.png' },
-      pron_we: { word: 'we', image: 'images/pronouns/pron_we.png' },
+      pron_he: { word: 'he', image: 'images/pronouns/pron_he.webp' },
+      pron_she: { word: 'she', image: 'images/family/family_mother_1773075997792.webp' },
+      pron_it: { word: 'it', image: 'images/animals/dog.webp' },
+      pron_they: { word: 'they', image: 'images/family/family_home.webp' },
+      pron_we: { word: 'we', image: 'images/pronouns/pron_we.webp' },
       pron_you: { word: 'you', color: '#FFF3E0', emoji: '🫵' },
-      pron_i: { word: 'I', image: 'images/pronouns/pron_i_v2_mirror_point_v2_1773651368293.png' },
-      poss_his: { word: 'his', image: 'images/possessives/poss_his_v3_book_arrow_v2_1773651384133.png' },
-      poss_her: { word: 'her', image: 'images/possessives/poss_her_v3_hat_arrow_1773630467553.png' },
-      poss_its: { word: 'its', image: 'images/possessives/poss_its_v3_yarn_arrow_v2_1773630483676.png' },
-      poss_their: { word: 'their', image: 'images/possessives/poss_their_v3_dog_arrow_v2_1773651416435.png' },
-      poss_my: { word: 'my', image: 'images/possessives/poss_my_v3_phone_arrow_v2_1773651451526.png' },
-      poss_your: { word: 'your', image: 'images/possessives/poss_your_v3_guitar_arrow_v2_1773651434309.png' },
-      poss_babys: { word: "baby's", image: 'images/possessives/poss_babys.png' },
-      poss_boys: { word: "boy's", image: 'images/possessives/poss_boys_v3_car_arrow_v2_1773630502208.png' },
-      poss_girls: { word: "girl's", image: 'images/possessives/poss_girls_v3_gift_arrow_v2_1773651399139.png' }
+      pron_i: { word: 'I', image: 'images/pronouns/pron_i_v2_mirror_point_v2_1773651368293.webp' },
+      poss_his: { word: 'his', image: 'images/possessives/poss_his_v3_book_arrow_v2_1773651384133.webp' },
+      poss_her: { word: 'her', image: 'images/possessives/poss_her_v3_hat_arrow_1773630467553.webp' },
+      poss_its: { word: 'its', image: 'images/possessives/poss_its_v3_yarn_arrow_v2_1773630483676.webp' },
+      poss_their: { word: 'their', image: 'images/possessives/poss_their_v3_dog_arrow_v2_1773651416435.webp' },
+      poss_my: { word: 'my', image: 'images/possessives/poss_my_v3_phone_arrow_v2_1773651451526.webp' },
+      poss_your: { word: 'your', image: 'images/possessives/poss_your_v3_guitar_arrow_v2_1773651434309.webp' },
+      poss_babys: { word: "baby's", image: 'images/possessives/poss_babys.webp' },
+      poss_boys: { word: "boy's", image: 'images/possessives/poss_boys_v3_car_arrow_v2_1773630502208.webp' },
+      poss_girls: { word: "girl's", image: 'images/possessives/poss_girls_v3_gift_arrow_v2_1773651399139.webp' }
     },
     batches: [
       ['pron_he', 'pron_she', 'pron_it', 'pron_they', 'pron_we', 'pron_you', 'pron_i'],
@@ -715,13 +715,13 @@ window.CHAPTER_DATA = {
   23: {
     isRepeatMode: true,
     items: {
-      s_i_happy: { word: 'I am happy', sentence: 'I am happy', image: 'images/sentences/i_am_happy.png' },
-      s_you_friend: { word: 'You are my friend', sentence: 'You are my friend', image: 'images/sentences/you_are_my_friend.png' },
-      s_he_boy: { word: 'He is a boy', sentence: 'He is a boy', image: 'images/sentences/he_is_a_boy.png' },
-      s_she_girl: { word: 'She is a girl', sentence: 'She is a girl', image: 'images/sentences/she_is_a_girl.png' },
-      s_it_cat: { word: 'It is a cat', sentence: 'It is a cat', image: 'images/animals/cat.png' },
-      s_we_family: { word: 'We are a family', sentence: 'We are a family', image: 'images/pronouns/pron_we.png' },
-      s_they_playing: { word: 'They are playing', sentence: 'They are playing', image: 'images/family/family_home.png' }
+      s_i_happy: { word: 'I am happy', sentence: 'I am happy', image: 'images/sentences/i_am_happy.webp' },
+      s_you_friend: { word: 'You are my friend', sentence: 'You are my friend', image: 'images/sentences/you_are_my_friend.webp' },
+      s_he_boy: { word: 'He is a boy', sentence: 'He is a boy', image: 'images/sentences/he_is_a_boy.webp' },
+      s_she_girl: { word: 'She is a girl', sentence: 'She is a girl', image: 'images/sentences/she_is_a_girl.webp' },
+      s_it_cat: { word: 'It is a cat', sentence: 'It is a cat', image: 'images/animals/cat.webp' },
+      s_we_family: { word: 'We are a family', sentence: 'We are a family', image: 'images/pronouns/pron_we.webp' },
+      s_they_playing: { word: 'They are playing', sentence: 'They are playing', image: 'images/family/family_home.webp' }
     },
     batches: [
       ['s_i_happy', 's_you_friend', 's_he_boy', 's_she_girl'],
@@ -737,13 +737,13 @@ window.CHAPTER_DATA = {
   24: {
     isRepeatMode: true,
     items: {
-      s_my_apple: { word: 'My apple is red', sentence: 'My apple is red', image: 'images/possessives/poss_my_v2_apple_mirror_v2_1773630532257.png' },
-      s_your_guitar: { word: 'Your guitar is loud', sentence: 'Your guitar is loud', image: 'images/possessives/poss_your_v3_guitar_arrow_v2_1773651434309.png' },
-      s_his_book: { word: 'His book is blue', sentence: 'His book is blue', image: 'images/possessives/poss_his_v3_book_arrow_v2_1773651384133.png' },
-      s_her_hat: { word: 'Her hat is stylish', sentence: 'Her hat is stylish', image: 'images/possessives/poss_her_v3_hat_arrow_1773630467553.png' },
-      s_its_ball: { word: 'Its ball is colorful', sentence: 'Its ball is colorful', image: 'images/possessives/poss_its_v3_yarn_arrow_v2_1773630483676.png' },
-      s_their_dog: { word: 'Their dog is friendly', sentence: 'Their dog is friendly', image: 'images/possessives/poss_their_v3_dog_arrow_v2_1773651416435.png' },
-      s_babys_rattle: { word: "The baby's rattle is colorful", sentence: "The baby's rattle is colorful", image: 'images/possessives/poss_babys.png' }
+      s_my_apple: { word: 'My apple is red', sentence: 'My apple is red', image: 'images/possessives/poss_my_v2_apple_mirror_v2_1773630532257.webp' },
+      s_your_guitar: { word: 'Your guitar is loud', sentence: 'Your guitar is loud', image: 'images/possessives/poss_your_v3_guitar_arrow_v2_1773651434309.webp' },
+      s_his_book: { word: 'His book is blue', sentence: 'His book is blue', image: 'images/possessives/poss_his_v3_book_arrow_v2_1773651384133.webp' },
+      s_her_hat: { word: 'Her hat is stylish', sentence: 'Her hat is stylish', image: 'images/possessives/poss_her_v3_hat_arrow_1773630467553.webp' },
+      s_its_ball: { word: 'Its ball is colorful', sentence: 'Its ball is colorful', image: 'images/possessives/poss_its_v3_yarn_arrow_v2_1773630483676.webp' },
+      s_their_dog: { word: 'Their dog is friendly', sentence: 'Their dog is friendly', image: 'images/possessives/poss_their_v3_dog_arrow_v2_1773651416435.webp' },
+      s_babys_rattle: { word: "The baby's rattle is colorful", sentence: "The baby's rattle is colorful", image: 'images/possessives/poss_babys.webp' }
     },
     batches: [
       ['s_my_apple', 's_your_guitar', 's_his_book', 's_her_hat'],
@@ -759,14 +759,14 @@ window.CHAPTER_DATA = {
   25: {
     isRepeatMode: true,
     items: {
-      bus_stop: { word: 'The bus stops here', sentence: 'The bus stops here', image: 'images/vehicles/bus_stop.png' },
-      car_fast: { word: 'The car goes fast', sentence: 'The car goes fast', image: 'images/vehicles/car_fast.png' },
-      bicycle_ride: { word: 'I ride my bicycle', sentence: 'I ride my bicycle', image: 'images/vehicles/bicycle_ride.png' },
-      train_long: { word: 'The train is long', sentence: 'The train is long', image: 'images/vehicles/train_long.png' },
-      airplane_high: { word: 'The airplane flies high', sentence: 'The airplane flies high', image: 'images/vehicles/airplane.png' },
-      boat_water: { word: 'The boat is on the water', sentence: 'The boat is on the water', image: 'images/vehicles/boat.png' },
-      truck_big: { word: 'The truck is big', sentence: 'The truck is big', image: 'images/vehicles/truck.png' },
-      scooter_small: { word: 'The scooter is small', sentence: 'The scooter is small', image: 'images/vehicles/scooter.png' }
+      bus_stop: { word: 'The bus stops here', sentence: 'The bus stops here', image: 'images/vehicles/bus_stop.webp' },
+      car_fast: { word: 'The car goes fast', sentence: 'The car goes fast', image: 'images/vehicles/car_fast.webp' },
+      bicycle_ride: { word: 'I ride my bicycle', sentence: 'I ride my bicycle', image: 'images/vehicles/bicycle_ride.webp' },
+      train_long: { word: 'The train is long', sentence: 'The train is long', image: 'images/vehicles/train_long.webp' },
+      airplane_high: { word: 'The airplane flies high', sentence: 'The airplane flies high', image: 'images/vehicles/airplane.webp' },
+      boat_water: { word: 'The boat is on the water', sentence: 'The boat is on the water', image: 'images/vehicles/boat.webp' },
+      truck_big: { word: 'The truck is big', sentence: 'The truck is big', image: 'images/vehicles/truck.webp' },
+      scooter_small: { word: 'The scooter is small', sentence: 'The scooter is small', image: 'images/vehicles/scooter.webp' }
     },
     batches: [
       ['bus_stop', 'car_fast', 'bicycle_ride', 'train_long'],
@@ -778,26 +778,26 @@ window.CHAPTER_DATA = {
   },
   26: {
     items: {
-      v_i_eat: { word: 'I eat', sentence: 'I eat', image: 'images/verbs/v26_i_eat_dinner_premium_v1_1773764012055.png' },
-      v_she_walks: { word: 'She walks', sentence: 'She walks', image: 'images/verbs/v26_she_walks_premium_v1_1773763897147.png' },
-      v_they_watch: { word: 'They watch', sentence: 'They watch', image: 'images/verbs/v26_they_watch_premium_v1_1773763919160.png' },
-      v_it_runs: { word: 'It runs', sentence: 'It runs', image: 'images/verbs/v26_it_runs_premium_v1_1773763938394.png' },
-      v_we_drink: { word: 'We drink', sentence: 'We drink', image: 'images/verbs/v26_we_drink_premium_v1_1773763961236.png' },
-      v_you_sleep: { word: 'You sleep', sentence: 'You sleep', image: 'images/verbs/v26_you_sleep_premium_v1_1773763978953.png' },
-      v_it_jumps: { word: 'It jumps', sentence: 'It jumps', image: 'images/verbs/v26_it_jumps_premium_v1_1773764349536.png' },
-      v_i_speak: { word: 'I speak', sentence: 'I speak', image: 'images/verbs/verb_i_v2_speak_mirror_v2_1773651351878.png' },
-      v_she_reads: { word: 'She reads', sentence: 'She reads', image: 'images/verbs/v26_she_reads_premium_v1_1773764368196.png' },
-      v_they_sing: { word: 'They sing', sentence: 'They sing', image: 'images/verbs/verb_they_v2_sing_notes_v2_1773630547420.png' },
-      v_he_writes: { word: 'He writes', sentence: 'He writes', image: 'images/verbs/v26_he_writes_premium_v1_1773764051303.png' },
-      v_we_listen: { word: 'We listen', sentence: 'We listen', image: 'images/verbs/v26_we_listen_premium_v1_1773764071225.png' },
-      v_you_sit: { word: 'You sit', sentence: 'You sit', image: 'images/verbs/v26_you_sit_premium_v1_1773764091139.png' },
-      v_it_flies: { word: 'It flies', sentence: 'It flies', image: 'images/verbs/v26_it_flies_premium_v1_1773764384883.png' },
-      v_i_stand: { word: 'I stand', sentence: 'I stand', image: 'images/verbs/v26_i_stand_premium_v1_1773764110820.png' },
-      v_she_smiles: { word: 'She smiles', sentence: 'She smiles', image: 'images/family/sister_smiles.png' },
-      v_they_laugh: { word: 'They laugh', sentence: 'They laugh', image: 'images/family/ch26_they_laugh_v1.png' },
-      v_he_plays: { word: 'He plays', sentence: 'He plays', image: 'images/family/ch26_he_plays_v1.png' },
-      v_we_cook: { word: 'We cook', sentence: 'We cook', image: 'images/family/ch26_we_cook_v1.png' },
-      v_you_wash: { word: 'You wash', sentence: 'You wash', image: 'images/verbs/v26_you_wash_premium_v1_1773764030297.png' }
+      v_i_eat: { word: 'I eat', sentence: 'I eat', image: 'images/verbs/v26_i_eat_dinner_premium_v1_1773764012055.webp' },
+      v_she_walks: { word: 'She walks', sentence: 'She walks', image: 'images/verbs/v26_she_walks_premium_v1_1773763897147.webp' },
+      v_they_watch: { word: 'They watch', sentence: 'They watch', image: 'images/verbs/v26_they_watch_premium_v1_1773763919160.webp' },
+      v_it_runs: { word: 'It runs', sentence: 'It runs', image: 'images/verbs/v26_it_runs_premium_v1_1773763938394.webp' },
+      v_we_drink: { word: 'We drink', sentence: 'We drink', image: 'images/verbs/v26_we_drink_premium_v1_1773763961236.webp' },
+      v_you_sleep: { word: 'You sleep', sentence: 'You sleep', image: 'images/verbs/v26_you_sleep_premium_v1_1773763978953.webp' },
+      v_it_jumps: { word: 'It jumps', sentence: 'It jumps', image: 'images/verbs/v26_it_jumps_premium_v1_1773764349536.webp' },
+      v_i_speak: { word: 'I speak', sentence: 'I speak', image: 'images/verbs/verb_i_v2_speak_mirror_v2_1773651351878.webp' },
+      v_she_reads: { word: 'She reads', sentence: 'She reads', image: 'images/verbs/v26_she_reads_premium_v1_1773764368196.webp' },
+      v_they_sing: { word: 'They sing', sentence: 'They sing', image: 'images/verbs/verb_they_v2_sing_notes_v2_1773630547420.webp' },
+      v_he_writes: { word: 'He writes', sentence: 'He writes', image: 'images/verbs/v26_he_writes_premium_v1_1773764051303.webp' },
+      v_we_listen: { word: 'We listen', sentence: 'We listen', image: 'images/verbs/v26_we_listen_premium_v1_1773764071225.webp' },
+      v_you_sit: { word: 'You sit', sentence: 'You sit', image: 'images/verbs/v26_you_sit_premium_v1_1773764091139.webp' },
+      v_it_flies: { word: 'It flies', sentence: 'It flies', image: 'images/verbs/v26_it_flies_premium_v1_1773764384883.webp' },
+      v_i_stand: { word: 'I stand', sentence: 'I stand', image: 'images/verbs/v26_i_stand_premium_v1_1773764110820.webp' },
+      v_she_smiles: { word: 'She smiles', sentence: 'She smiles', image: 'images/family/sister_smiles.webp' },
+      v_they_laugh: { word: 'They laugh', sentence: 'They laugh', image: 'images/family/ch26_they_laugh_v1.webp' },
+      v_he_plays: { word: 'He plays', sentence: 'He plays', image: 'images/family/ch26_he_plays_v1.webp' },
+      v_we_cook: { word: 'We cook', sentence: 'We cook', image: 'images/family/ch26_we_cook_v1.webp' },
+      v_you_wash: { word: 'You wash', sentence: 'You wash', image: 'images/verbs/v26_you_wash_premium_v1_1773764030297.webp' }
     },
     batches: [
       ['v_i_eat', 'v_she_walks', 'v_they_watch', 'v_it_runs', 'v_we_drink'],
@@ -818,26 +818,26 @@ window.CHAPTER_DATA = {
   },
   27: {
     items: {
-      v_i_work: { word: 'I work', sentence: 'I work', image: 'images/verbs/ch27_i_work_v1.png' },
-      v_she_cleans: { word: 'She cleans', sentence: 'She cleans', image: 'images/verbs/verb_she_v3_cleans_v2_1773652987130.png' },
-      v_they_travel: { word: 'They travel', sentence: 'They travel', image: 'images/verbs/ch27_they_travel_v1.png' },
-      v_he_drives: { word: 'He drives', sentence: 'He drives', image: 'images/verbs/ch27_he_drives_v1.png' },
-      v_we_swim: { word: 'We swim', sentence: 'We swim', image: 'images/verbs/verb_we_v3_swim_fish_v2_1773653001233.png' },
-      v_you_dance: { word: 'You dance', sentence: 'You dance', image: 'images/verbs/verb_you_v2_dance_premium_v2_1773653230487.png' },
-      v_it_crawls: { word: 'It crawls', sentence: 'It crawls', image: 'images/verbs/verb_it_v2_crawls_bug_v2_1773653194123_1773653245123.png' },
-      v_i_think: { word: 'I think', sentence: 'I think', image: 'images/verbs/verb_i_v2_think_mirror_v2_1773671042123_1773672272400.png' },
-      v_she_draws: { word: 'She draws', sentence: 'She draws', image: 'images/verbs/ch27_she_draws_v1.png' },
-      v_they_shout: { word: 'They shout', sentence: 'They shout', image: 'images/verbs/verb_they_v2_shout_crowd_v2_1773671042123_1773672289788.png' },
-      v_he_cries: { word: 'He cries', sentence: 'He cries', image: 'images/verbs/v27_he_cries_final_v8_1773750480000_1316_1773742215055.png' },
-      v_we_wait: { word: 'We wait', sentence: 'We wait', image: 'images/verbs/v27_we_wait_final_v8_1773750480000_1316_1773742233870.png' },
-      v_you_buy: { word: 'You buy', sentence: 'You buy', image: 'images/verbs/v27_you_buy_final_v9_1773750840000_1317_1773742294403.png' },
-      v_it_grows: { word: 'It grows', sentence: 'It grows', image: 'images/verbs/v27_it_grows_final_v9_1773750840000_1317_1773742313303.png' },
-      v_i_help: { word: 'I help', sentence: 'I help', image: 'images/verbs/v27_i_help_final_v10_1773751320000_1318_1773742341353.png' },
-      v_he_carries: { word: 'He carries', sentence: 'He carries', image: 'images/verbs/v27_he_carries_final_v11_1773751800000_1319_1773742420458.png' },
-      v_they_are_happy: { word: 'They are happy', sentence: 'They are happy', image: 'images/verbs/v27_they_are_happy_final_v11_1773751800000_1319_1773742434579.png' },
-      v_he_opens: { word: 'He opens', sentence: 'He opens', image: 'images/verbs/v27_he_opens_final_v10_1773751320000_1318_1773742358013.png' },
-      v_we_close: { word: 'We close', sentence: 'We close', image: 'images/verbs/v27_we_close_final_v10_1773751320000_1318_1773742371639.png' },
-      v_you_jump: { word: 'You jump', sentence: 'You jump', image: 'images/verbs/v27_you_jump_final_v10_1773751320000_1318_1773742386779.png' }
+      v_i_work: { word: 'I work', sentence: 'I work', image: 'images/verbs/ch27_i_work_v1.webp' },
+      v_she_cleans: { word: 'She cleans', sentence: 'She cleans', image: 'images/verbs/verb_she_v3_cleans_v2_1773652987130.webp' },
+      v_they_travel: { word: 'They travel', sentence: 'They travel', image: 'images/verbs/ch27_they_travel_v1.webp' },
+      v_he_drives: { word: 'He drives', sentence: 'He drives', image: 'images/verbs/ch27_he_drives_v1.webp' },
+      v_we_swim: { word: 'We swim', sentence: 'We swim', image: 'images/verbs/verb_we_v3_swim_fish_v2_1773653001233.webp' },
+      v_you_dance: { word: 'You dance', sentence: 'You dance', image: 'images/verbs/verb_you_v2_dance_premium_v2_1773653230487.webp' },
+      v_it_crawls: { word: 'It crawls', sentence: 'It crawls', image: 'images/verbs/verb_it_v2_crawls_bug_v2_1773653194123_1773653245123.webp' },
+      v_i_think: { word: 'I think', sentence: 'I think', image: 'images/verbs/verb_i_v2_think_mirror_v2_1773671042123_1773672272400.webp' },
+      v_she_draws: { word: 'She draws', sentence: 'She draws', image: 'images/verbs/ch27_she_draws_v1.webp' },
+      v_they_shout: { word: 'They shout', sentence: 'They shout', image: 'images/verbs/verb_they_v2_shout_crowd_v2_1773671042123_1773672289788.webp' },
+      v_he_cries: { word: 'He cries', sentence: 'He cries', image: 'images/verbs/v27_he_cries_final_v8_1773750480000_1316_1773742215055.webp' },
+      v_we_wait: { word: 'We wait', sentence: 'We wait', image: 'images/verbs/v27_we_wait_final_v8_1773750480000_1316_1773742233870.webp' },
+      v_you_buy: { word: 'You buy', sentence: 'You buy', image: 'images/verbs/v27_you_buy_final_v9_1773750840000_1317_1773742294403.webp' },
+      v_it_grows: { word: 'It grows', sentence: 'It grows', image: 'images/verbs/v27_it_grows_final_v9_1773750840000_1317_1773742313303.webp' },
+      v_i_help: { word: 'I help', sentence: 'I help', image: 'images/verbs/v27_i_help_final_v10_1773751320000_1318_1773742341353.webp' },
+      v_he_carries: { word: 'He carries', sentence: 'He carries', image: 'images/verbs/v27_he_carries_final_v11_1773751800000_1319_1773742420458.webp' },
+      v_they_are_happy: { word: 'They are happy', sentence: 'They are happy', image: 'images/verbs/v27_they_are_happy_final_v11_1773751800000_1319_1773742434579.webp' },
+      v_he_opens: { word: 'He opens', sentence: 'He opens', image: 'images/verbs/v27_he_opens_final_v10_1773751320000_1318_1773742358013.webp' },
+      v_we_close: { word: 'We close', sentence: 'We close', image: 'images/verbs/v27_we_close_final_v10_1773751320000_1318_1773742371639.webp' },
+      v_you_jump: { word: 'You jump', sentence: 'You jump', image: 'images/verbs/v27_you_jump_final_v10_1773751320000_1318_1773742386779.webp' }
     },
     batches: [
       ['v_i_work', 'v_she_cleans', 'v_they_travel', 'v_he_drives', 'v_we_swim'],
@@ -892,15 +892,15 @@ window.CHAPTER_DATA = {
   29: {
     isRepeatMode: true,
     items: {
-      hello: { word: 'Hello!', sentence: 'Hello!', image: 'images/dialogue/ch29_hello_comic_3d_v1_1773671042123_1773672305146.png' },
-      hi: { word: 'Hi!', sentence: 'Hi!', image: 'images/dialogue/ch29_hi_comic_3d_v1_1773671042123_1773672320345.png' },
-      how_are_you: { word: 'How are you?', sentence: 'How are you?', image: 'images/dialogue/ch29_how_are_you_comic_v1_1773682243123_1773683477254.png' },
-      whats_up: { word: 'What\'s up?', sentence: 'What\'s up?', image: 'images/dialogue/ch29_whats_up_comic_v1_1773682243123_1773683491833.png' },
-      im_fine: { word: 'I\'m fine.', sentence: 'I\'m fine.', image: 'images/dialogue/ch29_im_fine_comic_v1_1773682243123_1773683508849.png' },
-      fine: { word: 'Fine.', sentence: 'Fine.', image: 'images/dialogue/ch29_fine_comic_v1_1773763831326.png' },
-      great: { word: 'Great!', sentence: 'Great!', image: 'images/dialogue/ch29_great_comic_v1_1773682243123_1773683523014.png' },
-      im_good_and_you: { word: 'I\'m good and you?', sentence: 'I\'m good and you?', image: 'images/dialogue/ch29_good_and_you_comic_v1_1773763851349.png' },
-      im_good_how_about_you: { word: 'I\'m good and how about you?', sentence: 'I\'m good and how about you?', image: 'images/dialogue/ch29_good_how_about_you_comic_v1_1773763869616.png' }
+      hello: { word: 'Hello!', sentence: 'Hello!', image: 'images/dialogue/ch29_hello_comic_3d_v1_1773671042123_1773672305146.webp' },
+      hi: { word: 'Hi!', sentence: 'Hi!', image: 'images/dialogue/ch29_hi_comic_3d_v1_1773671042123_1773672320345.webp' },
+      how_are_you: { word: 'How are you?', sentence: 'How are you?', image: 'images/dialogue/ch29_how_are_you_comic_v1_1773682243123_1773683477254.webp' },
+      whats_up: { word: 'What\'s up?', sentence: 'What\'s up?', image: 'images/dialogue/ch29_whats_up_comic_v1_1773682243123_1773683491833.webp' },
+      im_fine: { word: 'I\'m fine.', sentence: 'I\'m fine.', image: 'images/dialogue/ch29_im_fine_comic_v1_1773682243123_1773683508849.webp' },
+      fine: { word: 'Fine.', sentence: 'Fine.', image: 'images/dialogue/ch29_fine_comic_v1_1773763831326.webp' },
+      great: { word: 'Great!', sentence: 'Great!', image: 'images/dialogue/ch29_great_comic_v1_1773682243123_1773683523014.webp' },
+      im_good_and_you: { word: 'I\'m good and you?', sentence: 'I\'m good and you?', image: 'images/dialogue/ch29_good_and_you_comic_v1_1773763851349.webp' },
+      im_good_how_about_you: { word: 'I\'m good and how about you?', sentence: 'I\'m good and how about you?', image: 'images/dialogue/ch29_good_how_about_you_comic_v1_1773763869616.webp' }
     },
     batches: [
       ['hello', 'hi', 'how_are_you'],
@@ -917,16 +917,16 @@ window.CHAPTER_DATA = {
   30: {
     isRepeatMode: true,
     items: {
-      eleven: { word: 'Eleven', sentence: 'Eleven', image: 'images/numbers/ch30_num_11_v2_1773724155000_1773724215553.png' },
-      twelve: { word: 'Twelve', sentence: 'Twelve', image: 'images/numbers/ch30_num_12_v2_1773724155000_1773724231695.png' },
-      thirteen: { word: 'Thirteen', sentence: 'Thirteen', image: 'images/numbers/ch30_num_13_v2_1773724155000_1773724246024.png' },
-      fourteen: { word: 'Fourteen', sentence: 'Fourteen', image: 'images/numbers/ch30_num_14_v2_1773724155000_1773724260935.png' },
-      fifteen: { word: 'Fifteen', sentence: 'Fifteen', image: 'images/numbers/ch30_num_15_v2_1773724155000_1773724275428.png' },
-      sixteen: { word: 'Sixteen', sentence: 'Sixteen', image: 'images/numbers/ch30_num_16_v2_1773724155000_1773724291226.png' },
-      seventeen: { word: 'Seventeen', sentence: 'Seventeen', image: 'images/numbers/ch30_num_17_v2_1773724155000_1773724308206.png' },
-      eighteen: { word: 'Eighteen', sentence: 'Eighteen', image: 'images/numbers/ch30_num_18_v2_1773724155000_1773724324933.png' },
-      nineteen: { word: 'Nineteen', sentence: 'Nineteen', image: 'images/numbers/ch30_num_19_v2_1773724155000_1773724380818.png' },
-      twenty: { word: 'Twenty', sentence: 'Twenty', image: 'images/numbers/ch30_num_20_v2_1773724155000_1773724394109.png' }
+      eleven: { word: 'Eleven', sentence: 'Eleven', image: 'images/numbers/ch30_num_11_v2_1773724155000_1773724215553.webp' },
+      twelve: { word: 'Twelve', sentence: 'Twelve', image: 'images/numbers/ch30_num_12_v2_1773724155000_1773724231695.webp' },
+      thirteen: { word: 'Thirteen', sentence: 'Thirteen', image: 'images/numbers/ch30_num_13_v2_1773724155000_1773724246024.webp' },
+      fourteen: { word: 'Fourteen', sentence: 'Fourteen', image: 'images/numbers/ch30_num_14_v2_1773724155000_1773724260935.webp' },
+      fifteen: { word: 'Fifteen', sentence: 'Fifteen', image: 'images/numbers/ch30_num_15_v2_1773724155000_1773724275428.webp' },
+      sixteen: { word: 'Sixteen', sentence: 'Sixteen', image: 'images/numbers/ch30_num_16_v2_1773724155000_1773724291226.webp' },
+      seventeen: { word: 'Seventeen', sentence: 'Seventeen', image: 'images/numbers/ch30_num_17_v2_1773724155000_1773724308206.webp' },
+      eighteen: { word: 'Eighteen', sentence: 'Eighteen', image: 'images/numbers/ch30_num_18_v2_1773724155000_1773724324933.webp' },
+      nineteen: { word: 'Nineteen', sentence: 'Nineteen', image: 'images/numbers/ch30_num_19_v2_1773724155000_1773724380818.webp' },
+      twenty: { word: 'Twenty', sentence: 'Twenty', image: 'images/numbers/ch30_num_20_v2_1773724155000_1773724394109.webp' }
     },
     batches: [
       ['eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'],
@@ -942,16 +942,16 @@ window.CHAPTER_DATA = {
   31: {
     isRepeatMode: true,
     items: {
-      twenty: { word: 'Twenty', sentence: 'Twenty', image: 'images/numbers/ch30_num_20_v2_1773724155000_1773724394109.png' },
-      thirty: { word: 'Thirty', sentence: 'Thirty', image: 'images/numbers/ch31_num_30_v2_1773724155000_1773724406887.png' },
-      forty: { word: 'Forty', sentence: 'Forty', image: 'images/numbers/ch31_num_40_v2_1773724155000_1773724420861.png' },
-      fifty: { word: 'Fifty', sentence: 'Fifty', image: 'images/numbers/ch31_num_50_v2_1773724155000_1773724436705.png' },
-      sixty: { word: 'Sixty', sentence: 'Sixty', image: 'images/numbers/ch31_num_60_v1_1773724155000_1773724450331.png' },
-      seventy: { word: 'Seventy', sentence: 'Seventy', image: 'images/numbers/ch31_num_70_v1_1773724155000_1773724461559.png' },
-      eighty: { word: 'Eighty', sentence: 'Eighty', image: 'images/numbers/ch31_num_80_v1_1773724155000_1773724475514.png' },
-      ninety: { word: 'Ninety', sentence: 'Ninety', image: 'images/numbers/ch31_num_90_v1_1773724155000_1773724539891.png' },
-      hundred: { word: 'One hundred', sentence: 'One hundred', image: 'images/numbers/ch31_num_100_final_v9_1773750840000_1317_1773742258174.png' },
-      thousand: { word: 'One thousand', sentence: 'One thousand', image: 'images/numbers/ch31_num_1000_final_v9_1773750840000_1317_1773742277417.png' }
+      twenty: { word: 'Twenty', sentence: 'Twenty', image: 'images/numbers/ch30_num_20_v2_1773724155000_1773724394109.webp' },
+      thirty: { word: 'Thirty', sentence: 'Thirty', image: 'images/numbers/ch31_num_30_v2_1773724155000_1773724406887.webp' },
+      forty: { word: 'Forty', sentence: 'Forty', image: 'images/numbers/ch31_num_40_v2_1773724155000_1773724420861.webp' },
+      fifty: { word: 'Fifty', sentence: 'Fifty', image: 'images/numbers/ch31_num_50_v2_1773724155000_1773724436705.webp' },
+      sixty: { word: 'Sixty', sentence: 'Sixty', image: 'images/numbers/ch31_num_60_v1_1773724155000_1773724450331.webp' },
+      seventy: { word: 'Seventy', sentence: 'Seventy', image: 'images/numbers/ch31_num_70_v1_1773724155000_1773724461559.webp' },
+      eighty: { word: 'Eighty', sentence: 'Eighty', image: 'images/numbers/ch31_num_80_v1_1773724155000_1773724475514.webp' },
+      ninety: { word: 'Ninety', sentence: 'Ninety', image: 'images/numbers/ch31_num_90_v1_1773724155000_1773724539891.webp' },
+      hundred: { word: 'One hundred', sentence: 'One hundred', image: 'images/numbers/ch31_num_100_final_v9_1773750840000_1317_1773742258174.webp' },
+      thousand: { word: 'One thousand', sentence: 'One thousand', image: 'images/numbers/ch31_num_1000_final_v9_1773750840000_1317_1773742277417.webp' }
     },
     batches: [
       ['twenty', 'thirty', 'forty', 'fifty'],
@@ -967,10 +967,10 @@ window.CHAPTER_DATA = {
   32: {
     isRepeatMode: true,
     items: {
-      where_from: { word: 'Where are you from?', sentence: 'Where are you from?', image: 'images/dialogue/v32_where_from_final_v11_1773751800000_1319_1773742464869.png' },
-      im_from_turkey: { word: 'I am from Turkey.', sentence: 'I am from Turkey.', image: 'images/dialogue/v32_turkey_final_v11_1773751800000_1319_1773742480793.png' },
-      how_old: { word: 'How old are you?', sentence: 'How old are you?', image: 'images/dialogue/v32_how_old_final_v12_1773752100000_1320_1773742520196.png' },
-      im_thirty: { word: 'I am thirty years old.', sentence: 'I am thirty years old.', image: 'images/dialogue/v32_age_final_v12_1773752100000_1320_1773742534825.png' }
+      where_from: { word: 'Where are you from?', sentence: 'Where are you from?', image: 'images/dialogue/v32_where_from_final_v11_1773751800000_1319_1773742464869.webp' },
+      im_from_turkey: { word: 'I am from Turkey.', sentence: 'I am from Turkey.', image: 'images/dialogue/v32_turkey_final_v11_1773751800000_1319_1773742480793.webp' },
+      how_old: { word: 'How old are you?', sentence: 'How old are you?', image: 'images/dialogue/v32_how_old_final_v12_1773752100000_1320_1773742520196.webp' },
+      im_thirty: { word: 'I am thirty years old.', sentence: 'I am thirty years old.', image: 'images/dialogue/v32_age_final_v12_1773752100000_1320_1773742534825.webp' }
     },
     batches: [
       ['where_from', 'im_from_turkey', 'how_old', 'im_thirty']
@@ -984,14 +984,14 @@ window.CHAPTER_DATA = {
   33: {
     isQAMode: true,
     items: {
-      where_is_father: { word: 'Where is your father?', sentence: 'My father is at work.', image: 'images/dialogue/ch33_father_work.png' },
-      where_is_he: { word: 'Where is he from?', sentence: 'He is from Italy.', image: 'images/dialogue/ch33_he_italy.png' },
-      what_is_his_name: { word: 'What is his name?', sentence: 'His name is Leo.', image: 'images/dialogue/ch33_name_leo.png' },
-      how_old_is_he: { word: 'How old is he?', sentence: 'He is ten years old.', image: 'images/dialogue/ch33_age_ten.png' },
-      where_is_she: { word: 'Where is she from?', sentence: 'She is from Spain.', image: 'images/dialogue/ch33_she_spain.png' },
-      what_is_her_name: { word: 'What is her name?', sentence: 'Her name is Mia.', image: 'images/dialogue/ch33_name_mia.png' },
-      is_he_doctor: { word: 'Is he a doctor?', sentence: 'Yes, he is.', image: 'images/dialogue/ch33_he_doctor.png' },
-      is_she_teacher: { word: 'Is she a teacher?', sentence: 'No, she is a student.', image: 'images/dialogue/ch33_she_student.png' }
+      where_is_father: { word: 'Where is your father?', sentence: 'My father is at work.', image: 'images/dialogue/ch33_father_work.webp' },
+      where_is_he: { word: 'Where is he from?', sentence: 'He is from Italy.', image: 'images/dialogue/ch33_he_italy.webp' },
+      what_is_his_name: { word: 'What is his name?', sentence: 'His name is Leo.', image: 'images/dialogue/ch33_name_leo.webp' },
+      how_old_is_he: { word: 'How old is he?', sentence: 'He is ten years old.', image: 'images/dialogue/ch33_age_ten.webp' },
+      where_is_she: { word: 'Where is she from?', sentence: 'She is from Spain.', image: 'images/dialogue/ch33_she_spain.webp' },
+      what_is_her_name: { word: 'What is her name?', sentence: 'Her name is Mia.', image: 'images/dialogue/ch33_name_mia.webp' },
+      is_he_doctor: { word: 'Is he a doctor?', sentence: 'Yes, he is.', image: 'images/dialogue/ch33_he_doctor.webp' },
+      is_she_teacher: { word: 'Is she a teacher?', sentence: 'No, she is a student.', image: 'images/dialogue/ch33_she_student.webp' }
     },
     batches: [
       ['where_is_father', 'where_is_he', 'what_is_his_name', 'how_old_is_he'],
@@ -1006,14 +1006,14 @@ window.CHAPTER_DATA = {
   34: {
     isQAMode: true,
     items: {
-      what_is_this: { word: 'What is this?', sentence: 'This is a smartphone.', image: 'images/dialogue/ch34_this_phone.png' },
-      what_is_that: { word: 'What is that?', sentence: 'That is a blue car.', image: 'images/dialogue/ch34_that_car.png' },
-      whose_bag: { word: 'Whose bag is this?', sentence: 'This is my bag.', image: 'images/dialogue/ch34_my_bag.png' },
-      whose_cat: { word: 'Whose cat is this?', sentence: 'This is her cat.', image: 'images/custom/ch34_her_cat.png' },
-      are_they_happy: { word: 'Are they happy?', sentence: 'Yes, they are.', image: 'images/custom/ch34_they_happy.png' },
-      is_it_big: { word: 'Is it big?', sentence: 'No, it is small.', image: 'images/custom/ch34_it_small.png' },
-      are_you_hungry: { word: 'Are you hungry?', sentence: 'Yes, I am.', image: 'images/custom/ch34_i_hungry.png' },
-      who_is_he: { word: 'Who is he?', sentence: 'He is my brother.', image: 'images/custom/ch34_he_brother.png' }
+      what_is_this: { word: 'What is this?', sentence: 'This is a smartphone.', image: 'images/dialogue/ch34_this_phone.webp' },
+      what_is_that: { word: 'What is that?', sentence: 'That is a blue car.', image: 'images/dialogue/ch34_that_car.webp' },
+      whose_bag: { word: 'Whose bag is this?', sentence: 'This is my bag.', image: 'images/dialogue/ch34_my_bag.webp' },
+      whose_cat: { word: 'Whose cat is this?', sentence: 'This is her cat.', image: 'images/custom/ch34_her_cat.webp' },
+      are_they_happy: { word: 'Are they happy?', sentence: 'Yes, they are.', image: 'images/custom/ch34_they_happy.webp' },
+      is_it_big: { word: 'Is it big?', sentence: 'No, it is small.', image: 'images/custom/ch34_it_small.webp' },
+      are_you_hungry: { word: 'Are you hungry?', sentence: 'Yes, I am.', image: 'images/custom/ch34_i_hungry.webp' },
+      who_is_he: { word: 'Who is he?', sentence: 'He is my brother.', image: 'images/custom/ch34_he_brother.webp' }
     },
     batches: [
       ['what_is_this', 'what_is_that', 'whose_bag', 'whose_cat'],
@@ -1048,14 +1048,14 @@ window.CHAPTER_DATA = {
   },
   36: {
     items: {
-      adj_big: { word: 'Big', sentence: 'The elephant is big.', image: 'images/dialogue/ch36_big_elephant.png' },
-      adj_small: { word: 'Small', sentence: 'The mouse is small.', image: 'images/custom/ch36_mouse_small_1773914273209.png' },
-      adj_good: { word: 'Good', sentence: 'This is good.', image: 'images/custom/ch36_good_final.png' },
-      adj_bad: { word: 'Bad', sentence: 'This is bad.', image: 'images/custom/ch36_bad_final.png' },
-      adj_happy: { word: 'Happy', sentence: 'I am happy.', image: 'images/custom/ch36_happy.png' },
-      adj_sad: { word: 'Sad', sentence: 'I am sad.', image: 'images/custom/ch36_sad.png' },
-      adj_fast: { word: 'Fast', sentence: 'This car is fast.', image: 'images/custom/ch36_fast.png' },
-      adj_slow: { word: 'Slow', sentence: 'This turtle is slow.', image: 'images/custom/ch36_slow.png' }
+      adj_big: { word: 'Big', sentence: 'The elephant is big.', image: 'images/dialogue/ch36_big_elephant.webp' },
+      adj_small: { word: 'Small', sentence: 'The mouse is small.', image: 'images/custom/ch36_mouse_small_1773914273209.webp' },
+      adj_good: { word: 'Good', sentence: 'This is good.', image: 'images/custom/ch36_good_final.webp' },
+      adj_bad: { word: 'Bad', sentence: 'This is bad.', image: 'images/custom/ch36_bad_final.webp' },
+      adj_happy: { word: 'Happy', sentence: 'I am happy.', image: 'images/custom/ch36_happy.webp' },
+      adj_sad: { word: 'Sad', sentence: 'I am sad.', image: 'images/custom/ch36_sad.webp' },
+      adj_fast: { word: 'Fast', sentence: 'This car is fast.', image: 'images/custom/ch36_fast.webp' },
+      adj_slow: { word: 'Slow', sentence: 'This turtle is slow.', image: 'images/custom/ch36_slow.webp' }
     },
     batches: [
       ['adj_big', 'adj_small', 'adj_good', 'adj_bad'],
@@ -1069,14 +1069,14 @@ window.CHAPTER_DATA = {
   },
   37: {
     items: {
-      adj_hot: { word: 'Hot', sentence: 'The sun is hot.', image: 'images/custom/ch37_hot_sun_1773914288948.png' },
-      adj_cold: { word: 'Cold', sentence: 'The ice is cold.', image: 'images/custom/ch37_cold_ice_1773914302369.png' },
-      adj_old: { word: 'Old', sentence: 'He is old.', image: 'images/custom/ch37_old_man_1773914323552.png' },
-      adj_young: { word: 'Young', sentence: 'She is young.', image: 'images/custom/ch37_young_girl_1773914336451.png' },
-      adj_beautiful: { word: 'Beautiful', sentence: 'The flower is beautiful.', image: 'images/custom/ch37_beautiful_flower_1773914350114.png' },
-      adj_ugly: { word: 'Ugly', sentence: 'The monster is ugly.', image: 'images/custom/ch37_ugly_monster_1773914364565.png' },
+      adj_hot: { word: 'Hot', sentence: 'The sun is hot.', image: 'images/custom/ch37_hot_sun_1773914288948.webp' },
+      adj_cold: { word: 'Cold', sentence: 'The ice is cold.', image: 'images/custom/ch37_cold_ice_1773914302369.webp' },
+      adj_old: { word: 'Old', sentence: 'He is old.', image: 'images/custom/ch37_old_man_1773914323552.webp' },
+      adj_young: { word: 'Young', sentence: 'She is young.', image: 'images/custom/ch37_young_girl_1773914336451.webp' },
+      adj_beautiful: { word: 'Beautiful', sentence: 'The flower is beautiful.', image: 'images/custom/ch37_beautiful_flower_1773914350114.webp' },
+      adj_ugly: { word: 'Ugly', sentence: 'The monster is ugly.', image: 'images/custom/ch37_ugly_monster_1773914364565.webp' },
       adj_cheap: { word: 'Cheap', sentence: 'It is cheap.', emoji: '🪙' },
-      adj_expensive: { word: 'Expensive', sentence: 'It is expensive.', image: 'images/custom/ch37_diamond_1773914379175.png' }
+      adj_expensive: { word: 'Expensive', sentence: 'It is expensive.', image: 'images/custom/ch37_diamond_1773914379175.webp' }
     },
     batches: [
       ['adj_hot', 'adj_cold', 'adj_old', 'adj_young'],
@@ -1138,11 +1138,11 @@ window.CHAPTER_DATA = {
   40: {
     isQAMode: true,
     items: {
-      qa_is_it_big: { word: 'Is it big?', sentence: 'Yes, it is very big.', image: 'images/dialogue/ch36_big_elephant.png' },
-      qa_how_is_it: { word: 'How is the weather?', sentence: 'It is very hot.', image: 'images/custom/ch40_hot_weather_1773914402331.png' },
-      qa_is_he_happy: { word: 'Is he happy?', sentence: 'No, he is sad.', image: 'images/custom/ch40_sad_man_1773914414702.png' },
-      qa_is_it_cheap: { word: 'Is it cheap?', sentence: 'No, it is expensive.', image: 'images/custom/ch37_diamond_1773914379175.png' },
-      qa_is_she_young: { word: 'Is she young?', sentence: 'Yes, she is young.', image: 'images/custom/ch37_young_girl_1773914336451.png' }
+      qa_is_it_big: { word: 'Is it big?', sentence: 'Yes, it is very big.', image: 'images/dialogue/ch36_big_elephant.webp' },
+      qa_how_is_it: { word: 'How is the weather?', sentence: 'It is very hot.', image: 'images/custom/ch40_hot_weather_1773914402331.webp' },
+      qa_is_he_happy: { word: 'Is he happy?', sentence: 'No, he is sad.', image: 'images/custom/ch40_sad_man_1773914414702.webp' },
+      qa_is_it_cheap: { word: 'Is it cheap?', sentence: 'No, it is expensive.', image: 'images/custom/ch37_diamond_1773914379175.webp' },
+      qa_is_she_young: { word: 'Is she young?', sentence: 'Yes, she is young.', image: 'images/custom/ch37_young_girl_1773914336451.webp' }
     },
     batches: [
       ['qa_is_it_big', 'qa_how_is_it', 'qa_is_he_happy', 'qa_is_it_cheap', 'qa_is_she_young']
@@ -1155,7 +1155,7 @@ window.CHAPTER_DATA = {
     items: {
       qa_what_day: { word: 'What day is it today?', sentence: 'Today is Friday.', isCalendar: true, dayIndex: 4 },
       qa_what_month: { word: 'What month is it?', sentence: 'It is October.', isMonth: true, monthIndex: 9 },
-      qa_when_birthday: { word: 'When is your birthday?', sentence: 'My birthday is in June.', image: 'images/custom/ch41_birthday_party_1773914427771.png' },
+      qa_when_birthday: { word: 'When is your birthday?', sentence: 'My birthday is in June.', image: 'images/custom/ch41_birthday_party_1773914427771.webp' },
       qa_is_it_mon: { word: 'Is it Monday?', sentence: 'No, it is Tuesday.', isCalendar: true, dayIndex: 1 },
       qa_is_it_jan: { word: 'Is it January?', sentence: 'No, it is February.', isMonth: true, monthIndex: 1 }
     },
@@ -1188,14 +1188,14 @@ window.CHAPTER_DATA = {
   },
   43: {
     items: {
-      act_run: { word: 'Run', sentence: 'I can run fast.', image: 'images/custom/ch43_run.png' },
-      act_jump: { word: 'Jump', sentence: 'He can jump high.', image: 'images/custom/ch43_jump.png' },
-      act_eat: { word: 'Eat', sentence: 'I eat an apple.', image: 'images/verbs/v26_i_eat_dinner_premium_v1_1773764012055.png' },
-      act_drink: { word: 'Drink', sentence: 'She drinks water.', image: 'images/verbs/v26_we_drink_premium_v1_1773763961236.png' },
-      act_sleep: { word: 'Sleep', sentence: 'The baby is sleeping.', image: 'images/verbs/v26_you_sleep_premium_v1_1773763978953.png' },
-      act_walk: { word: 'Walk', sentence: 'We walk in the park.', image: 'images/verbs/v26_she_walks_premium_v1_1773763897147.png' },
-      act_read: { word: 'Read', sentence: 'I read a book.', image: 'images/verbs/v26_she_reads_premium_v1_1773764368196.png' },
-      act_write: { word: 'Write', sentence: 'Write your name.', image: 'images/verbs/v26_he_writes_premium_v1_1773764051303.png' }
+      act_run: { word: 'Run', sentence: 'I can run fast.', image: 'images/custom/ch43_run.webp' },
+      act_jump: { word: 'Jump', sentence: 'He can jump high.', image: 'images/custom/ch43_jump.webp' },
+      act_eat: { word: 'Eat', sentence: 'I eat an apple.', image: 'images/verbs/v26_i_eat_dinner_premium_v1_1773764012055.webp' },
+      act_drink: { word: 'Drink', sentence: 'She drinks water.', image: 'images/verbs/v26_we_drink_premium_v1_1773763961236.webp' },
+      act_sleep: { word: 'Sleep', sentence: 'The baby is sleeping.', image: 'images/verbs/v26_you_sleep_premium_v1_1773763978953.webp' },
+      act_walk: { word: 'Walk', sentence: 'We walk in the park.', image: 'images/verbs/v26_she_walks_premium_v1_1773763897147.webp' },
+      act_read: { word: 'Read', sentence: 'I read a book.', image: 'images/verbs/v26_she_reads_premium_v1_1773764368196.webp' },
+      act_write: { word: 'Write', sentence: 'Write your name.', image: 'images/verbs/v26_he_writes_premium_v1_1773764051303.webp' }
     },
     batches: [
       ['act_run', 'act_jump', 'act_eat', 'act_drink'],
@@ -1209,12 +1209,12 @@ window.CHAPTER_DATA = {
   },
   44: {
     items: {
-      prep_in: { word: 'In', sentence: 'The cat is in the box.', image: 'images/custom/ch44_in.png' },
-      prep_on: { word: 'On', sentence: 'The book is on the table.', image: 'images/custom/ch44_on_v2.png' },
-      prep_under: { word: 'Under', sentence: 'The ball is under the chair.', image: 'images/custom/ch44_under.png' },
-      prep_next_to: { word: 'Next to', sentence: 'The dog is next to the tree.', image: 'images/custom/ch44_next_to.png' },
-      prep_between: { word: 'Between', sentence: 'The girl is between the boxes.', image: 'images/custom/ch44_between.png' },
-      prep_behind: { word: 'Behind', sentence: 'He is behind the door.', image: 'images/custom/ch44_behind.png' }
+      prep_in: { word: 'In', sentence: 'The cat is in the box.', image: 'images/custom/ch44_in.webp' },
+      prep_on: { word: 'On', sentence: 'The book is on the table.', image: 'images/custom/ch44_on_v2.webp' },
+      prep_under: { word: 'Under', sentence: 'The ball is under the chair.', image: 'images/custom/ch44_under.webp' },
+      prep_next_to: { word: 'Next to', sentence: 'The dog is next to the tree.', image: 'images/custom/ch44_next_to.webp' },
+      prep_between: { word: 'Between', sentence: 'The girl is between the boxes.', image: 'images/custom/ch44_between.webp' },
+      prep_behind: { word: 'Behind', sentence: 'He is behind the door.', image: 'images/custom/ch44_behind.webp' }
     },
     batches: [
       ['prep_in', 'prep_on', 'prep_under'],
@@ -1228,12 +1228,12 @@ window.CHAPTER_DATA = {
   },
   45: {
     items: {
-      weath_rainy: { word: 'Rainy', sentence: 'It is rainy today.', image: 'images/custom/ch45_rainy.png' },
-      weath_sunny: { word: 'Sunny', sentence: 'It is sunny and hot.', image: 'images/custom/ch45_sunny.png' },
-      weath_snowy: { word: 'Snowy', sentence: 'It is snowy and cold.', image: 'images/custom/ch45_snowy.png' },
-      weath_windy: { word: 'Windy', sentence: 'It is a windy day.', image: 'images/custom/ch45_windy.png' },
-      weath_cloudy: { word: 'Cloudy', sentence: 'It is cloudy today.', image: 'images/custom/ch45_cloudy.png' },
-      weath_stormy: { word: 'Stormy', sentence: 'It is stormy tonight.', image: 'images/custom/ch45_stormy.png' }
+      weath_rainy: { word: 'Rainy', sentence: 'It is rainy today.', image: 'images/custom/ch45_rainy.webp' },
+      weath_sunny: { word: 'Sunny', sentence: 'It is sunny and hot.', image: 'images/custom/ch45_sunny.webp' },
+      weath_snowy: { word: 'Snowy', sentence: 'It is snowy and cold.', image: 'images/custom/ch45_snowy.webp' },
+      weath_windy: { word: 'Windy', sentence: 'It is a windy day.', image: 'images/custom/ch45_windy.webp' },
+      weath_cloudy: { word: 'Cloudy', sentence: 'It is cloudy today.', image: 'images/custom/ch45_cloudy.webp' },
+      weath_stormy: { word: 'Stormy', sentence: 'It is stormy tonight.', image: 'images/custom/ch45_stormy.webp' }
     },
     batches: [
       ['weath_rainy', 'weath_sunny', 'weath_snowy'],
@@ -1247,12 +1247,12 @@ window.CHAPTER_DATA = {
   },
   46: {
     items: {
-      emo_angry: { word: 'Angry', sentence: 'He is very angry.', image: 'images/custom/ch46_angry.png' },
-      emo_tired: { word: 'Tired', sentence: 'I am so tired.', image: 'images/custom/ch46_tired.png' },
-      emo_bored: { word: 'Bored', sentence: 'She is bored.', image: 'images/custom/ch46_bored.png' },
-      emo_surprised: { word: 'Surprised', sentence: 'He is surprised.', image: 'images/custom/ch46_surprised.png' },
-      emo_scared: { word: 'Scared', sentence: 'The boy is scared.', image: 'images/custom/ch46_scared.png' },
-      emo_excited: { word: 'Excited', sentence: 'We are excited.', image: 'images/custom/ch46_excited.png' }
+      emo_angry: { word: 'Angry', sentence: 'He is very angry.', image: 'images/custom/ch46_angry.webp' },
+      emo_tired: { word: 'Tired', sentence: 'I am so tired.', image: 'images/custom/ch46_tired.webp' },
+      emo_bored: { word: 'Bored', sentence: 'She is bored.', image: 'images/custom/ch46_bored.webp' },
+      emo_surprised: { word: 'Surprised', sentence: 'He is surprised.', image: 'images/custom/ch46_surprised.webp' },
+      emo_scared: { word: 'Scared', sentence: 'The boy is scared.', image: 'images/custom/ch46_scared.webp' },
+      emo_excited: { word: 'Excited', sentence: 'We are excited.', image: 'images/custom/ch46_excited.webp' }
     },
     batches: [['emo_angry', 'emo_tired', 'emo_bored'], ['emo_surprised', 'emo_scared', 'emo_excited']],
     transitions: [{ icon: '😡', title: 'Duygular!', subtitle: 'Duyguları öğrenmeye devam.', next: 'Doğa' }],
@@ -1261,12 +1261,12 @@ window.CHAPTER_DATA = {
   },
   47: {
     items: {
-      nat_river: { word: 'River', sentence: 'The river is long.', image: 'images/custom/ch47_river.png' },
-      nat_mountain: { word: 'Mountain', sentence: 'The mountain is high.', image: 'images/custom/ch47_mountain.png' },
-      nat_forest: { word: 'Forest', sentence: 'The forest is green.', image: 'images/custom/ch47_forest.png' },
-      nat_lake: { word: 'Lake', sentence: 'The lake is beautiful.', image: 'images/custom/ch47_lake.png' },
-      nat_island: { word: 'Island', sentence: 'It is a small island.', image: 'images/custom/ch47_island.png' },
-      nat_sea: { word: 'Sea', sentence: 'The sea is blue.', image: 'images/custom/ch47_sea.png' }
+      nat_river: { word: 'River', sentence: 'The river is long.', image: 'images/custom/ch47_river.webp' },
+      nat_mountain: { word: 'Mountain', sentence: 'The mountain is high.', image: 'images/custom/ch47_mountain.webp' },
+      nat_forest: { word: 'Forest', sentence: 'The forest is green.', image: 'images/custom/ch47_forest.webp' },
+      nat_lake: { word: 'Lake', sentence: 'The lake is beautiful.', image: 'images/custom/ch47_lake.webp' },
+      nat_island: { word: 'Island', sentence: 'It is a small island.', image: 'images/custom/ch47_island.webp' },
+      nat_sea: { word: 'Sea', sentence: 'The sea is blue.', image: 'images/custom/ch47_sea.webp' }
     },
     batches: [['nat_river', 'nat_mountain', 'nat_forest'], ['nat_lake', 'nat_island', 'nat_sea']],
     transitions: [{ icon: '🌲', title: 'Doğa Gezisi!', subtitle: 'Doğayı tanıdın.', next: 'Phase 7 Quiz' }],
@@ -1276,16 +1276,16 @@ window.CHAPTER_DATA = {
   48: {
     isQAMode: true,
     items: {
-      qa_cat_box: { word: 'Where is the cat?', sentence: 'The cat is in the box.', image: 'images/custom/ch44_in.png' },
-      qa_book_table: { word: 'Where is the book?', sentence: 'The book is on the table.', image: 'images/custom/ch44_on_v2.png' },
-      qa_weather_sunny: { word: 'How is the weather?', sentence: 'It is sunny and hot.', image: 'images/custom/ch45_sunny.png' },
-      qa_weather_rainy: { word: 'Is it snowing?', sentence: 'No, it is rainy today.', image: 'images/custom/ch45_rainy.png' },
-      qa_feel_angry: { word: 'How does he feel?', sentence: 'He is angry and tired.', image: 'images/custom/ch46_angry.png' },
-      qa_feel_bored: { word: 'Are they bored?', sentence: 'Yes, they are bored.', image: 'images/custom/ch46_bored.png' },
-      qa_nat_mountain: { word: 'What is that high place?', sentence: 'It is a high mountain.', image: 'images/custom/ch47_mountain.png' },
-      qa_nat_sea: { word: 'Where can you swim?', sentence: 'You can swim in the sea.', image: 'images/custom/ch47_sea.png' },
-      qa_act_run: { word: 'What is he doing?', sentence: 'He is running in the park.', image: 'images/custom/ch43_run.png' },
-      qa_act_jump: { word: 'Can she jump?', sentence: 'Yes, she can jump high.', image: 'images/custom/ch43_jump.png' }
+      qa_cat_box: { word: 'Where is the cat?', sentence: 'The cat is in the box.', image: 'images/custom/ch44_in.webp' },
+      qa_book_table: { word: 'Where is the book?', sentence: 'The book is on the table.', image: 'images/custom/ch44_on_v2.webp' },
+      qa_weather_sunny: { word: 'How is the weather?', sentence: 'It is sunny and hot.', image: 'images/custom/ch45_sunny.webp' },
+      qa_weather_rainy: { word: 'Is it snowing?', sentence: 'No, it is rainy today.', image: 'images/custom/ch45_rainy.webp' },
+      qa_feel_angry: { word: 'How does he feel?', sentence: 'He is angry and tired.', image: 'images/custom/ch46_angry.webp' },
+      qa_feel_bored: { word: 'Are they bored?', sentence: 'Yes, they are bored.', image: 'images/custom/ch46_bored.webp' },
+      qa_nat_mountain: { word: 'What is that high place?', sentence: 'It is a high mountain.', image: 'images/custom/ch47_mountain.webp' },
+      qa_nat_sea: { word: 'Where can you swim?', sentence: 'You can swim in the sea.', image: 'images/custom/ch47_sea.webp' },
+      qa_act_run: { word: 'What is he doing?', sentence: 'He is running in the park.', image: 'images/custom/ch43_run.webp' },
+      qa_act_jump: { word: 'Can she jump?', sentence: 'Yes, she can jump high.', image: 'images/custom/ch43_jump.webp' }
     },
     batches: [
       ['qa_cat_box', 'qa_book_table', 'qa_weather_sunny', 'qa_weather_rainy'],

@@ -47,69 +47,59 @@ window.saveCurrentUser = function(user) {
   }
 };
 
+// Sadece ad ve telefon tarayıcıdan güncellenebilir. XP, seri, bölümler ve
+// ödüller veritabanı fonksiyonlarıyla değişir (supabase/xp_guvenlik.sql).
 window.updateUser = async function(updatedUser) {
-  // Save locally first for responsiveness
   window.saveCurrentUser(updatedUser);
-
-  // Update Supabase
-  if (window.supabase && updatedUser.id) {
-    const { error } = await window.supabase
-      .from('profiles')
-      .upsert({
-        id: updatedUser.id,
-        name: updatedUser.name,
-        phone: updatedUser.phone,
-        xp: updatedUser.xp,
-        streak: updatedUser.streak,
-        completed_chapters: updatedUser.completedChapters || [],
-        rewards: updatedUser.rewards || [],
-        last_practice_date: updatedUser.lastPracticeDate
-      });
-
-    if (error) {
-      console.error('Supabase profile update error:', error);
-    }
-  }
+  if (!window.supabase || !updatedUser.id) return;
+  const { error } = await window.supabase
+    .from('profiles')
+    .update({ name: updatedUser.name, phone: updatedUser.phone })
+    .eq('id', updatedUser.id);
+  if (error) console.error('Supabase profile update error:', error);
 };
 
-window.updateStreak = async function() {
+function rpcErrorText(error) {
+  const msg = (error && error.message) || '';
+  if (/çok hızlı/i.test(msg)) return 'Bölüm çok hızlı bitirildi, XP verilmedi.';
+  if (/xp yetersiz/i.test(msg)) return 'XP yetersiz.';
+  if (/zaten alınmış/i.test(msg)) return 'Bu ödülü zaten aldın.';
+  return 'Bağlantı hatası, lütfen tekrar dene.';
+}
+
+// Bölüm sonunda çağrılır. Sunucu XP'yi sınırlar, seriyi ve bölüm listesini günceller.
+window.completeChapter = async function({ chapterId, earnedXP, correct, wrong }) {
   const user = window.getCurrentUser();
-  if (!user) return;
-  
-  const now = new Date();
-  const today = now.toISOString().split('T')[0];
-  const lastDate = user.lastPracticeDate;
-  
-  if (lastDate === today) return; // Already updated today
-  
-  const yesterday = new Date(now);
-  yesterday.setDate(now.getDate() - 1);
-  const yesterdayStr = yesterday.toISOString().split('T')[0];
-  
-  if (lastDate === yesterdayStr) {
-    user.streak = (user.streak || 0) + 1;
-  } else {
-    user.streak = 1;
+  if (!user) return { error: 'Giriş yapılmamış.' };
+  const { data, error } = await window.supabase.rpc('complete_chapter', {
+    p_chapter_id: chapterId,
+    p_earned_xp: Math.max(0, Math.round(earnedXP || 0)),
+    p_correct: correct || 0,
+    p_wrong: wrong || 0
+  });
+  if (error || !data) {
+    console.error('complete_chapter error:', error);
+    return { error: rpcErrorText(error) };
   }
-  
-  user.lastPracticeDate = today;
-  await window.updateUser(user);
+  const updated = window.profileToUser(data, { email: user.email, user_metadata: {} });
+  window.saveCurrentUser(updated);
+  return { user: updated };
 };
+
+// Eski çağrılarla uyumluluk için: seri artık complete_chapter içinde hesaplanır.
+window.updateStreak = async function() {};
 
 window.redeemReward = async function(reward) {
   const user = window.getCurrentUser();
-  if (!user || (user.xp || 0) < reward.price) return false;
-  
-  user.xp -= reward.price;
-  user.rewards = user.rewards || [];
-  user.rewards.push({
-    id: reward.id,
-    date: new Date().toISOString(),
-    name: reward.name
-  });
-  
-  await window.updateUser(user);
-  return true;
+  if (!user || !reward) return { error: 'Giriş yapılmamış.' };
+  const { data, error } = await window.supabase.rpc('redeem_reward', { p_reward_id: reward.id });
+  if (error || !data) {
+    console.error('redeem_reward error:', error);
+    return { error: rpcErrorText(error) };
+  }
+  const updated = window.profileToUser(data, { email: user.email, user_metadata: {} });
+  window.saveCurrentUser(updated);
+  return { user: updated };
 };
 
 window.clearCurrentUser = function() {

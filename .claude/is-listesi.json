@@ -1,0 +1,59 @@
+{
+  "aciklama": "Projenin iş listesi. Ajanlar SADECE 'durum' ve 'not' alanlarını değiştirir; madde silmez, kabul kriterini değiştirmez. Yeni madde eklemek için kullanıcı onayı gerekir. durum: yapilacak | devam | tamam | kullanicida",
+  "isler": [
+    {
+      "id": "SUPA-1",
+      "baslik": "Supabase SQL dosyalarını çalıştır",
+      "sahip": "kullanici",
+      "oncelik": 1,
+      "kabul": "auth_fix.sql ve ardından xp_guvenlik.sql hatasız çalıştı; auth_fix sonunda 3 politika ve rowsecurity=true görüldü; 'DİKKAT' uyarısı çıktıysa 0. adım uygulandı",
+      "durum": "kullanicida",
+      "not": ""
+    },
+    {
+      "id": "N8N-1",
+      "baslik": "n8n webhook'una oturum doğrulaması ekle",
+      "sahip": "kullanici",
+      "oncelik": 2,
+      "kabul": "supabase/n8n_dogrulama.md'deki adımlar uygulandı; başlıksız istek 401 ile duruyor",
+      "durum": "kullanicida",
+      "not": ""
+    },
+    {
+      "id": "LEGAL-1",
+      "baslik": "KVKK, Gizlilik, Çerez ve Kullanım Koşulları sayfalarını bağla",
+      "sahip": "ekip",
+      "oncelik": 2,
+      "kabul": "index.html'deki 4 bağlantı (href=\"#\") gerçek metin sayfalarına gidiyor; metinler kullanıcıdan alındı (ajanlar hukuki metin uydurmaz)",
+      "durum": "yapilacak",
+      "not": "Metinleri kullanıcı sağlamalı"
+    },
+    {
+      "id": "ASSET-1",
+      "baslik": "Şehir sahnesi arka planı eksik (images/bg/city_bg.webp)",
+      "sahip": "ekip",
+      "oncelik": 3,
+      "kabul": "node tools/audit_assets.js 0 eksik veriyor; şehir sahnesi (scene-city-p5) arka planla görünüyor",
+      "durum": "yapilacak",
+      "not": "Görsel hiç üretilmemiş; yeni görsel gerekiyor"
+    },
+    {
+      "id": "DATA-1",
+      "baslik": "Bölüm 29, 30, 31, 48 geçiş ekranı sayıları",
+      "sahip": "ekip",
+      "oncelik": 3,
+      "kabul": "node tools/validate_data.js uyarı vermiyor; bu bölümler baştan sona oynanınca her parti arasında doğru geçiş ekranı çıkıyor",
+      "durum": "yapilacak",
+      "not": ""
+    },
+    {
+      "id": "VENDOR-1",
+      "baslik": "Supabase kütüphanesini projeye al (CDN bağımlılığını kaldır)",
+      "sahip": "kullanici",
+      "oncelik": 3,
+      "kabul": "bash tools/vendor_supabase.sh çalıştı; index.html js/vendor/supabase.js kullanıyor; npm test geçiyor",
+      "durum": "kullanicida",
+      "not": ""
+    }
+  ]
+}

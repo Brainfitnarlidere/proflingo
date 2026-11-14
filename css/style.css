@@ -2687,7 +2687,7 @@ body {
   left: 4%;
   width: min(220px, 50vw);
   height: min(120px, 25vw);
-  background-image: url('../images/vehicles/car.png');
+  background-image: url('../images/vehicles/car.webp');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -3330,7 +3330,7 @@ body {
 
 /* --- Scene Backgrounds --- */
 .scene-body-p1 {
-  background-image: url('../images/bodyparts/silhouette.png');
+  background-image: url('../images/bodyparts/silhouette.webp');
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: 135%;
@@ -3342,7 +3342,7 @@ body {
 }
 
 .scene-kitchen-p2 {
-  background-image: url('../images/bg/kitchen_bg.png');
+  background-image: url('../images/bg/kitchen_bg.webp');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -3350,7 +3350,7 @@ body {
 }
 
 .scene-home-p3 {
-  background-image: url('../images/bg/home_bg.png');
+  background-image: url('../images/bg/home_bg.webp');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -3358,7 +3358,7 @@ body {
 }
 
 .scene-wardrobe-p4 {
-  background-image: url('../images/bg/wardrobe_bg.png');
+  background-image: url('../images/bg/wardrobe_bg.webp');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -3366,7 +3366,7 @@ body {
 }
 
 .scene-city-p5 {
-  background-image: url('../images/bg/city_bg.png');
+  background-image: url('../images/bg/city_bg.webp');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;

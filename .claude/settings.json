@@ -1,0 +1,34 @@
+{
+  "agent": "proje-lideri",
+  "permissions": {
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(git push)",
+      "Bash(git -C * push:*)",
+      "Bash(./sync.sh:*)",
+      "Bash(./sync.sh)",
+      "Bash(bash sync.sh:*)",
+      "Bash(bash ./sync.sh:*)",
+      "Bash(sh sync.sh:*)",
+      "Bash(sh ./sync.sh:*)",
+      "Bash(zsh sync.sh:*)",
+      "Bash(zsh ./sync.sh:*)",
+      "Bash(rm -rf:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/tools/hooks/js-kontrol.js\""
+          }
+        ]
+      }
+    ]
+  }
+}

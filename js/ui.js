@@ -581,14 +581,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // Market purchases (delegation)
   const marketItems = window.$('market-items');
   if (marketItems) {
-    marketItems.addEventListener('click', (e) => {
+    marketItems.addEventListener('click', async (e) => {
       const btn = e.target.closest('.btn-buy');
       if (!btn || btn.disabled || btn.classList.contains('owned')) return;
       
       const rewardId = btn.dataset.id;
       const reward = window.REWARDS.find(r => r.id === rewardId);
       
-      if (reward && window.redeemReward(reward)) {
+      btn.disabled = true;
+      const res = reward ? await window.redeemReward(reward) : { error: 'Ödül bulunamadı.' };
+      btn.disabled = false;
+      if (!res.error) {
         window.showToast('toast-heart', `🎉 ${reward.name} başarıyla alındı!`);
         window.renderMarket();
         const user = window.getCurrentUser();
@@ -600,7 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
           window.SOUNDS.correct.play().catch(() => {});
         }
       } else {
-        window.showToast('toast-heart', '❌ XP yetersiz veya bir hata oluştu.');
+        window.showToast('toast-heart', '❌ ' + res.error);
       }
     });
   }
