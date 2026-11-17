@@ -7,6 +7,9 @@ Format: tarih — ne yapıldı — test sonucu — açık kalanlar. Eski kayıtl
 - Winner Mode artık canlar doluyken kazanılan her ekstra canda açılıyor (eskiden bölüm başına bir kez); bitince sıradaki soruya geçiliyor.
 - Okunmayan 46 soru (eşleştirme, hafıza, sahne, 10'lu liste) artık talimatı okuyor; her soruya "🔊 Tekrar dinle" düğmesi eklendi.
 - Testler 11/11 (eski kodla yeni testler kırılıyor, doğrulandı). Seslendirme değişikliği VOICE-1 olarak beklemede (Higgsfield üyeliği).
+- Canlıda yeni HTML + eski JS karışıyordu (10 dk önbellek): tools/surum.js ile ?v= etiketleri; kontrol.js ve sync.sh bunu denetliyor.
+- Ses: kelime seçme sorusu artık cevabı söylemiyor; görsel seçmede "Find X"; aynı anda tek ses (eski kodda yavaş internette 4 ses üst üste çalıyordu).
+- Oturum takibi: js/oturum.js + supabase/oturum_takibi.sql (giriş zamanı, aktif süre, kullanici_aktivite görünümü). SQL kullanıcıda (SUPA-3). Testler 13/13.
 
 ## 2026-11-17 — Baştan sona kontrol (Claude ile elle)
 - GitHub ile birleştirme: GitHub'daki geçmiş web yüklemelerinden oluşuyordu; CNAME (proflingo.com) korunarak birleştirildi, node_modules git takibinden çıkarıldı. Push yapıldı.

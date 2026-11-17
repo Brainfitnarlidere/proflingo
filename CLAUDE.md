@@ -20,6 +20,8 @@ Görsel eşleştirmeyle dil öğreten web uygulaması. Arayüz Türkçe; öğret
 
 ## Komutlar
 - Hepsi birden (her oturum başında): `node tools/kontrol.js` (`--hizli`: tarayıcısız)
+- CSS/JS değiştiyse göndermeden önce: `node tools/surum.js` (index.html'deki `?v=` etiketleri;
+  yapılmazsa canlıda tarayıcı eski JS'i önbellekten kullanır ve yeni HTML ile karışır)
 - Sözdizimi: `node --check js/<dosya>.js` (düzenlemelerde hook otomatik yapar)
 - Testler: `npm test` (Playwright, internetsiz; sahte Supabase: `tests/helpers/`)
 - Bölüm verisi kontrolü: `node tools/validate_data.js`

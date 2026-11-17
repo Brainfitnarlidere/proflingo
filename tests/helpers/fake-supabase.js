@@ -6,7 +6,7 @@
   const S = window.__FAKE = { users:{}, profiles:{}, session:null, otp:'123456', confirm:true, failProfile:false, calls:[] };
   try { const saved = JSON.parse(localStorage.getItem('__fake_db')||'null'); if (saved) Object.assign(S, saved, {calls:[]}); } catch(e){}
   try { const cfg = JSON.parse(localStorage.getItem('__fake_cfg')||'null'); if (cfg && !localStorage.getItem('__fake_db')) Object.assign(S, cfg); } catch(e){}
-  const persist = () => localStorage.setItem('__fake_db', JSON.stringify({users:S.users, profiles:S.profiles, session:S.session, confirm:S.confirm, failProfile:S.failProfile}));
+  const persist = () => localStorage.setItem('__fake_db', JSON.stringify({users:S.users, profiles:S.profiles, session:S.session, confirm:S.confirm, failProfile:S.failProfile, oturumlar:S.oturumlar||[]}));
   function qb(table){
     let op='select', payload=null, filt={};
     const api = {
@@ -42,6 +42,15 @@
       if((p.rewards||[]).some(r=>r.id===a.p_reward_id)) return {data:null,error:{message:'Bu ödül zaten alınmış'}};
       if(p.xp<pr) return {data:null,error:{message:'XP yetersiz'}};
       p.xp-=pr; p.rewards.push({id:a.p_reward_id}); persist(); return {data:p,error:null};
+    }
+    if (name==='oturum_baslat'){
+      S.oturumlar = S.oturumlar || [];
+      const o = {id:S.oturumlar.length+1, user_id:uid, tur:a.p_tur==='giris'?'giris':'acilis', nabiz:0};
+      S.oturumlar.push(o); persist(); return {data:o.id,error:null};
+    }
+    if (name==='oturum_nabiz'){
+      const o=(S.oturumlar||[]).find(x=>x.id===a.p_oturum && x.user_id===uid);
+      if(!o) return {data:null,error:{message:'yok'}}; o.nabiz++; persist(); return {data:o.id,error:null};
     }
     return {data:null,error:{message:'yok'}};
   }

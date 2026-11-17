@@ -29,7 +29,12 @@ window.renderWordChoice = function(q) {
     btn.className = 'quiz-option-word';
     btn.textContent = ch.isQAMode ? ch.items[k].sentence : ch.items[k].word;
     btn.dataset.key = k;
-    btn.onclick = () => { if (k === q.key) window.correctAns(btn, 'word'); else window.wrongAns(btn, q, 'word'); };
+    btn.onclick = () => {
+      if (k === q.key) {
+        if (window.playTTS) window.playTTS(btn.textContent); // doğru kelimeyi duysun
+        window.correctAns(btn, 'word');
+      } else window.wrongAns(btn, q, 'word');
+    };
     grid.appendChild(btn);
   });
 };
@@ -310,7 +315,9 @@ window.renderSpeakWord = function(q) {
      if (window.playNativeTTS) {
        if ([33, 34, 40, 41, 42].includes(window.gameState.chapterId)) {
          window.playNativeTTS(d.word, { gender: 'male' });
+         const qiAtStart = window.gameState.qIndex;
          setTimeout(() => {
+           if (window.gameState.qIndex !== qiAtStart) return; // soru geçildiyse okuma
            window.playNativeTTS(d.sentence, { gender: 'female' });
          }, 2000); 
        } else {
@@ -342,7 +349,9 @@ window.renderSpeakWord = function(q) {
         const isDualQA = [33, 34, 40, 41, 42].includes(window.gameState.chapterId);
         if (isDualQA) {
           window.playNativeTTS(d.word, { gender: 'male' });
+          const qiAtStart = window.gameState.qIndex;
           setTimeout(() => {
+            if (window.gameState.qIndex !== qiAtStart) return; // soru geçildiyse okuma
             window.playNativeTTS(d.sentence, { gender: 'female' });
           }, 2000); 
         } else {

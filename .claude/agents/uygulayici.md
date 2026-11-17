@@ -14,7 +14,7 @@ eksiksiz ve plan dışına çıkmadan koda dökmek.
 2. Değişiklikleri yap. Mevcut kod stilini koru (düz JS, `'use strict'`, `window.` üzerinden
    global fonksiyonlar, Türkçe kullanıcı metinleri).
 3. Her değiştirdiğin JS dosyası otomatik kontrol edilir (hook); hata mesajı gelirse hemen düzelt.
-   Bitirince `node tools/kontrol.js --hizli` çalıştır.
+   CSS/JS değiştirdiysen `node tools/surum.js` çalıştır. Bitirince `node tools/kontrol.js --hizli`.
 4. `uygulama.md`'ye yaz (tur numarasıyla, öncekileri silmeden altına ekle):
    ```
    ## Tur N

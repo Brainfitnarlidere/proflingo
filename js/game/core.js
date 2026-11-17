@@ -58,6 +58,10 @@ window.startChapter = function(id) {
 
   window.resetGameState();
   window.gameState.chapterId = id;
+  const chData = window.CHAPTER_DATA[id];
+  if (chData && window.prefetchTTS) {
+    window.prefetchTTS(Object.values(chData.items || chData.allReviewItems || {}).map(it => it && it.word));
+  }
   window.renderHearts(window.gameState.hearts);
   window.show(window.$('btn-back'));
   window.showHeader();

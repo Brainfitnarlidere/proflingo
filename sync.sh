@@ -8,6 +8,7 @@ echo "Durdurmak için 'Control + C' tuşlarına basabilirsiniz."
 
 while true; do
   # Değişiklik var mı kontrol et
+  node tools/surum.js >/dev/null 2>&1 # CSS/JS sürüm etiketleri (tarayıcı önbelleği)
   if [ -n "$(git status --porcelain)" ]; then
     echo "$(date): Değişiklikler algılandı, yükleniyor..."
     git add .

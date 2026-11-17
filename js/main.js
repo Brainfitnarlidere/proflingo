@@ -175,6 +175,7 @@ window.initEvents = function() {
   on('drawer-overlay', 'click', window.closeDrawer);
   
   on('btn-logout', 'click', async () => {
+    if (window.Oturum) { await window.Oturum.nabiz(true); window.Oturum.durdur(); }
     try {
       if (window.supabase && window.supabase.auth) {
         await window.supabase.auth.signOut();

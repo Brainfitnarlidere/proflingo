@@ -20,6 +20,15 @@
       "not": "2026-11-17 kontrolünde mailer_autoconfirm=true bulundu: kayıtta e-posta doğrulanmıyor."
     },
     {
+      "id": "SUPA-3",
+      "baslik": "Oturum takibi SQL'ini çalıştır",
+      "sahip": "kullanici",
+      "oncelik": 1,
+      "kabul": "supabase/oturum_takibi.sql hatasız çalıştı; giriş yapınca oturumlar tablosuna satır düşüyor; kullanici_aktivite görünümünde ad, e-posta, son giriş ve toplam dakika görünüyor",
+      "durum": "kullanicida",
+      "not": "2026-11-17: Kod hazır (js/oturum.js). SQL çalıştırılmadan önce de uygulama bozulmaz, sadece kayıt tutulmaz. KVKK: aydınlatma metninde giriş zamanı ve kullanım süresinin kaydedildiği belirtilmeli (LEGAL-1)."
+    },
+    {
       "id": "VOICE-1",
       "baslik": "Seslendirmeyi Higgsfield ile değiştir",
       "sahip": "kullanici",
@@ -44,7 +53,7 @@
       "oncelik": 2,
       "kabul": "index.html'deki 4 bağlantı (href=\"#\") gerçek metin sayfalarına gidiyor; metinler kullanıcıdan alındı (ajanlar hukuki metin uydurmaz)",
       "durum": "yapilacak",
-      "not": "Metinleri kullanıcı sağlamalı"
+      "not": "Metinleri kullanıcı sağlamalı Aydınlatma metni giriş zamanı ve aktif süre kaydını da (oturumlar tablosu) kapsamalı."
     },
     {
       "id": "ASSET-1",
@@ -89,7 +98,7 @@
       "oncelik": 1,
       "kabul": "Canlar doluyken kazanılan her ekstra canda Winner Mode açılır; 52 bölümdeki her soru açılınca okunur; her soruda Tekrar dinle düğmesi görünür ve okur (npm test)",
       "durum": "tamam",
-      "not": "2026-11-17: Winner Mode bölüm başına bir kez/sadece 3. doğruda açılıyordu, düzeltildi; Winner sonrası aynı sorunun tekrar gelmesi düzeltildi. 355 sorudan 46'sı (eşleştirme, hafıza, sahne, 10'lu liste) okunmuyordu, artık talimat okunuyor. Tekrar dinle düğmesi eklendi; ilk dokunuşta konuşma motoru kilidi açılıyor. tests/game.spec.ts yanlış alanla (qIdx) hep ilk soruyu deniyordu, düzeltildi."
+      "not": "2026-11-17: Winner Mode bölüm başına bir kez/sadece 3. doğruda açılıyordu, düzeltildi; Winner sonrası aynı sorunun tekrar gelmesi düzeltildi. 355 sorudan 46'sı (eşleştirme, hafıza, sahne, 10'lu liste) okunmuyordu, artık talimat okunuyor. Tekrar dinle düğmesi eklendi; ilk dokunuşta konuşma motoru kilidi açılıyor. tests/game.spec.ts yanlış alanla (qIdx) hep ilk soruyu deniyordu, düzeltildi. Aynı gün: kelime seçme sorusu cevabı okumuyor (soruyu okuyor, doğru cevapta kelimeyi okuyor); görsel seçmede 'Find X' okunuyor; aynı anda tek ses (yavaş internette 4 ses üst üste çalıyordu); bölüm başında kelime sesleri önceden indiriliyor; CSS/JS sürüm etiketleri (tools/surum.js) eklendi."
     }
   ]
 }

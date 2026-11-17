@@ -63,33 +63,59 @@ window.unlockAudio = function() {
   if (window.isBgmPlaying) window.SOUNDS.bgm.play().catch(() => { });
 };
 
-window.playTTS = async function(text) {
+// Tek kelimeler için sözlük sitesindeki insan sesi kayıtları. Bölüm başında önceden
+// indirilir (prefetchTTS); kayıt hazır değilse beklemeden tarayıcının sesiyle okunur,
+// çünkü indirme beklenip gecikmeyle başlatılan sesleri tarayıcılar engelleyebiliyor.
+window._ttsUrls = {}; // kelime -> ses adresi ('' = kayıt yok)
+
+// Aynı anda tek ses: yeni okuma başlarken (ve yeni soru açılırken) öncekini sustur.
+// Eskiden geç inen ses kayıtları sonraki soruların üstünde arka arkaya çalıyordu.
+window._currentAudio = null;
+window.stopSpeech = function() {
+  if (window._currentAudio) {
+    try { window._currentAudio.pause(); } catch (e) {}
+    window._currentAudio = null;
+  }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+};
+
+function fetchWordAudioUrl(word) {
+  const key = String(word || '').trim().toLowerCase();
+  if (!key) return Promise.resolve('');
+  if (key in window._ttsUrls) return Promise.resolve(window._ttsUrls[key]);
+  window._ttsUrls[key] = ''; // aynı kelime için ikinci istek atılmasın
+  return fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(key)}`)
+    .then(res => (res.ok ? res.json() : null))
+    .then(data => {
+      const hit = data && data[0] && (data[0].phonetics || []).find(p => p.audio);
+      window._ttsUrls[key] = hit ? hit.audio : '';
+      return window._ttsUrls[key];
+    })
+    .catch(() => '');
+}
+
+window.prefetchTTS = function(words) {
+  (words || []).filter(w => w && !/[ ?]/.test(w)).slice(0, 60).forEach(fetchWordAudioUrl);
+};
+
+window.playTTS = function(text) {
+  if (!text) return;
   if (text.includes(' ') || text.includes('?')) {
     window.playNativeTTS(text);
     return;
   }
-  try {
-    const cleanWord = text.trim().toLowerCase();
-    const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${cleanWord}`);
-    if (!res.ok) throw new Error('API limits or word not found');
-    const data = await res.json();
-    let audioUrl = null;
-    for (const item of data[0].phonetics) {
-      if (item.audio && item.audio !== '') {
-        audioUrl = item.audio;
-        break;
-      }
-    }
-    if (audioUrl) {
-      const humanAudio = new Audio(audioUrl);
-      humanAudio.volume = 1.0; 
-      humanAudio.play().catch(() => window.playNativeTTS(text));
-    } else {
-      window.playNativeTTS(text);
-    }
-  } catch (err) {
-    window.playNativeTTS(text);
+  const key = text.trim().toLowerCase();
+  const url = window._ttsUrls[key];
+  if (url) {
+    window.stopSpeech();
+    const humanAudio = new Audio(url);
+    humanAudio.volume = 1.0;
+    window._currentAudio = humanAudio;
+    humanAudio.play().catch(() => { if (window._currentAudio === humanAudio) window.playNativeTTS(text); });
+    return;
   }
+  window.playNativeTTS(text);
+  fetchWordAudioUrl(key); // bir sonraki sefer için
 };
 
 window.playNativeTTS = function(text, opts = {}) {
@@ -130,7 +156,7 @@ window.playNativeTTS = function(text, opts = {}) {
     if (anyEng) utterance.voice = anyEng;
   }
   
-  window.speechSynthesis.cancel();
+  window.stopSpeech();
   window.speechSynthesis.speak(utterance);
 };
 

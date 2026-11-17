@@ -90,10 +90,11 @@ window.profileToUser = function(profile, authUser) {
   };
 };
 
-async function finishLogin(authUser) {
+async function finishLogin(authUser, tur) {
   const user = await loadOrCreateProfile(authUser);
   clearPending();
   window.saveCurrentUser(user);
+  if (window.Oturum) window.Oturum.baslat(tur || 'giris'); // giriş zamanı ve aktif süre
   return user;
 }
 
@@ -200,7 +201,7 @@ window.authRestoreSession = async function() {
   try {
     const { data } = await window.supabase.auth.getSession();
     if (data && data.session && data.session.user) {
-      return await finishLogin(data.session.user);
+      return await finishLogin(data.session.user, 'acilis');
     }
   } catch (e) {
     console.error('Session restore error:', e);

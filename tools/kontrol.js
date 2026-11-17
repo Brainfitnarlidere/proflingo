@@ -27,7 +27,12 @@ const assets = run('node', ['tools/audit_assets.js']);
 const missing = (assets.stdout.match(/^EKSİK: .*/gm) || []);
 console.log(missing.length ? `⚠ Eksik dosya: ${missing.length}\n${missing.join('\n')}` : '✓ Görsel/ses yolları');
 
-// 3) Tarayıcı testleri
+// 3) Sürüm etiketleri (eskiyse canlıda yeni HTML ile eski JS karışır)
+const surum = run('node', ['tools/surum.js', '--kontrol']);
+console.log(surum.stdout.trim());
+if (surum.status !== 0) bozuk = true;
+
+// 4) Tarayıcı testleri
 if (!process.argv.includes('--hizli')) {
   const t = spawnSync('npx', ['playwright', 'test', '--reporter=line'], { cwd: root, encoding: 'utf8', env: process.env });
   const out = (t.stdout || '') + (t.stderr || '');

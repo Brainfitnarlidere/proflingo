@@ -110,6 +110,7 @@ window.renderQuestion = function() {
   }
   const q = window.gameState.questions[window.gameState.qIndex];
   window.gameState.questionSpeech = null; // bu soruda ne okunduysa "Tekrar dinle" onu okur
+  if (window.stopSpeech) window.stopSpeech(); // önceki sorunun sesi bu soruya taşmasın
   
   if (window.gameState.isSpeedMode) {
     window.startTimer(10); // 10 seconds per question in speed mode
@@ -140,10 +141,15 @@ window.renderQuestion = function() {
 
   let speech = null;
   if (d_target) {
-    if (q.type === 'listen-choice' || q.type === 'word-choice') {
+    if (q.type === 'listen-choice') {
       speech = { text: d_target.word };
+    } else if (q.type === 'word-choice') {
+      // Görsel gösterilip kelimesi soruluyor: kelimeyi okumak cevabı vermek olur,
+      // soruyu oku ("What do you see?"). Soru-cevap bölümlerinde hedef sorunun kendisi.
+      speech = ch.isQAMode ? { text: d_target.word } : { text: q.prompt || 'What do you see?', native: true };
     } else if (q.type === 'image-choice') {
-      speech = { text: ch.isQAMode ? d_target.sentence : d_target.word };
+      // Ekranda yazanı oku: tek hedef + ne yapılacağı ("Find Pig")
+      speech = { text: 'Find ' + (ch.isQAMode ? d_target.sentence : d_target.word) };
     } else if (q.type === 'word-ordering') {
       speech = { text: d_target.word, slow: true };
     } else if (q.type === 'speak' && !isDualQA) {
@@ -161,9 +167,9 @@ window.renderQuestion = function() {
     window.replayQuestion();
   }
 
-  // "Tekrar dinle": kendi dinleme düğmesi olan türler (dinleme, konuşma) hariç her soruda
+  // "Tekrar dinle": her soruda. Konuşma sorularında kendi "🔊 Repeat" düğmesi olduğu için gizli.
   const replayBtn = window.$('btn-quiz-replay');
-  if (replayBtn) replayBtn.classList.toggle('hidden', q.type === 'listen-choice' || q.type === 'speak');
+  if (replayBtn) replayBtn.classList.toggle('hidden', q.type === 'speak');
 };
 
 // Bu soruda okunan metni tekrar okur (düğme ve ilk okuma bunu kullanır).

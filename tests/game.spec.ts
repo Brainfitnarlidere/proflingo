@@ -86,7 +86,7 @@ test.describe('Oyun ve XP', () => {
       w.playTTS = async (t: string) => { log.push(t); }; w.playSlow = (t: string) => log.push(t); w.playNativeTTS = (t: string) => log.push(t);
       w.startWinnerMode = () => {}; w.onQuizDone = () => {};
       for (const c of w.CHAPTERS) {
-        w.startChapter(c.id); await new Promise(r => setTimeout(r, 20));
+        w.startChapter(c.id); await new Promise(r => setTimeout(r, 150)); // öğrenme kartı 100 ms sonra okur
         w.startQuizPhase(); await new Promise(r => setTimeout(r, 20));
         const qs = w.gameState.questions || [];
         for (let i = 0; i < qs.length; i++) {
@@ -94,8 +94,10 @@ test.describe('Oyun ve XP', () => {
           await new Promise(r => setTimeout(r, 60));   // düşen görseller bir kare sonra okur
           const where = `bölüm ${c.id} soru ${i} (${qs[i].type})`;
           if (!log.length) miss.push(where + ': açılınca okunmadı');
-          // "Tekrar dinle": her soruda olmalı (dinleme/konuşma kendi düğmesini kullanır)
-          const own = ({ 'listen-choice': 'btn-quiz-listen', 'speak': 'btn-speak-repeat' } as any)[qs[i].type];
+          const chd = w.CHAPTER_DATA[c.id];
+          if (qs[i].type === 'word-choice' && !chd.isQAMode && log.includes(chd.items[qs[i].key].word)) miss.push(where + ': cevabı sesli söyledi');
+          // "Tekrar dinle": her soruda olmalı (konuşma sorusu kendi Repeat düğmesini kullanır)
+          const own = ({ 'speak': 'btn-speak-repeat' } as any)[qs[i].type];
           const btn = document.getElementById(own || 'btn-quiz-replay') as HTMLElement | null;
           if (!btn || btn.offsetParent === null || btn.classList.contains('hidden')) miss.push(where + ': tekrar dinle düğmesi görünmüyor');
           else if (!own) { const n = log.length; btn.click(); if (log.length === n) miss.push(where + ': düğme okumadı'); }
@@ -125,5 +127,33 @@ test.describe('Oyun ve XP', () => {
     expect(r.steps[2]).toBe(5);
     expect(r.opened).toBe(2);
     expect(r.qIndex).toBe(9);   // Winner sonrası sıradaki soruya geçilir
+  });
+
+  test('yavaş internette sesler üst üste binmez, geç gelen ses başka soruda çalmaz', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    await page.context().route('**/api.dictionaryapi.dev/**', async route => {
+      await new Promise(r => setTimeout(r, 1200));                      // yavaş bağlantı
+      const w = route.request().url().split('/').pop();
+      await route.fulfill({ contentType: 'application/json', body: JSON.stringify([{ phonetics: [{ audio: `https://ses/${w}.mp3` }] }]) });
+    });
+    const r = await page.evaluate(async () => {
+      const w = window as any; const playing = new Set<any>(); let speaking = false; let worst = 0;
+      const bump = () => { worst = Math.max(worst, playing.size + (speaking ? 1 : 0)); };
+      w.Audio = function (u: string) { const a: any = { src: u, volume: 1, currentTime: 0,
+        play() { playing.add(a); bump(); setTimeout(() => playing.delete(a), 900); return Promise.resolve(); },
+        pause() { playing.delete(a); } }; return a; };
+      w.speechSynthesis.speak = () => { speaking = true; bump(); setTimeout(() => (speaking = false), 700); };
+      w.speechSynthesis.cancel = () => { speaking = false; };
+      w.startWinnerMode = () => {}; w.onQuizDone = () => {};
+      w.startChapter(4); await new Promise(r => setTimeout(r, 150)); w.startQuizPhase();
+      const qs = w.gameState.questions;
+      for (let i = 0; i < Math.min(qs.length, 10); i++) {                // hızlı oyuncu: 400 ms'de bir soru
+        w.gameState.qIndex = i; w.renderQuestion(); await new Promise(r => setTimeout(r, 400)); w.stopTimer && w.stopTimer();
+      }
+      await new Promise(r => setTimeout(r, 1500));
+      return worst;
+    });
+    expect(r).toBeLessThanOrEqual(1);
   });
 });

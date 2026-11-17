@@ -75,4 +75,27 @@ test.describe('Giriş ve kayıt', () => {
     await boot(page);
     expect(await page.evaluate(() => (window as any).getCurrentUser()?.xp)).toBe(40);
   });
+
+  test('giriş zamanı ve aktif süre kaydı: kayıtta "giris", açılışta "acilis", sinyal ve çıkış', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    await page.waitForTimeout(300);
+    const oturumlar = () => page.evaluate(() => (window as any).__FAKE.oturumlar || []);
+    expect((await oturumlar()).map((o: any) => o.tur)).toEqual(['giris']);
+
+    await boot(page);                                   // uygulamayı kayıtlı oturumla tekrar aç
+    await page.waitForTimeout(300);
+    expect((await oturumlar()).map((o: any) => o.tur)).toEqual(['giris', 'acilis']);
+
+    await page.evaluate(() => (window as any).Oturum.nabiz(true));
+    await page.waitForTimeout(100);
+    expect((await oturumlar())[1].nabiz).toBe(1);       // aktiflik sinyali doğru oturuma gitti
+
+    await page.evaluate(() => { (window as any).Oturum.lastInput = Date.now() - 10 * 60 * 1000; return (window as any).Oturum.nabiz(); });
+    expect((await oturumlar())[1].nabiz).toBe(1);       // 10 dk dokunulmadıysa sinyal gitmez
+
+    await page.evaluate(() => document.getElementById('btn-logout')!.click());
+    await page.waitForTimeout(300);
+    expect(await page.evaluate(() => (window as any).Oturum.id)).toBeNull();   // çıkışta durur
+  });
 });
