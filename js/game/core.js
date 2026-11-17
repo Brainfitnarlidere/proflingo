@@ -44,8 +44,7 @@ window.resetGameState = function() {
     quizWrong: 0,
     allCorrect: 0,
     allWrong: 0,
-    memoryGameDone: false,
-    winnerModeUsed: false
+    memoryGameDone: false
   };
 };
 

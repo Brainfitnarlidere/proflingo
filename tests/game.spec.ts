@@ -17,8 +17,8 @@ test.describe('Oyun ve XP', () => {
         try { w.startQuizPhase(); } catch (e: any) { errs.push('quiz: ' + e.message); }
         await new Promise(r => setTimeout(r, 40));
         const qs = w.gameState.questions || [];
-        for (let i = 1; i < Math.min(qs.length, 6); i++) {
-          try { w.gameState.qIdx = i; w.renderQuestion(); } catch (e: any) { errs.push('render: ' + e.message); }
+        for (let i = 0; i < qs.length; i++) {   // her soru (eskiden yanlış alanla hep ilk soru gösteriliyordu)
+          try { w.gameState.qIndex = i; w.renderQuestion(); } catch (e: any) { errs.push('render: ' + e.message); }
         }
         w.stopTimer && w.stopTimer();
         return { errs, n: qs.length };
@@ -75,5 +75,55 @@ test.describe('Oyun ve XP', () => {
     await page.waitForTimeout(300);
     expect(app.n8n.length).toBeGreaterThan(0);
     expect(app.n8n[0]['authorization']).toMatch(/^Bearer /);
+  });
+
+  test('her soru açılınca okunur ve her soruda tekrar dinle düğmesi çalışır', async ({ page }) => {
+    test.setTimeout(120_000);
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const unread: string[] = await page.evaluate(async () => {
+      const w = window as any, log: string[] = [], miss: string[] = [];
+      w.playTTS = async (t: string) => { log.push(t); }; w.playSlow = (t: string) => log.push(t); w.playNativeTTS = (t: string) => log.push(t);
+      w.startWinnerMode = () => {}; w.onQuizDone = () => {};
+      for (const c of w.CHAPTERS) {
+        w.startChapter(c.id); await new Promise(r => setTimeout(r, 20));
+        w.startQuizPhase(); await new Promise(r => setTimeout(r, 20));
+        const qs = w.gameState.questions || [];
+        for (let i = 0; i < qs.length; i++) {
+          log.length = 0; w.gameState.qIndex = i; w.renderQuestion();
+          await new Promise(r => setTimeout(r, 60));   // düşen görseller bir kare sonra okur
+          const where = `bölüm ${c.id} soru ${i} (${qs[i].type})`;
+          if (!log.length) miss.push(where + ': açılınca okunmadı');
+          // "Tekrar dinle": her soruda olmalı (dinleme/konuşma kendi düğmesini kullanır)
+          const own = ({ 'listen-choice': 'btn-quiz-listen', 'speak': 'btn-speak-repeat' } as any)[qs[i].type];
+          const btn = document.getElementById(own || 'btn-quiz-replay') as HTMLElement | null;
+          if (!btn || btn.offsetParent === null || btn.classList.contains('hidden')) miss.push(where + ': tekrar dinle düğmesi görünmüyor');
+          else if (!own) { const n = log.length; btn.click(); if (log.length === n) miss.push(where + ': düğme okumadı'); }
+          w.stopTimer && w.stopTimer();
+        }
+      }
+      return miss;
+    });
+    expect(unread).toEqual([]);
+  });
+
+  test('Winner Mode: canlar doluyken kazanılan her ekstra canda açılır', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(async () => {
+      const w = window as any; let opened = 0;
+      w.startWinnerMode = () => { opened++; };
+      w.renderQuestion = () => {}; w.SOUNDS.correct.play = () => Promise.resolve();
+      w.startChapter(1); w.startQuizPhase();
+      const g = w.gameState; const steps: any[] = [];
+      g.hearts = 4; g.consecutiveCorrects = 0; g.qIndex = 0;
+      for (let k = 1; k <= 9; k++) { w.correctAns(null, 'word'); steps.push(g.hearts); }
+      await new Promise(r => setTimeout(r, 1000));
+      return { opened, steps, qIndex: g.qIndex };
+    });
+    // 3. doğru: 4→5 can (Winner yok); 6. ve 9. doğru: canlar dolu → Winner iki kez
+    expect(r.steps[2]).toBe(5);
+    expect(r.opened).toBe(2);
+    expect(r.qIndex).toBe(9);   // Winner sonrası sıradaki soruya geçilir
   });
 });

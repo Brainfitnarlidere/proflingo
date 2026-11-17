@@ -109,6 +109,7 @@ window.renderQuestion = function() {
     return; 
   }
   const q = window.gameState.questions[window.gameState.qIndex];
+  window.gameState.questionSpeech = null; // bu soruda ne okunduysa "Tekrar dinle" onu okur
   
   if (window.gameState.isSpeedMode) {
     window.startTimer(10); // 10 seconds per question in speed mode
@@ -134,22 +135,44 @@ window.renderQuestion = function() {
   else if (q.type === 'matching-list-10') window.renderMatchingList10(q);
 
   const ch = window.CHAPTER_DATA[window.gameState.chapterId];
-  const d_target = ch.items[q.key];
+  const d_target = (ch.items && ch.items[q.key]) || (ch.allReviewItems && ch.allReviewItems[q.key]);
   const isDualQA = [33, 34, 40, 41, 42].includes(window.gameState.chapterId);
 
-  if (d_target && window.playTTS) {
-    if (q.type === 'listen-choice') {
-      window.playTTS(d_target.word);
-    } else if (q.type === 'word-choice') {
-      window.playTTS(ch.isQAMode ? d_target.word : d_target.word);
+  let speech = null;
+  if (d_target) {
+    if (q.type === 'listen-choice' || q.type === 'word-choice') {
+      speech = { text: d_target.word };
     } else if (q.type === 'image-choice') {
-      window.playTTS(ch.isQAMode ? d_target.sentence : d_target.word);
+      speech = { text: ch.isQAMode ? d_target.sentence : d_target.word };
     } else if (q.type === 'word-ordering') {
-      if (window.playSlow) window.playSlow(d_target.word);
+      speech = { text: d_target.word, slow: true };
     } else if (q.type === 'speak' && !isDualQA) {
-      window.playTTS(ch.isQAMode ? d_target.sentence : d_target.word);
+      speech = { text: ch.isQAMode ? d_target.sentence : d_target.word };
     }
   }
+  // Birden fazla kelimeli sorularda tek hedef yok: ne yapılacağını söyleyen talimatı oku.
+  // (Kelimelerin kendisi sürüklerken/dokununca okunur.)
+  const MULTI_ITEM_TYPES = ['match-pairs', 'memory-match', 'drag-drop-scene', 'matching-list-10'];
+  if (!speech && MULTI_ITEM_TYPES.includes(q.type) && q.prompt) {
+    speech = { text: q.prompt, native: true };
+  }
+  if (speech) {
+    window.gameState.questionSpeech = speech;
+    window.replayQuestion();
+  }
+
+  // "Tekrar dinle": kendi dinleme düğmesi olan türler (dinleme, konuşma) hariç her soruda
+  const replayBtn = window.$('btn-quiz-replay');
+  if (replayBtn) replayBtn.classList.toggle('hidden', q.type === 'listen-choice' || q.type === 'speak');
+};
+
+// Bu soruda okunan metni tekrar okur (düğme ve ilk okuma bunu kullanır).
+window.replayQuestion = function() {
+  const s = window.gameState.questionSpeech;
+  if (!s || !s.text) return;
+  if (s.slow && window.playSlow) window.playSlow(s.text);
+  else if (s.native && window.playNativeTTS) window.playNativeTTS(s.text);
+  else if (window.playTTS) window.playTTS(s.text);
 };
 
 window.correctAns = function(btn, mode) {
@@ -170,17 +193,22 @@ window.correctAns = function(btn, mode) {
   window.showXPFloat(xpGained);
   window.SOUNDS.correct.currentTime = 0;
   window.SOUNDS.correct.play().catch(() => {});
-  if (window.gameState.consecutiveCorrects % 3 === 0 && window.gameState.hearts < 5) {
+  // Her 3 doğru cevaplık seride bir can kazanılır.
+  const heartEarned = window.gameState.consecutiveCorrects % 3 === 0;
+  const heartsWereFull = window.gameState.hearts >= 5;
+  if (heartEarned && !heartsWereFull) {
     window.gameState.hearts++;
     window.renderHearts(window.gameState.hearts);
     window.showToast('toast-heart', '❤️ +1 Can! Harika!');
   }
 
-  // Winner Mode Trigger: 5 hearts AND 3-in-a-row (first time in the chapter)
-  if (window.gameState.hearts === 5 && window.gameState.consecutiveCorrects === 3 && !window.gameState.winnerModeUsed) {
-    window.gameState.winnerModeUsed = true;
-    setTimeout(() => window.startWinnerMode(), 800);
-    return; // Stop normal progression
+  // Winner Mode: canlar doluyken bir can daha kazanılınca açılır — her seferinde
+  // (eskiden bölüm başına bir kez ve sadece 3. doğruda kontrol ediliyordu).
+  if (heartEarned && heartsWereFull) {
+    if (btn) btn.classList.add(mode === 'word' ? 'option-correct' : 'option-correct-color');
+    window.gameState.qIndex++; // Winner Mode bitince sıradaki soruya geçilsin
+    setTimeout(() => { window.clearStyles(); window.startWinnerMode(); }, 800);
+    return;
   }
   if (btn) btn.classList.add(mode === 'word' ? 'option-correct' : 'option-correct-color');
   setTimeout(async () => {

@@ -48,6 +48,15 @@ window.unlockAudio = function() {
       window.SOUNDS.bgm.volume = 0.05;
     }).catch(() => { });
   });
+  // Safari ve telefonlarda konuşma motoru ilk dokunuşta açılmazsa sonraki otomatik
+  // okumalar sessizce engellenebilir: sessiz bir cümleyle kilidi aç.
+  try {
+    if ('speechSynthesis' in window) {
+      const u = new SpeechSynthesisUtterance(' ');
+      u.volume = 0;
+      window.speechSynthesis.speak(u);
+    }
+  } catch (e) {}
   window.audioUnlocked = true;
   document.removeEventListener('click', window.unlockAudio);
   document.removeEventListener('touchstart', window.unlockAudio);

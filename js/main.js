@@ -194,6 +194,7 @@ window.initEvents = function() {
   });
   on('btn-retry', 'click', () => window.startChapter(window.gameState.chapterId));
 
+  on('btn-quiz-replay', 'click', () => window.replayQuestion());
   on('btn-next-card', 'click', window.nextCard);
   on('btn-prev-card', 'click', window.prevCard);
   on('btn-speak-word', 'click', () => { 

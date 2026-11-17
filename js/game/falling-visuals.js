@@ -33,6 +33,7 @@ window.renderFallingVisuals = function(q) {
       inst.textContent = `Click the: "${targetItem.word}"`;
     }
     prog.textContent = `Sets: ${idx + 1}/5 | Correct: 0/3`;
+    window.gameState.questionSpeech = { text: targetItem.word };
     window.playTTS(targetItem.word);
     
     // Spawning loop — wait one frame for layout to be ready

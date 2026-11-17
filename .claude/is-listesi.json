@@ -7,8 +7,26 @@
       "sahip": "kullanici",
       "oncelik": 1,
       "kabul": "auth_fix.sql ve ardından xp_guvenlik.sql hatasız çalıştı; auth_fix sonunda 3 politika ve rowsecurity=true görüldü; 'DİKKAT' uyarısı çıktıysa 0. adım uygulandı",
+      "durum": "tamam",
+      "not": "2026-11-15: iki SQL de çalıştı; 2 fonksiyon, 3 politika, 0 eski profil doğrulandı. 2026-11-17: canlıda girişsiz okuma/XP/market engelli olduğu doğrulandı."
+    },
+    {
+      "id": "SUPA-2",
+      "baslik": "Supabase'de e-posta onayını aç",
+      "sahip": "kullanici",
+      "oncelik": 1,
+      "kabul": "Authentication ayarlarında 'Confirm email' açık; /auth/v1/settings mailer_autoconfirm=false; Site URL https://proflingo.com; Confirm signup şablonunda {{ .Token }} var; yeni kayıtta onay ekranı çıkıyor ve kod/link çalışıyor",
       "durum": "kullanicida",
-      "not": ""
+      "not": "2026-11-17 kontrolünde mailer_autoconfirm=true bulundu: kayıtta e-posta doğrulanmıyor."
+    },
+    {
+      "id": "VOICE-1",
+      "baslik": "Seslendirmeyi Higgsfield ile değiştir",
+      "sahip": "kullanici",
+      "oncelik": 2,
+      "kabul": "Higgsfield ücretli üyelik alındı ve bağlandı; uygulamadaki tüm okumalar (kelime, cümle, talimat, 'Tekrar dinle') yeni sesle çalışıyor; tarayıcının kendi sesi ve sözlük sitesi yalnızca yedek olarak kalıyor",
+      "durum": "bekliyor",
+      "not": "2026-11-17: Kullanıcı ücretli üyeliği alınca yapılacak. Şu an okuma js/speech.js'de: tek kelimede dictionaryapi.dev ses dosyası, olmazsa tarayıcının konuşma motoru (en-US)."
     },
     {
       "id": "N8N-1",
@@ -34,8 +52,8 @@
       "sahip": "ekip",
       "oncelik": 3,
       "kabul": "node tools/audit_assets.js 0 eksik veriyor; şehir sahnesi (scene-city-p5) arka planla görünüyor",
-      "durum": "yapilacak",
-      "not": "Görsel hiç üretilmemiş; yeni görsel gerekiyor"
+      "durum": "tamam",
+      "not": "2026-11-17: city_bg.webp çizildi (diğer arka planlarla aynı çizgi stili); şehir sahnesi 52. bölüme bağlandı (35. bölüm sahne sorusu kullanmıyordu); kutu kare yapıldı, noktalar arsalara oturuyor."
     },
     {
       "id": "DATA-1",
@@ -54,6 +72,24 @@
       "kabul": "bash tools/vendor_supabase.sh çalıştı; index.html js/vendor/supabase.js kullanıyor; npm test geçiyor",
       "durum": "kullanicida",
       "not": ""
+    },
+    {
+      "id": "SCENE-1",
+      "baslik": "Diğer sahnelerde bırakma noktalarının hizası",
+      "sahip": "ekip",
+      "oncelik": 3,
+      "kabul": "7, 14, 21, 28 ve 50. bölümlerin sahne sorusunda, bilgisayar ve telefon boyutunda her bırakma noktası görseldeki ilgili yerin üstünde duruyor (ekran görüntüsüyle doğrulanır)",
+      "durum": "tamam",
+      "not": "2026-11-17: .scene-bg her ekranda 328/500 oranında (bilgisayar görünümü piksel piksel aynı, telefon artık aynı yerleşimde); küçük ekranda daireler 32px. Ayrıca 28'den sonra 50/52'de gardırop görünmesi hatası düzeltildi (satır içi arka plan temizleniyor)."
+    },
+    {
+      "id": "GAME-1",
+      "baslik": "Winner Mode, soru okuma ve Tekrar dinle düğmesi",
+      "sahip": "ekip",
+      "oncelik": 1,
+      "kabul": "Canlar doluyken kazanılan her ekstra canda Winner Mode açılır; 52 bölümdeki her soru açılınca okunur; her soruda Tekrar dinle düğmesi görünür ve okur (npm test)",
+      "durum": "tamam",
+      "not": "2026-11-17: Winner Mode bölüm başına bir kez/sadece 3. doğruda açılıyordu, düzeltildi; Winner sonrası aynı sorunun tekrar gelmesi düzeltildi. 355 sorudan 46'sı (eşleştirme, hafıza, sahne, 10'lu liste) okunmuyordu, artık talimat okunuyor. Tekrar dinle düğmesi eklendi; ilk dokunuşta konuşma motoru kilidi açılıyor. tests/game.spec.ts yanlış alanla (qIdx) hep ilk soruyu deniyordu, düzeltildi."
     }
   ]
 }

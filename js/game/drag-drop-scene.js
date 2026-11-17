@@ -11,6 +11,12 @@ window.renderDragDropScene = function(q) {
   bg.innerHTML = '';
   sidebar.innerHTML = '';
   
+  // Önceki sahneden kalan satır içi arka planı temizle (yoksa 28'den sonra 50/52
+  // bölümlerinde gardırop görünüyordu)
+  bg.className = 'scene-bg';
+  bg.style.backgroundImage = '';
+  bg.style.backgroundSize = '';
+
   // Set background based on phase
   if (q.bgClass) {
     bg.className = 'scene-bg ' + q.bgClass;
@@ -139,7 +145,9 @@ window.getSceneForChapter = function(chapterId, allItems) {
         { key: 'ch5_jacket', x: 62, y: 32 }
       ]
     },
-    35: {
+    // Şehir sahnesi: 52. bölüm (USTALIK SINAVI). 35. bölüm eşleştirme oyunu kullandığı
+    // için sahne sorusuna hiç ulaşmıyordu; şehir kelimeleri 14, 50 ve 52'de var.
+    52: {
       bgClass: 'scene-city-p5',
       zones: [
         { key: 'ch12_school', x: 20, y: 30 },

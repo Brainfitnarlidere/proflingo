@@ -3373,6 +3373,18 @@ body {
   background-color: #f1f5f9;
 }
 
+/* Şehir görseli kare: kutu da kare olsun ki bırakma noktaları arsalara otursun */
+/* Sahne kutusu her ekranda aynı oranda kalır: bırakma noktaları (%) bilgisayar
+   ekranındaki 328x500 kutuya göre ayarlanmıştır, telefonda da aynı yere düşer. */
+.scene-bg {
+  height: auto;
+  aspect-ratio: 328 / 500;
+}
+.scene-bg.scene-city-p5 {
+  aspect-ratio: 1 / 1;
+  background-size: 100% 100%;
+}
+
 /* Ensure dropped items look good */
 .scene-drop-zone {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -3918,3 +3930,41 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-15px); }
 }
+
+/* Küçük ekranda bırakma daireleri birbirine binmesin */
+@media (max-width: 480px) {
+  .scene-bg .scene-drop-zone {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .scene-bg .scene-drop-zone-label {
+    font-size: 0.55rem;
+    top: -18px;
+    padding: 0 4px;
+  }
+}
+
+/* Soru başlığı + "Tekrar dinle" düğmesi */
+.quiz-prompt-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+.quiz-prompt-row .quiz-prompt { margin-bottom: 0; }
+.btn-replay {
+  border: none;
+  background: rgba(108, 99, 255, 0.1);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 6px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-replay:hover { background: rgba(108, 99, 255, 0.18); }
+.btn-replay:active { transform: scale(0.96); }
+.btn-replay.hidden { display: none; }
