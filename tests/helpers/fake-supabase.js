@@ -32,7 +32,7 @@
     const p = S.profiles[uid];
     if (name==='complete_chapter'){
       const pct = a.p_correct+a.p_wrong ? Math.round(100*a.p_correct/(a.p_correct+a.p_wrong)) : 0;
-      const gain = Math.max(0, Math.min(a.p_earned_xp, a.p_correct*45+600)) + (pct>=80?50:0);
+      const gain = Math.max(0, Math.min(a.p_earned_xp, a.p_correct*75+1000)) + (pct>=80?50:0);
       p.xp += gain; if (pct>=80 && !p.completed_chapters.includes(a.p_chapter_id)) p.completed_chapters.push(a.p_chapter_id);
       p.streak = (p.streak||0) + 1; persist(); return {data:p,error:null};
     }

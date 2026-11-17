@@ -63,99 +63,53 @@ window.unlockAudio = function() {
   if (window.isBgmPlaying) window.SOUNDS.bgm.play().catch(() => { });
 };
 
-// Tek kelimeler için sözlük sitesindeki insan sesi kayıtları. Bölüm başında önceden
-// indirilir (prefetchTTS); kayıt hazır değilse beklemeden tarayıcının sesiyle okunur,
-// çünkü indirme beklenip gecikmeyle başlatılan sesleri tarayıcılar engelleyebiliyor.
-window._ttsUrls = {}; // kelime -> ses adresi ('' = kayıt yok)
+// Bütün okumalar tek kaynaktan: tarayıcının konuşma motoru, her seferinde AYNI ses ve
+// AYNI ses düzeyi. (Eskiden sözlük sitesinden gelen, düzeyi kelimeden kelimeye değişen
+// kayıtlar ve rastgele seçilen sesler karışıyordu.) Yeni seslendirme: is-listesi VOICE-1.
+const SES_DUZEYI = 1.0;
+const SES_HIZI = 0.75;
+const ERKEK_SESLER = ['Alex', 'Google US English Male', 'Fred', 'Aaron', 'Arthur', 'James', 'Daniel'];
+const KADIN_SESLER = ['Samantha', 'Google US English Female', 'Ava', 'Allison', 'Karen', 'Victoria', 'Moira'];
 
 // Aynı anda tek ses: yeni okuma başlarken (ve yeni soru açılırken) öncekini sustur.
-// Eskiden geç inen ses kayıtları sonraki soruların üstünde arka arkaya çalıyordu.
-window._currentAudio = null;
 window.stopSpeech = function() {
-  if (window._currentAudio) {
-    try { window._currentAudio.pause(); } catch (e) {}
-    window._currentAudio = null;
-  }
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
 };
 
-function fetchWordAudioUrl(word) {
-  const key = String(word || '').trim().toLowerCase();
-  if (!key) return Promise.resolve('');
-  if (key in window._ttsUrls) return Promise.resolve(window._ttsUrls[key]);
-  window._ttsUrls[key] = ''; // aynı kelime için ikinci istek atılmasın
-  return fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(key)}`)
-    .then(res => (res.ok ? res.json() : null))
-    .then(data => {
-      const hit = data && data[0] && (data[0].phonetics || []).find(p => p.audio);
-      window._ttsUrls[key] = hit ? hit.audio : '';
-      return window._ttsUrls[key];
-    })
-    .catch(() => '');
+// Her cinsiyet için bir kez seçilir ve hep o ses kullanılır (rastgele değil).
+window._sabitSesler = {};
+function sabitSes(gender) {
+  if (gender in window._sabitSesler) return window._sabitSesler[gender];
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null; // henüz yüklenmedi; yüklenince seçilecek
+  const us = voices.filter(v => (v.lang || '').replace('_', '-').startsWith('en-US'));
+  const isimler = gender === 'female' ? KADIN_SESLER : ERKEK_SESLER;
+  let secilen = null;
+  for (const ad of isimler) { secilen = us.find(v => v.name.includes(ad)); if (secilen) break; }
+  if (!secilen) secilen = us[0] || voices.find(v => (v.lang || '').startsWith('en')) || null;
+  window._sabitSesler[gender] = secilen;
+  return secilen;
+}
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.addEventListener('voiceschanged', () => { window._sabitSesler = {}; });
 }
 
-window.prefetchTTS = function(words) {
-  (words || []).filter(w => w && !/[ ?]/.test(w)).slice(0, 60).forEach(fetchWordAudioUrl);
-};
-
 window.playTTS = function(text) {
-  if (!text) return;
-  if (text.includes(' ') || text.includes('?')) {
-    window.playNativeTTS(text);
-    return;
-  }
-  const key = text.trim().toLowerCase();
-  const url = window._ttsUrls[key];
-  if (url) {
-    window.stopSpeech();
-    const humanAudio = new Audio(url);
-    humanAudio.volume = 1.0;
-    window._currentAudio = humanAudio;
-    humanAudio.play().catch(() => { if (window._currentAudio === humanAudio) window.playNativeTTS(text); });
-    return;
-  }
-  window.playNativeTTS(text);
-  fetchWordAudioUrl(key); // bir sonraki sefer için
+  if (text) window.playNativeTTS(text);
 };
 
 window.playNativeTTS = function(text, opts = {}) {
-  if (!('speechSynthesis' in window)) return;
-  // Strip emojis to prevent them from being read aloud
-  const cleanText = text.replace(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g, "");
+  if (!text || !('speechSynthesis' in window)) return;
+  // Emojileri okumasın
+  const cleanText = String(text).replace(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g, '');
   const utterance = new SpeechSynthesisUtterance(cleanText);
   utterance.lang = 'en-US';
-  const { rate = 0.75, pitch = 1.0, gender = 'male' } = opts;
+  const { rate = SES_HIZI, pitch = 1.0, gender = 'male' } = opts;
   utterance.rate = rate;
   utterance.pitch = pitch;
-  utterance.volume = 1.0; 
-  
-  let voices = window.speechSynthesis.getVoices();
-  if (voices.length === 0) {
-    voices = window.speechSynthesis.getVoices();
-  }
-  
-  const preferredMaleNames = ['Daniel', 'Alex', 'Google US English Male', 'Fred', 'Arthur', 'James'];
-  const preferredFemaleNames = ['Samantha', 'Google US English Female', 'Karen', 'Victoria', 'Moira'];
-  
-  const usVoices = voices.filter(v => v.lang.startsWith('en-US'));
-
-  if (usVoices.length > 0) {
-    const targetNames = (gender === 'female') ? preferredFemaleNames : preferredMaleNames;
-    const genderMatching = usVoices.filter(v => targetNames.some(name => v.name.includes(name)));
-    
-    if (genderMatching.length > 0) {
-      // Pick random from matching gender for mix
-      utterance.voice = genderMatching[Math.floor(Math.random() * genderMatching.length)];
-    } else {
-      // Pick random US voice
-      utterance.voice = usVoices[Math.floor(Math.random() * usVoices.length)];
-    }
-  } else {
-    // Fallback to any english voice
-    const anyEng = voices.find(v => v.lang.startsWith('en-'));
-    if (anyEng) utterance.voice = anyEng;
-  }
-  
+  utterance.volume = SES_DUZEYI;
+  const voice = sabitSes(gender);
+  if (voice) utterance.voice = voice;
   window.stopSpeech();
   window.speechSynthesis.speak(utterance);
 };
@@ -164,28 +118,153 @@ window.playSlow = function(text) {
   window.playNativeTTS(text, { rate: 0.50 });
 };
 
+// Yakın ses kapısı: dinleme sırasında mikrofon seviyesini ölçer. İlk 0,4 sn ortam gürültüsü
+// (taban), sonrası konuşma (tepe). Yakından konuşan kişinin sesi tabandan belirgin yüksektir;
+// uzaktaki konuşma/TV/gürültü bu eşiği geçemez. Tarayıcının tanıyıcısını değiştiremediğimiz
+// için sonuç bu ölçüme göre değerlendirilir (uzak ses = can kaybı yok, tekrar dene).
+window.YAKIN_SES = { MUTLAK_ESIK: 0.02, TABAN_KATI: 3, OLCUM_MS: 50, TABAN_MS: 400 };
+
+window.mikrofonOlcerBaslat = async function() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC || !navigator.mediaDevices) return null;
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: false }
+    });
+    const ctx = new AC();
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 1024;
+    ctx.createMediaStreamSource(stream).connect(analyser);
+    const buf = new Float32Array(analyser.fftSize);
+    const t0 = Date.now();
+    let tabanTop = 0, tabanN = 0, tepe = 0;
+    const timer = setInterval(() => {
+      analyser.getFloatTimeDomainData(buf);
+      let s = 0;
+      for (let i = 0; i < buf.length; i++) s += buf[i] * buf[i];
+      const rms = Math.sqrt(s / buf.length);
+      if (Date.now() - t0 < window.YAKIN_SES.TABAN_MS) { tabanTop += rms; tabanN++; }
+      else if (rms > tepe) tepe = rms;
+    }, window.YAKIN_SES.OLCUM_MS);
+    let durdu = false;
+    return {
+      yakinMi() {
+        const taban = tabanN ? tabanTop / tabanN : 0;
+        return tepe >= Math.max(window.YAKIN_SES.MUTLAK_ESIK, taban * window.YAKIN_SES.TABAN_KATI);
+      },
+      seviye() { return { taban: tabanN ? tabanTop / tabanN : 0, tepe }; },
+      durdur() {
+        if (durdu) return; durdu = true;
+        clearInterval(timer);
+        stream.getTracks().forEach(t => t.stop());   // mikrofon açık kalmasın
+        try { ctx.close(); } catch (e) {}
+      }
+    };
+  } catch (e) {
+    return null; // ölçüm yapılamazsa kapı devre dışı (eski davranış)
+  }
+};
+
 window.normalizePhrase = function(str) {
   return str.toLowerCase().replace(/'/g, '').replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
 };
 
+// Tanıyıcının kısa kelimeleri sık karıştırdığı yazılışlar (içerikteki HOMOPHONES'a eklenir).
+const EK_ES_SESLILER = {
+  eye: ['i', 'aye', 'ai', 'ay', 'hi', 'high', 'eyes', 'hai'], i: ['eye', 'aye', 'ai', 'ay', 'hi', 'high'],
+  hi: ['high', 'hey', 'hai', 'i', 'eye', 'hay', 'hiya'], ear: ['here', 'hear', 'year', 'ears', 'era', 'eer'],
+  nose: ['knows', 'noes', 'nos', 'noise', 'nosy'], hand: ['and', 'hands', 'end', 'han'], head: ['had', 'heard', 'hid', 'hed'],
+  leg: ['lag', 'legs', 'lead', 'leck', 'lake'], arm: ['am', 'harm', 'arms', 'um', 'arn'], foot: ['put', 'food', 'feet', 'fut'],
+  hat: ['hot', 'had', 'hut', 'at'], cat: ['kat', 'cut', 'cad', 'cap', 'kit'], dog: ['dug', 'doug', 'dock', 'dogs'],
+  pig: ['big', 'peg', 'pick', 'pigs'], cow: ['how', 'ciao', 'cows', 'kow', 'cal'], bird: ['bed', 'bert', 'burt', 'word', 'birds'],
+  fish: ['fist', 'phish', 'fis', 'fishes'], egg: ['eggs', 'ag', 'eg', 'ack', 'ec'], milk: ['mil', 'melk', 'milks'],
+  meat: ['meet', 'mead', 'neat', 'mit'], soup: ['soap', 'sup', 'super', 'sue'], rice: ['rise', 'lice', 'ryes', 'rights', 'raise'],
+  baby: ['bobby', 'maybe', 'babe'], bed: ['bad', 'bet', 'bid', 'bread'], door: ['dore', 'dour', 'tour', 'daw', 'doors'],
+  lamp: ['lump', 'lamb', 'lab', 'lamps'], sofa: ['soda', 'so far', 'sopha', 'sofas'], car: ['ca', 'far', 'cart', 'kar', 'cars'],
+  bus: ['buzz', 'boss', 'bass', 'bust', 'buses'], boat: ['both', 'bought', 'vote', 'boats'], park: ['bark', 'pork', 'parc', 'parks'],
+  bank: ['bang', 'punk', 'banks'], cook: ['look', 'cork', 'kook', 'cooks'], he: ['hee', 'hi', 'e'], she: ['shea', 'chi', 'see'],
+  it: ['eat', 'at', 'ate'], they: ['day', 'the', 'dey'], we: ['wee', 'oui', 'v'], you: ['u', 'ewe', 'yo', 'yew', 'ju'],
+  his: ['is', 'hiss', "he's", 'hits'], her: ['hur', 'here', 'uh'], its: ["it's", 'eats', 'hits'], my: ['mai', 'mi', 'me', 'mine'],
+  your: ["you're", 'yore', 'ur', 'you'], big: ['pig', 'bag', 'bic'], good: ['could', 'would', 'god', 'hood'], bad: ['bed', 'bat', 'bud', 'pad'],
+  sad: ['said', 'set', 'sat', 'shed'], fast: ['first', 'past', 'fest'], slow: ['low', 'snow', 'flow', 'slo'], hot: ['hat', 'hut', 'what', 'hop'],
+  cold: ['called', 'gold', 'code', 'coal'], old: ['all', 'ode', 'owed', 'hold'], ugly: ['ugli', 'uglee'], may: ['mae', 'me', 'my', 'mey'],
+  june: ['joon', 'dune'], july: ['julie', 'jewelry'], run: ['ran', 'rum', 'ron', 'fun'], jump: ['jumped', 'chump', 'dump'],
+  eat: ['it', 'eight', 'eats', 'heat'], walk: ['wok', 'work', 'woke', 'talk'], read: ['red', 'reed', 'ride', 'lead'],
+  in: ['and', 'an', 'inn', 'n'], on: ['an', 'own', 'un', 'ahn'], lake: ['like', 'leak', 'lick', 'late'], sea: ['see', 'c', 'si', 'she'],
+  red: ['read', 'rad', 'led', 'bread'], blue: ['blew', 'bloo'], pink: ['pinky', 'pin', 'ping', 'bink'], one: ['won', '1', 'on', 'wan'],
+  two: ['to', 'too', '2', 'tu'], four: ['for', 'fore', '4', 'far'], five: ['5', 'hive', 'fife', 'fight'], six: ['6', 'sex', 'sicks', 'sics'],
+  nine: ['9', 'nein', 'line', 'mine'], ten: ['10', 'tin', 'then', 'tan']
+};
+window.HOMOPHONES = window.HOMOPHONES || {};
+for (const [k, list] of Object.entries(EK_ES_SESLILER)) {
+  window.HOMOPHONES[k] = Array.from(new Set([...(window.HOMOPHONES[k] || []), ...list]));
+}
+
+// Okunuş anahtarı: yazılışı farklı ama aynı okunan kelimeleri eşler
+// (eye / i / hi / high → "ai", ear / here / hear → "iir", nose / knows → "nous"/"naus").
+window.sesAnahtari = function(kelime) {
+  const w = String(kelime || '').toLowerCase().replace(/[^a-z]/g, '');
+  if (!w) return '';
+  const ozel = { i: 'ai', eye: 'ai', aye: 'ai', ai: 'ai', ay: 'ai', a: 'ei', u: 'yu', you: 'yu', ewe: 'yu', yew: 'yu',
+    c: 'si', see: 'si', sea: 'si', b: 'bi', be: 'bi', bee: 'bi', r: 'ar', are: 'ar', o: 'ou', oh: 'ou', owe: 'ou' };
+  if (ozel[w]) return ozel[w];
+  // BÜYÜK harfler = belirlenmiş ses (sonraki kurallar dokunmaz); küçük harfler = işlenmemiş yazım
+  let k = w
+    .replace(/^wr/, 'r').replace(/^kn/, 'n').replace(/^gn/, 'n').replace(/^wh/, 'w')
+    .replace(/^h(?=[aeiouy])/, '')
+    .replace(/ph/g, 'f').replace(/ck/g, 'k').replace(/qu/g, 'kw').replace(/q/g, 'k')
+    .replace(/eigh/g, 'EI').replace(/igh/g, 'AI').replace(/eye/g, 'AI').replace(/ye$/, 'AI')
+    .replace(/([aeiou])([b-df-hj-np-tv-z])e$/, (m, v, c) => ({ a: 'EI', e: 'II', i: 'AI', o: 'OU', u: 'UU' })[v] + c)
+    .replace(/ee|ea|ie/g, 'II').replace(/oo/g, 'UU').replace(/ou|ow/g, 'AU').replace(/oa/g, 'OU').replace(/ai|ay/g, 'EI')
+    .replace(/c(?=[eiy])/g, 's').replace(/c/g, 'k').replace(/x/g, 'ks').replace(/z/g, 's')
+    .replace(/([b-df-hj-np-tv-z])y$/, (m, c) => c + (w.length <= 3 ? 'AI' : 'II'))
+    .replace(/e$/, '')
+    .replace(/([a-z])\1+/g, '$1');
+  if (k === 'i') k = 'AI'; // "hi" → "i" → "ai"
+  return k.toLowerCase();
+};
+
+// İki kelime arasındaki harf farkı (Levenshtein)
+window.harfFarki = function(a, b) {
+  const m = a.length, n = b.length;
+  if (!m) return n; if (!n) return m;
+  let prev = Array.from({ length: n + 1 }, (_, k) => k);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i];
+    for (let k = 1; k <= n; k++) {
+      cur[k] = Math.min(prev[k] + 1, cur[k - 1] + 1, prev[k - 1] + (a[i - 1] === b[k - 1] ? 0 : 1));
+    }
+    prev = cur;
+  }
+  return prev[n];
+};
+
+// Söylenen kelime hedefe "yakın" mı? Kısa kelimede 1 harf (ilk harf aynı), orta uzunlukta
+// 2, uzun kelimede 3 harf farka izin verilir. Eş sesliler (HOMOPHONES) de kabul.
+window.yakinKelime = function(hedef, soylenen) {
+  if (hedef === soylenen) return true;
+  const H = window.HOMOPHONES || {};
+  if ((H[hedef] && H[hedef].includes(soylenen)) || (H[soylenen] && H[soylenen].includes(hedef))) return true;
+  // Okunuşları aynı ya da çok yakınsa kabul (kısa anahtarlarda birebir aynı olmalı)
+  const k1 = window.sesAnahtari(hedef), k2 = window.sesAnahtari(soylenen);
+  if (k1 && k1 === k2) return true;
+  if (Math.min(k1.length, k2.length) >= 3 && window.harfFarki(k1, k2) <= 1) return true;
+  const fark = window.harfFarki(hedef, soylenen);
+  if (hedef.length <= 3) return fark <= 1 && hedef[0] === soylenen[0];
+  if (hedef.length <= 7) return fark <= 2;
+  return fark <= 3;
+};
+
+// Konuşma kontrolü: hedefteki kelimelerin en az %75'i yakın eşleşirse doğru (tek kelimede o kelime).
 window.isLenientMatch = function(target, spoken) {
   const targetWords = window.normalizePhrase(target);
   const spokenWords = window.normalizePhrase(spoken);
-  const spokenSet = new Set(spokenWords);
-  let allMatched = true;
-  for (const word of targetWords) {
-    let matchFound = spokenSet.has(word);
-    if (!matchFound && window.HOMOPHONES[word]) {
-      matchFound = window.HOMOPHONES[word].some(h => spokenSet.has(h));
-    }
-    if (!matchFound) {
-      allMatched = false;
-      break;
-    }
-  }
-  if (allMatched) return true;
-  const score = window.diceSimilarity(target, spoken);
-  return score > 0.60;
+  if (!targetWords.length || !spokenWords.length) return false;
+  const eslesen = targetWords.filter(t => spokenWords.some(s => window.yakinKelime(t, s))).length;
+  if (eslesen / targetWords.length >= 0.75) return true;
+  // Kelimeler bitişik/ayrık anlaşıldıysa (ör. "icecream" / "ice cream") bütün olarak karşılaştır
+  const birlesikHedef = targetWords.join(''), birlesikSoylenen = spokenWords.join('');
+  return birlesikHedef.length > 3 && window.harfFarki(birlesikHedef, birlesikSoylenen) <= Math.max(1, Math.floor(birlesikHedef.length / 5));
 };
 
 window.diceSimilarity = function(a, b) {

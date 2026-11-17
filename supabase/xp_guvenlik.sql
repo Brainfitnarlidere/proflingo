@@ -50,8 +50,8 @@ declare
   prof public.profiles;
   today date := (now() at time zone 'Europe/Istanbul')::date;
   daily_cap constant int := 15000;      -- günde en fazla kazanılabilecek XP
-  per_answer constant int := 45;        -- bir doğru cevabın en fazla XP'si (15 x 3 seri çarpanı)
-  extra constant int := 600;            -- Winner Mode vb. bonuslar için pay
+  per_answer constant int := 75;        -- bir doğru cevabın en fazla XP'si (sesli söyleme 25 x 3 seri çarpanı)
+  extra constant int := 1000;           -- eşleşme/yakalama puanları ve Winner Mode bonusları için pay
   min_sec_per_answer constant int := 2; -- cevap başına en az süre
   cap int; gain int; pct int; elapsed numeric;
 begin

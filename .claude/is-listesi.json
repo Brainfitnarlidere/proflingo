@@ -29,6 +29,15 @@
       "not": "2026-11-17: Kod hazır (js/oturum.js). SQL çalıştırılmadan önce de uygulama bozulmaz, sadece kayıt tutulmaz. KVKK: aydınlatma metninde giriş zamanı ve kullanım süresinin kaydedildiği belirtilmeli (LEGAL-1)."
     },
     {
+      "id": "SUPA-4",
+      "baslik": "xp_guvenlik.sql'i yeni puan sınırlarıyla tekrar çalıştır",
+      "sahip": "kullanici",
+      "oncelik": 1,
+      "kabul": "supabase/xp_guvenlik.sql yeniden çalıştırıldı (doğru cevap başına 75, ek pay 1000); yeni puanlar sunucuda kırpılmıyor",
+      "durum": "kullanicida",
+      "not": "2026-11-17: Soru türüne göre puan ve eşleşme başına puan eklendi. Çalıştırılmazsa eski sınır (45/600) yüksek puanlı bölümlerde XP'yi kırpabilir."
+    },
+    {
       "id": "VOICE-1",
       "baslik": "Seslendirmeyi Higgsfield ile değiştir",
       "sahip": "kullanici",
@@ -98,7 +107,16 @@
       "oncelik": 1,
       "kabul": "Canlar doluyken kazanılan her ekstra canda Winner Mode açılır; 52 bölümdeki her soru açılınca okunur; her soruda Tekrar dinle düğmesi görünür ve okur (npm test)",
       "durum": "tamam",
-      "not": "2026-11-17: Winner Mode bölüm başına bir kez/sadece 3. doğruda açılıyordu, düzeltildi; Winner sonrası aynı sorunun tekrar gelmesi düzeltildi. 355 sorudan 46'sı (eşleştirme, hafıza, sahne, 10'lu liste) okunmuyordu, artık talimat okunuyor. Tekrar dinle düğmesi eklendi; ilk dokunuşta konuşma motoru kilidi açılıyor. tests/game.spec.ts yanlış alanla (qIdx) hep ilk soruyu deniyordu, düzeltildi. Aynı gün: kelime seçme sorusu cevabı okumuyor (soruyu okuyor, doğru cevapta kelimeyi okuyor); görsel seçmede 'Find X' okunuyor; aynı anda tek ses (yavaş internette 4 ses üst üste çalıyordu); bölüm başında kelime sesleri önceden indiriliyor; CSS/JS sürüm etiketleri (tools/surum.js) eklendi."
+      "not": "2026-11-17: Winner Mode bölüm başına bir kez/sadece 3. doğruda açılıyordu, düzeltildi; Winner sonrası aynı sorunun tekrar gelmesi düzeltildi. 355 sorudan 46'sı (eşleştirme, hafıza, sahne, 10'lu liste) okunmuyordu, artık talimat okunuyor. Tekrar dinle düğmesi eklendi; ilk dokunuşta konuşma motoru kilidi açılıyor. tests/game.spec.ts yanlış alanla (qIdx) hep ilk soruyu deniyordu, düzeltildi. Aynı gün: kelime seçme sorusu cevabı okumuyor (soruyu okuyor, doğru cevapta kelimeyi okuyor); görsel seçmede 'Find X' okunuyor; aynı anda tek ses (yavaş internette 4 ses üst üste çalıyordu); bölüm başında kelime sesleri önceden indiriliyor; CSS/JS sürüm etiketleri (tools/surum.js) eklendi. 2026-11-17 (2): tek sabit ses ve düzey; soru türüne göre puan + eşleşme başına +5; her soruda tek tekrar düğmesi ('🔊 Repeat'); ses tanımada müzik susturma, 5 tahmin, takılmayan mikrofon, yakın ses kapısı, okunuş benzerliği (eye=i=hi) ve 'Doğru söyledin!'."
+    },
+    {
+      "id": "ASR-1",
+      "baslik": "Yalnızca yakındaki sese odaklanan ses tanıma (harici servis)",
+      "sahip": "ekip",
+      "oncelik": 3,
+      "kabul": "Gürültülü ortamda (TV/konuşma) yakından söylenen kelimeler tarayıcı tanıyıcısından belirgin daha iyi tanınıyor; maliyet kullanıcı tarafından onaylandı",
+      "durum": "yapilacak",
+      "not": "Tarayıcının hazır tanıyıcısı mikrofonu kendisi açtığı için 'sadece yakın ses' ayarı yapılamıyor. Şu anki çözüm: mikrofon seviyesine göre yakın ses kapısı (uzak ses can götürmez), 5 tahmin, okunuş benzerliği. Gerçek çözüm için Whisper/Deepgram gibi ücretli bir servis gerekir."
     }
   ]
 }

@@ -167,9 +167,10 @@ window.renderQuestion = function() {
     window.replayQuestion();
   }
 
-  // "Tekrar dinle": her soruda. Konuşma sorularında kendi "🔊 Repeat" düğmesi olduğu için gizli.
+  // Her soruda TEK tekrar düğmesi: dinleme sorusunda büyük hoparlör, konuşma sorusunda kendi
+  // "🔊 Repeat" düğmesi var; diğer bütün sorularda bu ortak düğme görünür.
   const replayBtn = window.$('btn-quiz-replay');
-  if (replayBtn) replayBtn.classList.toggle('hidden', q.type === 'speak');
+  if (replayBtn) replayBtn.classList.toggle('hidden', q.type === 'speak' || q.type === 'listen-choice');
 };
 
 // Bu soruda okunan metni tekrar okur (düğme ve ilk okuma bunu kullanır).
@@ -181,22 +182,44 @@ window.replayQuestion = function() {
   else if (window.playTTS) window.playTTS(s.text);
 };
 
+// Soru türüne göre taban puan (seri çarpanından önce). Sunucu sınırı: supabase/xp_guvenlik.sql
+window.XP_PUANLARI = {
+  'word-choice': 10,       // görselden kelime seç
+  'image-choice': 10,      // kelimeden görsel seç
+  'listen-choice': 15,     // dinleyip seç
+  'word-ordering': 20,     // cümle sırala
+  'speak': 25,             // sesli söyle
+  'match-pairs': 10,       // eşleştirme (bitirince) + her eşleşme XP_ESLESME
+  'memory-match': 15,      // hafıza oyunu (bitirince) + her eşleşme
+  'matching-list-10': 15,  // 10'lu liste (bitirince) + her eşleşme
+  'drag-drop-scene': 20,   // sahneye yerleştir (bitirince) + her eşleşme
+  'falling-visuals': 20    // düşen görseller (bitirince) + her yakalama XP_YAKALAMA
+};
+window.XP_ESLESME = 5;
+window.XP_YAKALAMA = 3;
+
+window.seriCarpani = function() {
+  const user = window.getCurrentUser();
+  const streak = (user ? user.streak : 0) || 0;
+  return streak >= 7 ? 3 : streak >= 3 ? 2 : 1;
+};
+
+// Puanı (seri çarpanıyla) ekler ve ekranda gösterir.
+window.puanEkle = function(taban) {
+  const xp = Math.round(taban * window.seriCarpani());
+  window.gameState.earnedXP += xp;
+  window.showXPFloat(xp);
+  return xp;
+};
+
 window.correctAns = function(btn, mode) {
   window.gameState.answering = false;
   window.gameState.quizCorrect++;
   window.gameState.consecutiveCorrects++;
   
-  const user = window.getCurrentUser();
-  let multiplier = 1;
-  const streak = (user ? user.streak : 0) || 0;
-  if (streak >= 7) multiplier = 3;
-  else if (streak >= 3) multiplier = 2;
-
-  const xpBase = window.gameState.firstTry ? 15 : 10;
-  const xpGained = xpBase * multiplier;
-  
-  window.gameState.earnedXP += xpGained;
-  window.showXPFloat(xpGained);
+  const curQ = window.gameState.questions[window.gameState.qIndex] || {};
+  const taban = window.XP_PUANLARI[curQ.type] || 10;
+  window.puanEkle(window.gameState.firstTry ? taban : Math.round(taban * 2 / 3)); // ilk denemede tam puan
   window.SOUNDS.correct.currentTime = 0;
   window.SOUNDS.correct.play().catch(() => {});
   // Her 3 doğru cevaplık seride bir can kazanılır.

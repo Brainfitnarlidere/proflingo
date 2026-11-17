@@ -281,6 +281,7 @@ window.renderMatchPairs = function(q) {
         const dragEl = draggablesContainer.querySelector(`[data-key="${k}"]`);
         if (dragEl) dragEl.style.visibility = 'hidden';
         matchesMade++;
+        window.puanEkle(window.XP_ESLESME); // her doğru eşleşme
         window.SOUNDS.pop.play().catch(() => {});
         if (matchesMade === q.options.length) {
           setTimeout(() => window.correctAns(null, 'match'), 500);
@@ -388,37 +389,84 @@ window.renderSpeakWord = function(q) {
   }
   const recognition = new SpeechRecognition();
   recognition.lang = 'en-US';
+  recognition.maxAlternatives = 5;   // gürültüde doğru kelime çoğu zaman 2.-3. tahminde olur
+  recognition.interimResults = false;
+  recognition.continuous = false;
+
+  let olcer = null;          // yakın ses kapısı (mikrofon seviyesi ölçümü)
+  let muzikCaliyordu = false;
+  let sonuclandi = false;
+
+  const dinlemeyiBitir = () => {
+    btnMic.classList.remove('listening');
+    if (olcer) { olcer.durdur(); }
+    if (muzikCaliyordu && window.SOUNDS && window.SOUNDS.bgm) window.SOUNDS.bgm.play().catch(() => {});
+    muzikCaliyordu = false;
+  };
+
   btnMic.onclick = async () => {
     if (!window.gameState.answering) return;
     if (btnMic.classList.contains('listening')) {
-      txtResult.style.color = "var(--success)";
-      txtResult.textContent = "Microphone is already active";
-      return;
+      try { recognition.abort(); } catch (e) {}   // takılı kaldıysa sıfırla
+      dinlemeyiBitir();
     }
+    sonuclandi = false;
     try {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Dinlerken uygulamanın kendi sesleri mikrofona girmesin
+      if (window.stopSpeech) window.stopSpeech();
+      if (window.SOUNDS && window.SOUNDS.bgm && !window.SOUNDS.bgm.paused) { muzikCaliyordu = true; window.SOUNDS.bgm.pause(); }
+      olcer = window._yakinSesKapisiKapali ? null : await window.mikrofonOlcerBaslat();
+      if (!olcer) await navigator.mediaDevices.getUserMedia({ audio: true }).then(st => st.getTracks().forEach(t => t.stop()));
       recognition.start();
       btnMic.classList.add('listening');
       txtResult.style.color = "var(--success)";
-      txtResult.textContent = "Microphone Active";
+      txtResult.textContent = "Listening… speak close to the mic";
     } catch (e) {
+      dinlemeyiBitir();
       txtResult.style.color = "var(--error)";
       txtResult.textContent = "Microphone permission denied.";
     }
   };
+
   recognition.onresult = (event) => {
-    btnMic.classList.remove('listening');
-    const speechResult = event.results[0][0].transcript.toLowerCase().trim();
+    sonuclandi = true;
+    const tahminler = [];
+    for (const r of event.results) for (const alt of r) if (alt && alt.transcript) tahminler.push(alt.transcript.toLowerCase().trim());
+    const yakin = olcer ? olcer.yakinMi() : true;
+    dinlemeyiBitir();
     const targetText = window.CHAPTER_DATA[window.gameState.chapterId].isQAMode ? d.sentence : d.word;
-    if (window.isLenientMatch(targetText, speechResult)) {
+    if (tahminler.some(t => window.isLenientMatch(targetText, t))) {
       txtResult.style.color = "var(--success)";
-      txtResult.textContent = `Doğru: "${targetText}"`;
+      txtResult.textContent = `Doğru söyledin! ✅ "${targetText}"`;
       window.correctAns(null, 'word');
+    } else if (!yakin) {
+      // Duyulan ses uzaktan geldi / ortam gürültüsü: can kaybettirme, tekrar denet
+      txtResult.style.color = "var(--warning, #d97706)";
+      txtResult.textContent = "Too far or too noisy. Move closer to the mic and try again.";
     } else {
       txtResult.style.color = "var(--wrong)";
-      txtResult.textContent = window.buildMismatchHint(targetText, speechResult);
+      txtResult.textContent = window.buildMismatchHint(targetText, tahminler[0] || '');
       window.loseHeart();
       window.gameState.firstTry = false;
     }
+  };
+
+  recognition.onerror = (event) => {
+    sonuclandi = true;
+    dinlemeyiBitir();
+    const err = event && event.error;
+    if (err === 'audio-capture' && olcer !== null) window._yakinSesKapisiKapali = true; // bu cihazda ölçüm ile tanıma birlikte çalışmıyor
+    txtResult.style.color = "var(--warning, #d97706)";
+    txtResult.textContent = err === 'not-allowed' ? "Microphone permission denied."
+      : err === 'no-speech' ? "No speech heard. Speak close to the mic and try again."
+      : "Didn't catch that. Speak close to the mic and try again.";
+  };
+
+  recognition.onend = () => {
+    if (!sonuclandi) {
+      txtResult.style.color = "var(--warning, #d97706)";
+      txtResult.textContent = "Didn't catch that. Speak close to the mic and try again.";
+    }
+    dinlemeyiBitir();
   };
 };

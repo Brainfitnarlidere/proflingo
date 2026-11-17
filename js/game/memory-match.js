@@ -61,6 +61,7 @@ window.renderMemoryMatch = function(q) {
         selectedBox.style.visibility = 'hidden';
         selectedBox = null;
         matchesFound++;
+        window.puanEkle(window.XP_ESLESME); // her doğru eşleşme
         window.SOUNDS.pop.play().catch(() => {});
         if (matchesFound === keys.length) {
           setTimeout(() => window.correctAns(null, 'memory'), 500);

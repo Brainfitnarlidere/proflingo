@@ -39,7 +39,7 @@ test.describe('Oyun ve XP', () => {
       await w.onQuizDone();
     });
     const p = await serverProfile(page);
-    expect(p.xp).toBe(10 * 45 + 600 + 50);   // 5000 istendi, sınır uygulandı
+    expect(p.xp).toBe(10 * 75 + 1000 + 50);  // 5000 istendi, sınır uygulandı
     expect(p.completed_chapters).toContain(1);
     expect(await page.evaluate(() => (window as any).getCurrentUser().xp)).toBe(p.xp);
   });
@@ -96,8 +96,11 @@ test.describe('Oyun ve XP', () => {
           if (!log.length) miss.push(where + ': açılınca okunmadı');
           const chd = w.CHAPTER_DATA[c.id];
           if (qs[i].type === 'word-choice' && !chd.isQAMode && log.includes(chd.items[qs[i].key].word)) miss.push(where + ': cevabı sesli söyledi');
-          // "Tekrar dinle": her soruda olmalı (konuşma sorusu kendi Repeat düğmesini kullanır)
-          const own = ({ 'speak': 'btn-speak-repeat' } as any)[qs[i].type];
+          // Her soruda TEK tekrar düğmesi (dinleme: büyük hoparlör, konuşma: kendi Repeat düğmesi)
+          const own = ({ 'speak': 'btn-speak-repeat', 'listen-choice': 'btn-quiz-listen' } as any)[qs[i].type];
+          const gorunur = (id: string) => { const e = document.getElementById(id) as HTMLElement | null; return !!e && e.offsetParent !== null && !e.classList.contains('hidden'); };
+          const tekrarSayisi = ['btn-quiz-replay', 'btn-quiz-listen', 'btn-speak-repeat'].filter(gorunur).length;
+          if (tekrarSayisi !== 1) miss.push(where + `: ${tekrarSayisi} tekrar düğmesi görünüyor`);
           const btn = document.getElementById(own || 'btn-quiz-replay') as HTMLElement | null;
           if (!btn || btn.offsetParent === null || btn.classList.contains('hidden')) miss.push(where + ': tekrar dinle düğmesi görünmüyor');
           else if (!own) { const n = log.length; btn.click(); if (log.length === n) miss.push(where + ': düğme okumadı'); }
@@ -155,5 +158,147 @@ test.describe('Oyun ve XP', () => {
       return worst;
     });
     expect(r).toBeLessThanOrEqual(1);
+  });
+
+  test('her okuma aynı ses ve aynı ses düzeyiyle yapılır', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(() => {
+      const w = window as any; const okunan: any[] = []; let kayitSayisi = 0;
+      const sesler = [
+        { name: 'Google UK English Male', lang: 'en-GB' }, { name: 'Samantha', lang: 'en-US' },
+        { name: 'Fred', lang: 'en-US' }, { name: 'Alex', lang: 'en-US' }, { name: 'Victoria', lang: 'en-US' },
+      ];
+      w.speechSynthesis.getVoices = () => sesler;
+      w.SpeechSynthesisUtterance = function (this: any, t: string) { this.text = t; };   // sahte seslerle çalışabilsin
+      w._sabitSesler = {};
+      w.speechSynthesis.speak = (u: any) => okunan.push({ metin: u.text, duzey: u.volume, ses: u.voice && u.voice.name });
+      const A = w.Audio; w.Audio = function (...a: any[]) { kayitSayisi++; return new A(...a); };
+      for (let k = 0; k < 8; k++) { w.playTTS('Banana'); w.playTTS('Pig'); w.playTTS('What do you see?'); w.playSlow('I am a student'); }
+      w.playNativeTTS('Where are you from?', { gender: 'female' }); w.playNativeTTS('I am from Turkey.', { gender: 'female' });
+      return { okunan, kayitSayisi };
+    });
+    const erkek = r.okunan.slice(0, 32), kadin = r.okunan.slice(32);
+    expect(new Set(r.okunan.map((o: any) => o.duzey))).toEqual(new Set([1]));   // hep aynı düzey
+    expect(new Set(erkek.map((o: any) => o.ses))).toEqual(new Set(['Alex']));   // hep aynı ses (rastgele değil)
+    expect(new Set(kadin.map((o: any) => o.ses))).toEqual(new Set(['Samantha']));
+    expect(r.kayitSayisi).toBe(0);                                              // dışarıdan ses kaydı yok
+  });
+
+  test('her soru türü kendi puanını verir; eşleştirmede her doğru eşleşme ayrıca puan kazandırır', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(async () => {
+      const w = window as any;
+      w.renderQuestion = () => {}; w.startWinnerMode = () => {}; w.playTTS = () => {}; w.playNativeTTS = () => {};
+      w.SOUNDS.correct.play = () => Promise.resolve(); w.SOUNDS.pop.play = () => Promise.resolve();
+      const turPuani: Record<string, number> = {};
+      for (const tip of ['word-choice', 'listen-choice', 'word-ordering', 'speak']) {
+        const g = w.gameState; g.questions = [{ type: tip }]; g.qIndex = 0; g.firstTry = true; g.hearts = 0; g.consecutiveCorrects = 0;
+        const once = g.earnedXP; w.correctAns(null, 'word'); turPuani[tip] = g.earnedXP - once;
+      }
+      // Hafıza oyunu: gerçek tıklamalarla eşleştir
+      w.startChapter(7); w.startQuizPhase();
+      const qs = w.gameState.questions; const i = qs.findIndex((q: any) => q.type === 'memory-match');
+      w.gameState.qIndex = i; w.gameState.answering = true;
+      w.correctAns = () => {};                        // bitirme puanını ayrı tut
+      w.renderMemoryMatch(qs[i]);
+      const once = w.gameState.earnedXP; const adimlar: number[] = [];
+      const kelime = (k: string) => qs[i].items[k].word;
+      for (const box of Array.from(document.querySelectorAll('#memory-grid .memory-box')) as HTMLElement[]) {
+        box.click();
+        const opt = (Array.from(document.querySelectorAll('#memory-words-pool .memory-word-option')) as HTMLElement[])
+          .find(o => o.textContent === kelime(box.dataset.key!))!;
+        opt.click(); adimlar.push(w.gameState.earnedXP - once);
+      }
+      return { turPuani, adimlar, cift: Object.keys(qs[i].items).length };
+    });
+    expect(r.turPuani).toEqual({ 'word-choice': 10, 'listen-choice': 15, 'word-ordering': 20, 'speak': 25 });
+    expect(r.adimlar).toEqual(Array.from({ length: r.cift }, (_, k) => (k + 1) * 5));   // her eşleşmede +5
+  });
+
+  test('ses tanıma: uzak ses can götürmez, 2. tahmin kabul edilir, mikrofon takılmaz, müzik susar', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(async () => {
+      const w = window as any; const sonuc: any = {};
+      // Sahte ses tanıyıcı: testten sonuç/hata gönderilebilir
+      let aktif: any = null;
+      w.SpeechRecognition = function (this: any) { aktif = this; this.start = () => {}; this.abort = () => {}; };
+      w.webkitSpeechRecognition = w.SpeechRecognition;
+      let yakin = true;
+      w.mikrofonOlcerBaslat = async () => ({ yakinMi: () => yakin, durdur: () => {} });
+      w.playTTS = () => {}; w.playNativeTTS = () => {}; w.renderQuestion = () => {}; w.startWinnerMode = () => {};
+      let muzik = 'calıyor'; w.SOUNDS.bgm = { get paused() { return muzik !== 'calıyor'; }, pause() { muzik = 'durdu'; }, play() { muzik = 'calıyor'; return Promise.resolve(); } };
+      w.startChapter(1); w.startQuizPhase();
+      const qs = w.gameState.questions; const i = qs.findIndex((q: any) => q.type === 'speak');
+      w.gameState.qIndex = i; w.gameState.answering = true; w.gameState.hearts = 5;
+      w.renderSpeakWord(qs[i]);
+      const hedef = w.CHAPTER_DATA[1].items[qs[i].key].word.toLowerCase();
+      const mic = document.getElementById('btn-speak-mic')!; const yazi = () => document.getElementById('speak-result-text')!.textContent;
+      const sonucGonder = (alts: string[]) => aktif.onresult({ results: [alts.map(t => ({ transcript: t }))] });
+      let dogru = 0; w.correctAns = () => { dogru++; };
+
+      await (mic as any).onclick(); sonuc.dinlerkenMuzik = muzik;
+      yakin = false; sonucGonder(['banana bread']); sonuc.uzakCan = w.gameState.hearts; sonuc.uzakYazi = yazi(); sonuc.sonraMuzik = muzik;
+      await (mic as any).onclick(); yakin = true; sonucGonder(['banana bread']); sonuc.yakinCan = w.gameState.hearts;
+      await (mic as any).onclick(); sonucGonder(['the end', hedef]); sonuc.ikinciTahminDogru = dogru; sonuc.dogruYazi = yazi();
+      await (mic as any).onclick(); aktif.onend(); sonuc.takildiMi = mic.classList.contains('listening'); sonuc.sessizYazi = yazi();
+      await (mic as any).onclick(); aktif.onerror({ error: 'no-speech' }); sonuc.hataSonrasiTakildiMi = mic.classList.contains('listening');
+      return sonuc;
+    });
+    expect(r.dinlerkenMuzik).toBe('durdu');
+    expect(r.sonraMuzik).toBe('calıyor');
+    expect(r.uzakCan).toBe(5);                       // uzak/gürültü: can gitmez
+    expect(r.uzakYazi).toContain('Too far or too noisy');
+    expect(r.yakinCan).toBe(4);                      // yakından yanlış: can gider
+    expect(r.ikinciTahminDogru).toBe(1);             // doğru kelime 2. tahminde: kabul
+    expect(r.dogruYazi).toContain('Doğru söyledin');
+    expect(r.takildiMi).toBe(false);                 // sonuç gelmeden bitti: mikrofon takılmaz
+    expect(r.sessizYazi).toContain("Didn't catch that");
+    expect(r.hataSonrasiTakildiMi).toBe(false);
+  });
+
+  test('yakın ses kapısı: ortamdan belirgin yüksek ses yakın, zayıf ses uzak sayılır', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    const r = await page.evaluate(async () => {
+      const w = window as any;
+      const dene = async (taban: number, tepe: number) => {
+        let t = Date.now(); const seviyeler = () => (Date.now() - t < w.YAKIN_SES.TABAN_MS ? taban : tepe);
+        Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: { getUserMedia: async () => ({ getTracks: () => [{ stop() {} }] }) } });
+        w.AudioContext = function () { return {
+          createAnalyser: () => ({ fftSize: 1024, getFloatTimeDomainData: (b: Float32Array) => b.fill(seviyeler()) }),
+          createMediaStreamSource: () => ({ connect() {} }), close() {} }; };
+        const o = await w.mikrofonOlcerBaslat(); t = Date.now();
+        await new Promise(r => setTimeout(r, w.YAKIN_SES.TABAN_MS + 250));
+        const sonuc = o.yakinMi(); o.durdur(); return sonuc;
+      };
+      return {
+        sessizOdaYakin: await dene(0.003, 0.12),    // sessiz oda, yakından konuşma
+        gurultuluOdaYakin: await dene(0.03, 0.15),  // gürültülü oda, yakından konuşma
+        gurultuluOdaUzak: await dene(0.03, 0.05),   // gürültülü oda, uzaktaki konuşma
+        sessizOdaUzak: await dene(0.003, 0.012),    // sessiz oda, uzaktaki konuşma
+      };
+    });
+    expect(r).toEqual({ sessizOdaYakin: true, gurultuluOdaYakin: true, gurultuluOdaUzak: false, sessizOdaUzak: false });
+  });
+
+  test('yakın söylenen sözcük doğru kabul edilir, alakasız sözcük edilmez', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    const r = await page.evaluate(() => {
+      const m = (window as any).isLenientMatch;
+      return {
+        nine_nein: m('Nine', 'nein'), seven_heaven: m('Seven', 'heaven'), cat_cut: m('Cat', 'cut'),
+        banana_bananas: m('Banana', 'bananas'), cumle_eksik: m('I am a student', 'i am student'),
+        ice_cream: m('Ice cream', 'icecream'),
+        cat_dog: m('Cat', 'dog'), cat_hat: m('Cat', 'hat'), cumle_baska: m('Where are you from?', 'what is your name'),
+        bos: m('Apple', ''),
+        eye_i: m('Eye', 'i'), eye_hi: m('Eye', 'hi'), eye_high: m('Eye', 'high'), ear_here: m('Ear', 'here'),
+        nose_knows: m('Nose', 'knows'), two_to: m('Two', 'to'), eye_dog: m('Eye', 'dog'),
+      };
+    });
+    expect(r).toEqual({ nine_nein: true, seven_heaven: true, cat_cut: true, banana_bananas: true, cumle_eksik: true,
+      ice_cream: true, cat_dog: false, cat_hat: false, cumle_baska: false, bos: false,
+      eye_i: true, eye_hi: true, eye_high: true, ear_here: true, nose_knows: true, two_to: true, eye_dog: false });
   });
 });

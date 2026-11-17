@@ -3,6 +3,13 @@
 Her oturumun sonunda proje lideri en üste kısa bir kayıt ekler (en yeni üstte).
 Format: tarih — ne yapıldı — test sonucu — açık kalanlar. Eski kayıtlar silinmez.
 
+## 2026-11-17 (08:00) — Ses, puan ve konuşma tanıma
+- Okuma: tek kaynak (tarayıcı sesi), sabit ses + sabit düzey (eskiden sözlük kayıtları ve rastgele ses karışıyordu).
+- Puan: soru türüne göre (10/15/20/25), eşleştirmelerde her eşleşme +5; sunucu sınırı 75/soru + 1000 (SUPA-4, 52 bölümde mükemmel oyun sınırın altında kaldığı hesaplandı).
+- Her soruda tek tekrar düğmesi, İngilizce "🔊 Repeat".
+- Konuşma: dinlerken müzik susar, 5 tahmin, takılmayan mikrofon, yakın ses kapısı (uzak ses can götürmez), okunuş benzerliği (eye = i = hi = high), "Doğru söyledin!". Gerçek yakın-ses odaklı tanıma ASR-1.
+- Testler 18/18; yeni testlerin eski kodla kırıldığı doğrulandı.
+
 ## 2026-11-17 (sabah) — Oyun testinden gelen düzeltmeler
 - Winner Mode artık canlar doluyken kazanılan her ekstra canda açılıyor (eskiden bölüm başına bir kez); bitince sıradaki soruya geçiliyor.
 - Okunmayan 46 soru (eşleştirme, hafıza, sahne, 10'lu liste) artık talimatı okuyor; her soruya "🔊 Tekrar dinle" düğmesi eklendi.

@@ -62,6 +62,7 @@ window.renderDragDropScene = function(q) {
         if (dragEl) dragEl.style.visibility = 'hidden';
         
         matched++;
+        window.puanEkle(window.XP_ESLESME); // her doğru yerleştirme
         window.SOUNDS.pop.play().catch(() => {});
         if (matched === q.zones.length) {
           setTimeout(() => window.correctAns(null, 'scene'), 1000);
@@ -220,6 +221,7 @@ window.renderMatchingList10 = function(q) {
         const dragEl = leftCol.querySelector(`[data-key="${k}"]`);
         if (dragEl) dragEl.style.visibility = 'hidden';
         matchesMade++;
+        window.puanEkle(window.XP_ESLESME); // her doğru eşleşme
         window.SOUNDS.pop.play().catch(() => {});
         if (matchesMade === q.keys.length) {
           setTimeout(() => window.correctAns(null, 'match'), 800);

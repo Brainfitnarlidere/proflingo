@@ -83,6 +83,7 @@ window.renderFallingVisuals = function(q) {
       el.onclick = () => {
         if (key === targetKey) {
           score++;
+          window.puanEkle(window.XP_YAKALAMA); // her doğru yakalama
           window.SOUNDS.pop.play().catch(() => {});
           prog.textContent = `Sets: ${idx + 1}/5 | Correct: ${score}/3`;
           el.remove();
