@@ -169,6 +169,7 @@ test.describe('Oyun ve XP', () => {
         { name: 'Google UK English Male', lang: 'en-GB' }, { name: 'Samantha', lang: 'en-US' },
         { name: 'Fred', lang: 'en-US' }, { name: 'Alex', lang: 'en-US' }, { name: 'Victoria', lang: 'en-US' },
       ];
+      w.SES_KAYITLARI = {};                                              // kayıtsız: tarayıcı sesi yolu
       w.speechSynthesis.getVoices = () => sesler;
       w.SpeechSynthesisUtterance = function (this: any, t: string) { this.text = t; };   // sahte seslerle çalışabilsin
       w._sabitSesler = {};
@@ -183,6 +184,36 @@ test.describe('Oyun ve XP', () => {
     expect(new Set(erkek.map((o: any) => o.ses))).toEqual(new Set(['Alex']));   // hep aynı ses (rastgele değil)
     expect(new Set(kadin.map((o: any) => o.ses))).toEqual(new Set(['Samantha']));
     expect(r.kayitSayisi).toBe(0);                                              // dışarıdan ses kaydı yok
+  });
+
+  test('ElevenLabs kaydı varsa o çalar; yoksa ya da çalamazsa tarayıcı sesine döner', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(async () => {
+      const w = window as any; const okunan: string[] = []; const calinan: string[] = [];
+      w.SpeechSynthesisUtterance = function (this: any, t: string) { this.text = t; };
+      w.speechSynthesis.speak = (u: any) => okunan.push(u.text);
+      let sonraHata = false;
+      const sahte: any = { dataset: {}, volume: 1, onerror: null, src: '',
+        play() { calinan.push(this.src); if (sonraHata) setTimeout(() => this.onerror && this.onerror(), 10); return Promise.resolve(); },
+        pause() {} };
+      w._kayitCalar = sahte;
+      w.SES_KAYITLARI = {
+        [w.sesKaydiAnahtari('Head', 'm', 'n')]: 'head.mp3',
+        [w.sesKaydiAnahtari('I am a student', 'm', 's')]: 'yavas.mp3',
+        [w.sesKaydiAnahtari('I am from Turkey.', 'f', 'n')]: 'kadin.mp3',
+        [w.sesKaydiAnahtari('Match the pairs!', 'm', 'n')]: 'talimat.mp3',
+        [w.sesKaydiAnahtari('Bozuk', 'm', 'n')]: 'yok.mp3',
+      };
+      w.playTTS('Head'); w.playSlow('I am a student'); w.playNativeTTS('I am from Turkey.', { gender: 'female' });
+      w.playNativeTTS('Match the pairs! 🔊');                   // emoji anahtarı bozmaz
+      w.playTTS('Hand');                                         // kaydı yok → tarayıcı sesi
+      sonraHata = true; w.playTTS('Bozuk'); await new Promise(r => setTimeout(r, 50));   // dosya açılamazsa yedek
+      return { okunan, calinan, eksik: Array.from(w.__eksikSesler) };
+    });
+    expect(r.calinan).toEqual(['audio/tts/head.mp3', 'audio/tts/yavas.mp3', 'audio/tts/kadin.mp3', 'audio/tts/talimat.mp3', 'audio/tts/yok.mp3']);
+    expect(r.okunan).toEqual(['Hand', 'Bozuk']);
+    expect(r.eksik).toEqual(['mn|Hand']);
   });
 
   test('her soru türü kendi puanını verir; eşleştirmede her doğru eşleşme ayrıca puan kazandırır', async ({ page }) => {

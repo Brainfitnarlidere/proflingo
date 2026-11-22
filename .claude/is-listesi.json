@@ -43,8 +43,8 @@
       "sahip": "kullanici",
       "oncelik": 2,
       "kabul": "Higgsfield ücretli üyelik alındı ve bağlandı; uygulamadaki tüm okumalar (kelime, cümle, talimat, 'Tekrar dinle') yeni sesle çalışıyor; tarayıcının kendi sesi ve sözlük sitesi yalnızca yedek olarak kalıyor",
-      "durum": "bekliyor",
-      "not": "2026-11-17: Kullanıcı ücretli üyeliği alınca yapılacak. Şu an okuma js/speech.js'de: tek kelimede dictionaryapi.dev ses dosyası, olmazsa tarayıcının konuşma motoru (en-US)."
+      "durum": "devam",
+      "not": "2026-11-22: Higgsfield yerine ElevenLabs seçildi (kullanıcı). Sesler: Liam (erkek: kelime/talimat), Matilda (kadın: cümle). Kayıtlar tools/elevenlabs_uret.js ile audio/tts/ altına üretilir, js/ses-kayitlari.js listesi; kaydı olmayan metin tarayıcı sesiyle okunur. Şimdilik sadece 6. bölüm üretildi (28 kayıt, 303 karakter); kullanıcı kontrol edince --hepsi (~20.600 karakter)."
     },
     {
       "id": "N8N-1",

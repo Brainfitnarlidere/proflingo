@@ -57,16 +57,59 @@ window.unlockAudio = function() {
       window.speechSynthesis.speak(u);
     }
   } catch (e) {}
+  // Kayıt oynatıcısının kilidini de ilk dokunuşta aç (iPhone'da sonraki otomatik okumalar için)
+  try {
+    const a = window._kayitCalar;
+    if (a && !a.dataset.yol) {
+      a.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+      const p = a.play(); if (p && p.catch) p.catch(() => {});
+    }
+  } catch (e) {}
   window.audioUnlocked = true;
   document.removeEventListener('click', window.unlockAudio);
   document.removeEventListener('touchstart', window.unlockAudio);
   if (window.isBgmPlaying) window.SOUNDS.bgm.play().catch(() => { });
 };
 
-// Bütün okumalar tek kaynaktan: tarayıcının konuşma motoru, her seferinde AYNI ses ve
-// AYNI ses düzeyi. (Eskiden sözlük sitesinden gelen, düzeyi kelimeden kelimeye değişen
-// kayıtlar ve rastgele seçilen sesler karışıyordu.) Yeni seslendirme: is-listesi VOICE-1.
+// Okumalar: metnin ElevenLabs kaydı varsa (js/ses-kayitlari.js, audio/tts/) o çalınır;
+// yoksa tarayıcının konuşma motoru, her seferinde AYNI ses ve AYNI ses düzeyiyle okur.
+// Kayıtlar tools/elevenlabs_uret.js ile üretilir (erkek: kelime/talimat, kadın: cümle).
 const SES_DUZEYI = 1.0;
+const KAYIT_DUZEYI = 1.0;
+const KAYIT_KLASORU = 'audio/tts/';
+// Tek oynatıcı: aynı anda iki kayıt çalamaz (yeni okuma eskisini keser).
+window._kayitCalar = new Audio();
+window._kayitCalar.preload = 'auto';
+// Kaydı olmayan metinler (eksikleri bulmak için; tools/elevenlabs_uret.js'e eklenir)
+window.__eksikSesler = new Set();
+
+function kayitDosyasi(text, rol, hiz) {
+  const liste = window.SES_KAYITLARI;
+  if (!liste || !window.sesKaydiAnahtari) return null;
+  const anahtar = window.sesKaydiAnahtari(text, rol, hiz);
+  const dosya = liste[anahtar];
+  if (!dosya && Object.keys(liste).length) window.__eksikSesler.add(anahtar);
+  return dosya ? KAYIT_KLASORU + dosya : null;
+}
+
+// Kaydı çalar; çalamazsa (dosya yok, tarayıcı engelledi) yedek olarak tarayıcı sesine döner.
+function kayitCal(yol, yedek) {
+  const a = window._kayitCalar;
+  let dondu = false;
+  const yedegeDon = () => {
+    if (dondu || a.dataset.yol !== yol) return; // bu arada başka okuma başladıysa karışma
+    dondu = true;
+    yedek();
+  };
+  a.onerror = yedegeDon;
+  a.dataset.yol = yol;
+  a.src = yol;
+  a.volume = KAYIT_DUZEYI;
+  try {
+    const p = a.play();
+    if (p && p.catch) p.catch(e => { if (!e || e.name !== 'AbortError') yedegeDon(); });
+  } catch (e) { yedegeDon(); }
+}
 const SES_HIZI = 0.75;
 const ERKEK_SESLER = ['Alex', 'Google US English Male', 'Fred', 'Aaron', 'Arthur', 'James', 'Daniel'];
 const KADIN_SESLER = ['Samantha', 'Google US English Female', 'Ava', 'Allison', 'Karen', 'Victoria', 'Moira'];
@@ -74,6 +117,8 @@ const KADIN_SESLER = ['Samantha', 'Google US English Female', 'Ava', 'Allison', 
 // Aynı anda tek ses: yeni okuma başlarken (ve yeni soru açılırken) öncekini sustur.
 window.stopSpeech = function() {
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  const a = window._kayitCalar;
+  if (a) { a.dataset.yol = ''; try { a.pause(); } catch (e) {} }
 };
 
 // Her cinsiyet için bir kez seçilir ve hep o ses kullanılır (rastgele değil).
@@ -99,12 +144,23 @@ window.playTTS = function(text) {
 };
 
 window.playNativeTTS = function(text, opts = {}) {
-  if (!text || !('speechSynthesis' in window)) return;
+  if (!text) return;
+  const { rate = SES_HIZI, pitch = 1.0, gender = 'male' } = opts;
+  const yol = kayitDosyasi(text, gender === 'female' ? 'f' : 'm', rate < SES_HIZI ? 's' : 'n');
+  if (yol) {
+    window.stopSpeech();
+    kayitCal(yol, () => tarayiciSesi(text, rate, pitch, gender));
+    return;
+  }
+  tarayiciSesi(text, rate, pitch, gender);
+};
+
+function tarayiciSesi(text, rate, pitch, gender) {
+  if (!('speechSynthesis' in window)) return;
   // Emojileri okumasın
   const cleanText = String(text).replace(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g, '');
   const utterance = new SpeechSynthesisUtterance(cleanText);
   utterance.lang = 'en-US';
-  const { rate = SES_HIZI, pitch = 1.0, gender = 'male' } = opts;
   utterance.rate = rate;
   utterance.pitch = pitch;
   utterance.volume = SES_DUZEYI;
@@ -112,7 +168,7 @@ window.playNativeTTS = function(text, opts = {}) {
   if (voice) utterance.voice = voice;
   window.stopSpeech();
   window.speechSynthesis.speak(utterance);
-};
+}
 
 window.playSlow = function(text) {
   window.playNativeTTS(text, { rate: 0.50 });

@@ -3,6 +3,12 @@
 Her oturumun sonunda proje lideri en üste kısa bir kayıt ekler (en yeni üstte).
 Format: tarih — ne yapıldı — test sonucu — açık kalanlar. Eski kayıtlar silinmez.
 
+## 2026-11-22 — ElevenLabs seslendirme (6. bölüm deneme)
+- js/speech.js: metnin hazır kaydı varsa (js/ses-kayitlari.js → audio/tts/*.mp3) tek oynatıcıyla çalar; kayıt yoksa ya da açılamazsa eskisi gibi tarayıcı sesi. Kaydı olmayan metinler window.__eksikSesler'de.
+- tools/elevenlabs_uret.js (+ tools/ses-ayarlari.json): sadece eksik kayıtları üretir; anahtar proje dışında (~/.proflingo/elevenlabs.env). Sesler Liam + Matilda, hız 0.9 / yavaş 0.7.
+- 6. bölüm üretildi (28 kayıt); tarayıcıda bütün kart ve sorular kayıtla okundu, tarayıcı sesine düşen olmadı. Testler 19/19.
+- Açık: kullanıcı 6. bölümü dinleyince `node tools/elevenlabs_uret.js --hepsi` (~1.360 kayıt, ~20.600 karakter). İtalyanca henüz yok.
+
 ## 2026-11-17 (08:00) — Ses, puan ve konuşma tanıma
 - Okuma: tek kaynak (tarayıcı sesi), sabit ses + sabit düzey (eskiden sözlük kayıtları ve rastgele ses karışıyordu).
 - Puan: soru türüne göre (10/15/20/25), eşleştirmelerde her eşleşme +5; sunucu sınırı 75/soru + 1000 (SUPA-4, 52 bölümde mükemmel oyun sınırın altında kaldığı hesaplandı).

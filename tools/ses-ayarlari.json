@@ -1,0 +1,11 @@
+{
+  "aciklama": "ElevenLabs seslendirme ayarları (tools/elevenlabs_uret.js). Ses değişirse eski kayıtlar yeniden üretilir.",
+  "model": "eleven_multilingual_v2",
+  "format": "mp3_44100_64",
+  "sesler": {
+    "m": { "ad": "Liam", "id": "TX3LPaxmHKxFdv7VOQHJ" },
+    "f": { "ad": "Matilda", "id": "XrExE9yKIg1WjnnlVkGX" }
+  },
+  "hiz": { "n": 0.9, "s": 0.7 },
+  "ayar": { "stability": 0.6, "similarity_boost": 0.75 }
+}
