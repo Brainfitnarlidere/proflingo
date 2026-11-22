@@ -3,6 +3,9 @@
 Her oturumun sonunda proje lideri en üste kısa bir kayıt ekler (en yeni üstte).
 Format: tarih — ne yapıldı — test sonucu — açık kalanlar. Eski kayıtlar silinmez.
 
+## 2026-11-22 — Günlük süre sınırı kaldırıldı
+- Kullanıcı isteği: 30 dakika dolunca bölüm açılmıyordu (core.js startChapter → limit ekranı). Kilit kaldırıldı; 30 dk tebrik bildirimi ve n8n 'goal_reached' kaldı. Test eklendi (eski kodla kırıldığı doğrulandı). Testler 20/20.
+
 ## 2026-11-22 — ElevenLabs seslendirme (6. bölüm deneme)
 - js/speech.js: metnin hazır kaydı varsa (js/ses-kayitlari.js → audio/tts/*.mp3) tek oynatıcıyla çalar; kayıt yoksa ya da açılamazsa eskisi gibi tarayıcı sesi. Kaydı olmayan metinler window.__eksikSesler'de.
 - tools/elevenlabs_uret.js (+ tools/ses-ayarlari.json): sadece eksik kayıtları üretir; anahtar proje dışında (~/.proflingo/elevenlabs.env). Sesler Liam + Matilda, hız 0.9 / yavaş 0.7.

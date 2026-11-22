@@ -186,6 +186,20 @@ test.describe('Oyun ve XP', () => {
     expect(r.kayitSayisi).toBe(0);                                              // dışarıdan ses kaydı yok
   });
 
+  test('günlük 30 dakika dolsa da bölüm açılır (süre sınırı yok)', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(async () => {
+      const w = window as any;
+      localStorage.setItem(w.UsageManager.getTodayKey(), '120');      // bugün 2 saat oynamış
+      w.startChapter(6); await new Promise(r => setTimeout(r, 200));
+      const limit = document.getElementById('screen-limit');
+      return { bolum: w.gameState.chapterId, limitGizli: !limit || limit.classList.contains('hidden') };
+    });
+    expect(r.bolum).toBe(6);
+    expect(r.limitGizli).toBe(true);
+  });
+
   test('ElevenLabs kaydı varsa o çalar; yoksa ya da çalamazsa tarayıcı sesine döner', async ({ page }) => {
     await setupApp(page, { confirm: false });
     await register(page);

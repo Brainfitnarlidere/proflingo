@@ -50,10 +50,7 @@ window.resetGameState = function() {
 
 
 window.startChapter = function(id) {
-  if (window.UsageManager && window.UsageManager.isLimitReached()) {
-    window.showLimitScreen();
-    return;
-  }
+  // Günlük süre sınırı yok: 30 dakika sadece hedef (tebrik bildirimi usage.js'de), oyunu kilitlemez.
   if (window.UsageManager) window.UsageManager.startSession();
 
   window.resetGameState();
