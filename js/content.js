@@ -909,8 +909,7 @@ window.CHAPTER_DATA = {
     ],
     transitions: [
       { icon: '👋', title: 'Selamlaşmalar!', subtitle: 'Temel nezaket kurallarını öğrendin.', next: 'Set 2' },
-      { icon: '😊', title: 'Nasılsın?', subtitle: 'Duygularını ifade etmeye başladın.', next: 'Set 3' },
-      { icon: '📈', title: 'Harika!', subtitle: 'Diyalog kurabiliyorsun.', next: 'Kapanış' }
+      { icon: '😊', title: 'Nasılsın?', subtitle: 'Duygularını ifade etmeye başladın.', next: 'Set 3' }
     ],
     speakPrompts: ['Speak the dialogue', 'Say it naturally']
   },
@@ -933,8 +932,7 @@ window.CHAPTER_DATA = {
       ['sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty']
     ],
     transitions: [
-      { icon: '🔢', title: 'Sayılar devam ediyor!', subtitle: '11\'den 15\'e kadar öğrendin.', next: 'Set 2' },
-      { icon: '🎯', title: 'Harika!', subtitle: '20\'ye kadar sayabiliyorsun.', next: 'Kapanış' }
+      { icon: '🔢', title: 'Sayılar devam ediyor!', subtitle: '11\'den 15\'e kadar öğrendin.', next: 'Set 2' }
     ],
     wordPrompts: ['Which number is this?', 'Select the number'],
     speakPrompts: ['Pronounce the number', 'Say it clearly']
@@ -958,8 +956,7 @@ window.CHAPTER_DATA = {
       ['sixty', 'seventy', 'eighty', 'ninety', 'hundred', 'thousand']
     ],
     transitions: [
-      { icon: '🔢', title: 'Büyük Sayılar!', subtitle: '10\'ar 10\'ar saymayı öğreniyoruz.', next: 'Set 2' },
-      { icon: '💯', title: '1000\'e Ulaştın!', subtitle: 'Tüm sayıları artık biliyorsun!', next: 'Kapanış' }
+      { icon: '🔢', title: 'Büyük Sayılar!', subtitle: '10\'ar 10\'ar saymayı öğreniyoruz.', next: 'Set 2' }
     ],
     wordPrompts: ['Which number is this?', 'Select the number'],
     speakPrompts: ['Pronounce the number', 'Say it clearly']
@@ -1291,6 +1288,10 @@ window.CHAPTER_DATA = {
       ['qa_cat_box', 'qa_book_table', 'qa_weather_sunny', 'qa_weather_rainy'],
       ['qa_feel_angry', 'qa_feel_bored', 'qa_nat_mountain', 'qa_nat_sea'],
       ['qa_act_run', 'qa_act_jump']
+    ],
+    transitions: [
+      { icon: '🐱', title: 'Harika!', subtitle: 'Yer ve hava durumu sorularını cevaplayabiliyorsun.', next: 'Duygular ve Doğa' },
+      { icon: '🏞️', title: 'Süper!', subtitle: 'Neredeyse bitti, son 2 soru kaldı!', next: 'Hareketler' }
     ],
     wordPrompts: ['Answer the questions', 'Practice Q&A'],
     speakPrompts: ['Answer out loud']

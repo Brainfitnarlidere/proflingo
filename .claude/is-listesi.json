@@ -79,8 +79,8 @@
       "sahip": "ekip",
       "oncelik": 3,
       "kabul": "node tools/validate_data.js uyarı vermiyor; bu bölümler baştan sona oynanınca her parti arasında doğru geçiş ekranı çıkıyor",
-      "durum": "yapilacak",
-      "not": ""
+      "durum": "tamam",
+      "not": "2026-11-24: 29/30/31'deki gösterilmeyen fazla 'Kapanış' geçişleri silindi; 48'de geçiş metni yoktu ve ilk grubun sonunda oyun çöküyordu: geçişler eklendi, ui.js eksik geçişte varsayılan metinle devam ediyor. Test eklendi (eski kodla 48'de kırıldı)."
     },
     {
       "id": "VENDOR-1",

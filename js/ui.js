@@ -410,7 +410,9 @@ window.renderLearnCard = function(state) {
 
 window.showTransitionScreen = function(state) {
   const ch = window.CHAPTER_DATA[state.chapterId];
-  const t = ch.transitions[state.currentBatch];
+  // Geçiş metni eksikse (yeni bölümlerde unutulabilir) varsayılanla devam et, oyun takılmasın
+  const t = (ch.transitions && ch.transitions[state.currentBatch]) ||
+    { icon: '⭐', title: 'Harika!', subtitle: 'Bu bölümü bitirdin, devam edelim!', next: 'Set ' + (state.currentBatch + 2) };
   const tot = state.quizCorrect + state.quizWrong;
   const pct = tot > 0 ? Math.round((state.quizCorrect / tot) * 100) : 0;
   if (window.$('transition-icon')) window.$('transition-icon').textContent = t.icon;

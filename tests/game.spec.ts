@@ -240,6 +240,25 @@ test.describe('Oyun ve XP', () => {
     expect(r.calinan).toEqual(['audio/tts/ingilizce.mp3']);
   });
 
+  test('çok gruplu her bölümde grup arası geçiş ekranı açılır (48. bölüm takılmıyordu)', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const hatalar = await page.evaluate(() => {
+      const w = window as any; const h: string[] = [];
+      for (const c of w.CHAPTERS) {
+        const ch = w.CHAPTER_DATA[c.id];
+        if (!ch.batches || ch.batches.length < 2) continue;
+        for (let b = 0; b < ch.batches.length - 1; b++) {
+          try { w.showTransitionScreen({ chapterId: c.id, currentBatch: b, quizCorrect: 3, quizWrong: 1 });
+            if (!document.getElementById('transition-title')!.textContent) h.push(c.id + '/' + b + ': başlık boş'); }
+          catch (e: any) { h.push(c.id + '/' + b + ': ' + e.message); }
+        }
+      }
+      return h;
+    });
+    expect(hatalar).toEqual([]);
+  });
+
   test('günlük 30 dakika dolsa da bölüm açılır (süre sınırı yok)', async ({ page }) => {
     await setupApp(page, { confirm: false });
     await register(page);
