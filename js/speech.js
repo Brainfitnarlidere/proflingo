@@ -145,7 +145,9 @@ window.playTTS = function(text) {
 
 window.playNativeTTS = function(text, opts = {}) {
   if (!text) return;
-  const { rate = SES_HIZI, pitch = 1.0, gender = 'male' } = opts;
+  const { rate = SES_HIZI, pitch = 1.0 } = opts;
+  // Ses belirtilmemişse: cümleler kadın, kelime/soru/talimat erkek sesle (js/ses-anahtar.js)
+  const gender = opts.gender || (window.cumleSesiMi && window.cumleSesiMi(text) ? 'female' : 'male');
   const yol = kayitDosyasi(text, gender === 'female' ? 'f' : 'm', rate < SES_HIZI ? 's' : 'n');
   if (yol) {
     window.stopSpeech();

@@ -230,6 +230,20 @@ test.describe('Oyun ve XP', () => {
     expect(r.eksik).toEqual(['mn|Hand']);
   });
 
+  test('cümleler kadın, kelime ve talimatlar erkek sesle okunur', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(() => {
+      const w = window as any; const calinan: string[] = [];
+      w._kayitCalar = { dataset: {}, play() { calinan.push(this.src); return Promise.resolve(); }, pause() {} };
+      w.SES_KAYITLARI = { [w.sesKaydiAnahtari('The elephant is big.', 'f', 'n')]: 'cumle.mp3',
+        [w.sesKaydiAnahtari('Big', 'm', 'n')]: 'kelime.mp3', [w.sesKaydiAnahtari('Find Big', 'm', 'n')]: 'talimat.mp3' };
+      w.playTTS('The elephant is big.'); w.playTTS('Big'); w.playTTS('Find Big');
+      return calinan;
+    });
+    expect(r).toEqual(['audio/tts/cumle.mp3', 'audio/tts/kelime.mp3', 'audio/tts/talimat.mp3']);
+  });
+
   test('her soru türü kendi puanını verir; eşleştirmede her doğru eşleşme ayrıca puan kazandırır', async ({ page }) => {
     await setupApp(page, { confirm: false });
     await register(page);

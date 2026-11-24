@@ -3,6 +3,11 @@
 Her oturumun sonunda proje lideri en üste kısa bir kayıt ekler (en yeni üstte).
 Format: tarih — ne yapıldı — test sonucu — açık kalanlar. Eski kayıtlar silinmez.
 
+## 2026-11-24 — Bütün bölümler ElevenLabs ile seslendirildi
+- 1.310 yeni kayıt (~19.900 karakter; toplam 1.338, ~19 MB). Kural: bölüm verisindeki en az 3 kelimelik cümleler Matilda, kelime/soru/talimat Liam; çift soru-cevap bölümlerinde soru erkek, cevap kadın.
+- Tarayıcı taraması: bütün bölümlerde 7.172 okuma kayıtla çaldı. 22 eksik çıktı; nedeni kart hoparlörünün iki kez bağlanmasıydı (main.js soru ve cevabı birleşik okuyordu), main.js'teki fazla dinleyici kaldırıldı, tekrar taramada eksik yok.
+- Testler: cümle/kelime ses kuralı testi eklendi.
+
 ## 2026-11-22 — Günlük süre sınırı kaldırıldı
 - Kullanıcı isteği: 30 dakika dolunca bölüm açılmıyordu (core.js startChapter → limit ekranı). Kilit kaldırıldı; 30 dk tebrik bildirimi ve n8n 'goal_reached' kaldı. Test eklendi (eski kodla kırıldığı doğrulandı). Testler 20/20.
 

@@ -198,10 +198,7 @@ window.initEvents = function() {
   on('btn-quiz-replay', 'click', () => window.replayQuestion());
   on('btn-next-card', 'click', window.nextCard);
   on('btn-prev-card', 'click', window.prevCard);
-  on('btn-speak-word', 'click', () => { 
-    const word = window.$('flashcard-word-static').textContent;
-    window.playTTS(word); 
-  });
+  // btn-speak-word: ui.js her kartta kendi okumasını bağlar (soru-cevapta soru ve cevabı ayrı okur).
 
   document.addEventListener('click', window.unlockAudio, { once: false });
   document.addEventListener('touchstart', window.unlockAudio, { once: false });

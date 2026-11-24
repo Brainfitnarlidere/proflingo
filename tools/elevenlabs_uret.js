@@ -5,6 +5,8 @@
 //   node tools/elevenlabs_uret.js --bolum 6          (tek bölüm; virgülle birden fazla: --bolum 6,7)
 //   node tools/elevenlabs_uret.js --hepsi            (bütün İngilizce bölümler)
 //   node tools/elevenlabs_uret.js --bolum 6 --kuru   (sadece say: kaç kayıt, kaç karakter; API çağrısı yok)
+//   node tools/elevenlabs_uret.js --hepsi --temizle  (listede artık kullanılmayan kayıtları siler)
+//   ... --ek eksik.json                             (tarayıcıda kaydı bulunamayan anahtarları da üretir)
 //
 // Anahtar: ELEVENLABS_API_KEY ortam değişkeni ya da ~/.proflingo/elevenlabs.env
 // (proje klasöründe tutulmaz; sync.sh onu GitHub'a gönderemez). Ayarlar: tools/ses-ayarlari.json
@@ -36,22 +38,26 @@ function bolumMetinleri(id) {
   const ch = window.CHAPTER_DATA[id];
   if (!ch) { console.log(`Bölüm ${id} yok, atlandı.`); return []; }
   const out = [];
-  const ekle = (rol, hiz, metin) => { if (window.sesMetniTemizle(metin)) out.push([rol, hiz, metin]); };
+  // Ses tarayıcıdaki kuralla aynı: cümle kadın, diğerleri erkek (rol verilmezse)
+  const ekle = (rol, hiz, metin) => {
+    if (!window.sesMetniTemizle(metin)) return;
+    out.push([rol || (window.cumleSesiMi(metin) ? 'f' : 'm'), hiz, metin]);
+  };
   for (const d of Object.values(ch.items || {})) {
     const { word, sentence } = d;
-    ekle('m', 'n', word);
+    ekle(null, 'n', word);
     if (ch.isQAMode) {
-      ekle('m', 'n', sentence); ekle('m', 'n', 'Find ' + sentence);
-      ekle('m', 's', word + ' ... ' + sentence);
-      if (CIFT_SORU_CEVAP.includes(id)) ekle('f', 'n', sentence);
+      ekle(null, 'n', sentence); ekle(null, 'n', 'Find ' + sentence);
+      ekle(null, 's', word + ' ... ' + sentence);
+      if (CIFT_SORU_CEVAP.includes(id)) { ekle('m', 'n', word); ekle('f', 'n', sentence); }
     } else {
-      ekle('m', 'n', 'Find ' + word);
-      if (sentence) { ekle('m', 'n', sentence); ekle('m', 's', sentence); }
+      ekle(null, 'n', 'Find ' + word);
+      if (sentence) { ekle(null, 'n', sentence); ekle(null, 's', sentence); }
     }
-    if (ch.isRepeatMode || ch.isSentenceMode) ekle('m', 's', word);
+    if (ch.isRepeatMode || ch.isSentenceMode) ekle(null, 's', word);
   }
-  (ch.wordPrompts || []).forEach(p => ekle('m', 'n', p));
-  SABIT_TALIMATLAR.forEach(p => ekle('m', 'n', p));
+  (ch.wordPrompts || []).forEach(p => ekle(null, 'n', p));
+  SABIT_TALIMATLAR.forEach(p => ekle(null, 'n', p));
   return out;
 }
 
@@ -114,8 +120,27 @@ async function uret(anahtar, rol, hiz, metin, hedef) {
       isler.push({ anahtar, rol, hiz, metin, ad });
     }
   }
+  // --ek dosya.json: tarayıcıda kaydı bulunamayan anahtarlar (["mn|Metin", ...])
+  if (arg.includes('--ek')) {
+    for (const k of JSON.parse(fs.readFileSync(arg[arg.indexOf('--ek') + 1], 'utf8'))) {
+      if (gorulen.has(k)) continue; gorulen.add(k);
+      const rol = k[0], hiz = k[1], metin = k.slice(3), ad = dosyaAdi(rol, hiz, metin);
+      if (liste[k] === ad && fs.existsSync(path.join(KLASOR, ad))) continue;
+      isler.push({ anahtar: k, rol, hiz, metin, ad });
+    }
+  }
   const karakter = isler.reduce((t, i) => t + window.sesMetniTemizle(i.metin).length, 0);
   console.log(`Bölüm: ${bolumler.join(', ')} | toplam metin: ${gorulen.size} | üretilecek: ${isler.length} (${karakter} karakter)`);
+  if (arg.includes('--temizle') && arg.includes('--hepsi') && !kuru) {
+    const kullanilan = new Set(gorulen);
+    let silinen = 0;
+    for (const k of Object.keys(liste)) if (!kullanilan.has(k)) { delete liste[k]; silinen++; }
+    const dosyalar = new Set(Object.values(liste)), bekleyen = new Set(isler.map(i => i.ad));
+    if (fs.existsSync(KLASOR)) for (const f of fs.readdirSync(KLASOR))
+      if (!dosyalar.has(f) && !bekleyen.has(f)) { fs.unlinkSync(path.join(KLASOR, f)); silinen++; }
+    listeyiYaz(liste);
+    console.log(`Temizlik: ${silinen} kullanılmayan kayıt/dosya çıkarıldı.`);
+  }
   if (kuru || !isler.length) return;
 
   const anahtar = anahtariBul();
