@@ -57,6 +57,8 @@ window.unlockAudio = function() {
       window.speechSynthesis.speak(u);
     }
   } catch (e) {}
+  // Hızlı oynatıcının (Web Audio) kilidini ilk dokunuşta aç
+  try { const c = sesBaglami(); if (c && c.state !== 'running') c.resume().catch(() => {}); } catch (e) {}
   // Kayıt oynatıcısının kilidini de ilk dokunuşta aç (iPhone'da sonraki otomatik okumalar için)
   try {
     const a = window._kayitCalar;
@@ -94,8 +96,114 @@ function kayitDosyasi(text, rol, hiz) {
   return dosya ? KAYIT_KLASORU + dosya : null;
 }
 
+// HIZLI OYNATMA: bölüm açılınca o bölümün kayıtları indirilip çözülür (sesOnYukle) ve
+// Web Audio ile gecikmesiz çalınır. Hazır değilse eski yol: <audio> ile indirip çal.
+window._sesTamponlari = new Map();   // yol -> AudioBuffer
+const yukleniyor = new Map();        // yol -> Promise
+let baglam = null, calanKaynak = null, kazanc = null;
+function sesBaglami() {
+  if (baglam) return baglam;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return null;
+  try { baglam = new AC(); kazanc = baglam.createGain(); kazanc.gain.value = KAYIT_DUZEYI; kazanc.connect(baglam.destination); }
+  catch (e) { baglam = null; }
+  return baglam;
+}
+window._sesBaglami = () => sesBaglami();
+window.__sesBaglamiSifirla = () => { baglam = null; calanKaynak = null; window._sesTamponlari.clear(); yukleniyor.clear(); }; // testler için
+// iPad/iPhone uygulamadan çıkıp dönünce sesi askıya alabilir: her dokunuşta yeniden aç
+['touchstart', 'click'].forEach(t => document.addEventListener(t, () => {
+  if (baglam && baglam.state !== 'running') baglam.resume().catch(() => {});
+}, { passive: true }));
+
+function tamponYukle(yol) {
+  if (window._sesTamponlari.has(yol)) return Promise.resolve(window._sesTamponlari.get(yol));
+  if (yukleniyor.has(yol)) return yukleniyor.get(yol);
+  const c = sesBaglami();
+  if (!c || !window.fetch) return Promise.resolve(null);
+  const p = fetch(yol).then(r => r.ok ? r.arrayBuffer() : null)
+    .then(b => b ? new Promise((ok, hata) => c.decodeAudioData(b, ok, hata)) : null)
+    .then(t => { if (t) window._sesTamponlari.set(yol, t); yukleniyor.delete(yol); return t; })
+    .catch(() => { yukleniyor.delete(yol); return null; });
+  yukleniyor.set(yol, p);
+  return p;
+}
+
+// Bir bölümde okunabilecek metinlerin kayıtlarını önceden indirir (bölüm açılınca çağrılır).
+let onYuklemeNo = 0;
+window.sesOnYukle = function(chapterId) {
+  const liste = window.SES_KAYITLARI, ch = window.CHAPTER_DATA && window.CHAPTER_DATA[chapterId];
+  if (!liste || !ch || !window.sesKaydiAnahtari) return 0;
+  const dil = aktifDil(), T = window.talimat || (m => m);
+  const metinler = new Set(['What do you see?', 'Find the image', 'Match the pairs!', 'Match the 9 pairs!',
+    'Complete the scene!', 'Reaction Game: Click the correctly named visuals!'].map(T));
+  (ch.wordPrompts || []).forEach(m => metinler.add(m));
+  for (const d of Object.values(ch.items || {})) {
+    [d.word, d.sentence].forEach(m => { if (m) { metinler.add(m); metinler.add(T('Find ') + m); } });
+    if (d.word && d.sentence) metinler.add(d.word + ' ... ' + d.sentence);
+  }
+  const yollar = new Set();
+  metinler.forEach(m => ['m', 'f'].forEach(rol => ['n', 's'].forEach(hiz => {
+    const f = liste[window.sesKaydiAnahtari(m, rol, hiz, dil)];
+    if (f) yollar.add(KAYIT_KLASORU + f);
+  })));
+  // Aynı anda en fazla 2 indirme: oyun akıcı kalsın (ilk kartların sesleri listenin başında).
+  // Bölüm değişirse eski bölümün kalan indirmeleri bırakılır.
+  const kuyruk = Array.from(yollar), bolumNo = ++onYuklemeNo;
+  const isci = async () => { while (kuyruk.length && bolumNo === onYuklemeNo) await tamponYukle(kuyruk.shift()); };
+  for (let i = 0; i < 2; i++) isci();
+  return yollar.size;
+};
+
+function tamponCal(tampon) {
+  const c = sesBaglami();
+  if (!c || c.state !== 'running') return false;
+  try {
+    const k = c.createBufferSource();
+    k.buffer = tampon;
+    k.connect(kazanc);
+    k.start(0);
+    calanKaynak = k;
+    return true;
+  } catch (e) { return false; }
+}
+
+// Kayıt süresi (saniye), hazırsa. Soru-cevapta cevabı soru bitince okumak için.
+window.kayitSuresi = function(text, gender) {
+  const yol = kayitDosyasi(text, gender === 'female' ? 'f' : 'm', 'n');
+  const t = yol && window._sesTamponlari.get(yol);
+  return t ? t.duration : null;
+};
+
+// Soru-cevapta cevap ne zaman okunsun (ms): soru kaydı bitince kısa bir ara; bilinmiyorsa 2 sn.
+window.cevapBeklemesi = function(soru) {
+  const sure = window.kayitSuresi(soru, 'male');
+  return sure ? Math.round(sure * 1000) + 400 : 2000;
+};
+
 // Kaydı çalar; çalamazsa (dosya yok, tarayıcı engelledi) yedek olarak tarayıcı sesine döner.
 function kayitCal(yol, yedek) {
+  const hazir = window._sesTamponlari.get(yol);
+  if (hazir && tamponCal(hazir)) return;
+  // İnmekte olan kayıt: ikinci kez indirmek yerine bitmesini kısa süre bekle
+  const c = sesBaglami();
+  if (yukleniyor.has(yol) && c && c.state === 'running') {
+    const no = okumaNo;
+    let bitti = false;
+    const sure = setTimeout(() => { if (!bitti && no === okumaNo) { bitti = true; elemanlaCal(yol, yedek); } }, 1200);
+    yukleniyor.get(yol).then(t => {
+      if (bitti || no !== okumaNo) return;
+      bitti = true; clearTimeout(sure);
+      if (!(t && tamponCal(t))) elemanlaCal(yol, yedek);
+    });
+    return;
+  }
+  tamponYukle(yol); // sonraki sefere hazır olsun
+  elemanlaCal(yol, yedek);
+}
+
+let okumaNo = 0; // her yeni okuma/susturma artırır; geç gelen eski okuma çalmasın
+function elemanlaCal(yol, yedek) {
   const a = window._kayitCalar;
   let dondu = false;
   const yedegeDon = () => {
@@ -121,9 +229,11 @@ const IT_KADIN_SESLER = ['Alice', 'Federica', 'Paola', 'Google italiano', 'Elsa'
 
 // Aynı anda tek ses: yeni okuma başlarken (ve yeni soru açılırken) öncekini sustur.
 window.stopSpeech = function() {
+  okumaNo++;
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   const a = window._kayitCalar;
   if (a) { a.dataset.yol = ''; try { a.pause(); } catch (e) {} }
+  if (calanKaynak) { try { calanKaynak.stop(); } catch (e) {} calanKaynak = null; }
 };
 
 // Her cinsiyet için bir kez seçilir ve hep o ses kullanılır (rastgele değil).

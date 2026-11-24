@@ -320,7 +320,7 @@ window.renderSpeakWord = function(q) {
          setTimeout(() => {
            if (window.gameState.qIndex !== qiAtStart) return; // soru geçildiyse okuma
            window.playNativeTTS(d.sentence, { gender: 'female' });
-         }, 2000); 
+         }, window.cevapBeklemesi ? window.cevapBeklemesi(d.word) : 2000);
        } else {
          window.playNativeTTS(d.word); 
        }
@@ -354,7 +354,7 @@ window.renderSpeakWord = function(q) {
           setTimeout(() => {
             if (window.gameState.qIndex !== qiAtStart) return; // soru geçildiyse okuma
             window.playNativeTTS(d.sentence, { gender: 'female' });
-          }, 2000); 
+          }, window.cevapBeklemesi ? window.cevapBeklemesi(d.word) : 2000);
         } else {
           window.playNativeTTS(d.word); 
         }

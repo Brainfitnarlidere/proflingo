@@ -55,6 +55,7 @@ window.startChapter = function(id) {
 
   window.resetGameState();
   window.gameState.chapterId = id;
+  if (window.sesOnYukle) window.sesOnYukle(id); // bölümün seslerini önceden indir (anında çalsın)
   window.renderHearts(window.gameState.hearts);
   window.show(window.$('btn-back'));
   window.showHeader();

@@ -397,7 +397,7 @@ window.renderLearnCard = function(state) {
           window.playNativeTTS(data.word, { gender: 'male' });
           setTimeout(() => {
             window.playNativeTTS(data.sentence, { gender: 'female' });
-          }, 2000); 
+          }, window.cevapBeklemesi ? window.cevapBeklemesi(data.word) : 2000);
         } else {
           window.playSlow(data.word + " ... " + data.sentence);
         }

@@ -11,6 +11,11 @@ Format: tarih — ne yapıldı — test sonucu — açık kalanlar. Eski kayıtl
 - Eklendi: "Şifremi unuttum" (kodla ya da e-postadaki linkle yeni şifre), onay kodu 6-10 hane kabul ediliyor, giriş düğmesi yazısı düzeltildi. Testler 24/24 (3 yeni).
 - Genel kontrol: canlı site yerelle aynı sürüm, RLS ve XP fonksiyonları girişsiz kapalı. Bulunan: oturumlar tablosu canlıda yok (SUPA-3), n8n.brainfitnarlidere.com DNS'te yok (N8N-1), DATA-1 uyarıları sürüyor. Ses tanıma testi yük altında bir kez kırıldı, tekrarda geçti (kararsız test).
 
+## 2026-11-24 — Seslerin daha hızlı gelmesi
+- Neden: her kayıt ilk çalışta ayrıca indiriliyordu (~0,5–0,8 sn). Şimdi bölüm açılınca (core.js startChapter → sesOnYukle) o bölümün kayıtları 2'şerli indirilip Web Audio ile çözülür, anında çalar; inmekte olan kayıt ikinci kez indirilmez. iPad'in askıya aldığı ses her dokunuşta yeniden açılır.
+- Soru-cevapta cevap sabit 2 sn yerine soru kaydı bitince +0,4 sn okunur (window.cevapBeklemesi).
+- Test eklendi; 6'lı eşzamanlı önden yükleme zamanlamaya duyarlı testleri ara sıra bozuyordu, 2'ye indirildi (3 tam koşu 34/34).
+
 ## 2026-11-24 — Tablette sürükle-bırak
 - Kullanıcı tablette (Safari ve Chrome) eşleştirmelerde sürükleyemiyordu: oyunlar sadece fare olaylarını (dragstart/drop) kullanıyordu. js/dokunmatik-surukle.js: draggable="true" olan her öğede parmak hareketini aynı olaylara çevirir (hayalet görüntü, kenarda otomatik kaydırma; dokunma tıklama olarak kalır). Böylece eşleştirme, 10'lu liste, sahne ve Winner Mode, bütün bölümler ve diller tek yerden düzeldi.
 - tests/dokunmatik.spec.ts (tablet, dokunmatik): EN 1 ve 33, İT 4 eşleştirme, 35 liste, 7 sahne, Winner Mode; dosya olmadan 5/5 kırılıyor.

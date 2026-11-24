@@ -197,6 +197,7 @@ test.describe('Oyun ve XP', () => {
     await register(page);
     const r = await page.evaluate(async () => {
       const w = window as any; const calinan: string[] = []; const tarayici: string[] = []; const hatalar: string[] = []; const yazilar = new Set<string>();
+      w.__sesBaglamiSifirla(); w.AudioContext = undefined; w.webkitAudioContext = undefined;   // yavaş yol: her okuma <audio> ile sayılsın
       w._kayitCalar.play = () => { calinan.push(w._kayitCalar.src); return Promise.resolve(); };
       w.speechSynthesis.speak = (u: any) => tarayici.push(u.text);
       w.startWinnerMode = () => {}; w.onQuizDone = () => {};
@@ -257,6 +258,31 @@ test.describe('Oyun ve XP', () => {
       return h;
     });
     expect(hatalar).toEqual([]);
+  });
+
+  test('bölüm açılınca sesleri önceden yüklenir ve beklemeden çalar; soru-cevapta cevap soru bitince okunur', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(async () => {
+      const w = window as any; const baslayan: number[] = []; let elemanCaldi = 0; const indirilen: string[] = [];
+      w.__sesBaglamiSifirla();
+      w.AudioContext = function () { return { state: 'running', destination: {}, resume: () => Promise.resolve(),
+        createGain: () => ({ gain: { value: 1 }, connect() {} }),
+        decodeAudioData: (b: ArrayBuffer, ok: any) => ok({ duration: 1.2, boyut: b.byteLength }),
+        createBufferSource: () => ({ connect() {}, start() { baslayan.push(Date.now()); }, stop() {} }) }; };
+      const f = w.fetch; w.fetch = (u: string) => { indirilen.push(u); return f(u); };
+      w._kayitCalar.play = () => { elemanCaldi++; return Promise.resolve(); };
+      w.startWinnerMode = () => {};
+      w.startChapter(33);
+      await new Promise(r => setTimeout(r, 1500));
+      const once = baslayan.length, elemanOnce = elemanCaldi;
+      w.stopSpeech(); w.playTTS('Where is your father?');
+      return { indirilen: indirilen.length, yeni: baslayan.length - once, elemanCaldi: elemanCaldi - elemanOnce, bekleme: w.cevapBeklemesi('Where is your father?') };
+    });
+    expect(r.indirilen).toBeGreaterThan(10);   // bölümün kayıtları önceden indirildi
+    expect(r.yeni).toBe(1);                   // hazır kayıt anında çaldı
+    expect(r.elemanCaldi).toBe(0);            // yavaş yol (indir-çal) kullanılmadı
+    expect(r.bekleme).toBe(1600);             // 1,2 sn soru + 0,4 sn (eskiden sabit 2 sn)
   });
 
   test('günlük 30 dakika dolsa da bölüm açılır (süre sınırı yok)', async ({ page }) => {
