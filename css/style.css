@@ -3968,3 +3968,17 @@ body {
 .btn-replay:hover { background: rgba(108, 99, 255, 0.18); }
 .btn-replay:active { transform: scale(0.96); }
 .btn-replay.hidden { display: none; }
+
+/* Dokunmatik sürükle-bırak (js/dokunmatik-surukle.js): sürüklenen öğede sayfa kaymasın,
+   uzun basınca iPhone/iPad menüsü ve yazı seçimi çıkmasın. */
+[draggable="true"] {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.dokunmatik-hayalet {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  transition: none !important;
+}
