@@ -92,6 +92,22 @@ group by p.id, p.name, p.email
 order by son_giris desc nulls last;
 revoke all on public.kullanici_aktivite from anon, authenticated;
 
+-- Günlük kullanım (n8n'in yerine). Gün Türkiye saatine göre; 30 dk ve üstü = günlük hedef tamam.
+-- Table Editor'da "gunluk_kullanim". Tarayıcıdan erişilemez.
+create or replace view public.gunluk_kullanim with (security_invoker = true) as
+select
+  (o.basladi at time zone 'Europe/Istanbul')::date as gun,
+  p.name as ad_soyad,
+  p.email,
+  count(o.id) as oturum_sayisi,
+  round(sum(o.aktif_saniye) / 60.0, 1) as aktif_dakika,
+  sum(o.aktif_saniye) >= 1800 as hedef_tamam
+from public.oturumlar o
+join public.profiles p on p.id = o.user_id
+group by 1, p.id, p.name, p.email
+order by gun desc, aktif_dakika desc;
+revoke all on public.gunluk_kullanim from anon, authenticated;
+
 -- Örnek: bir kişinin tüm girişleri (Türkiye saatiyle)
 --   select basladi at time zone 'Europe/Istanbul' as giris, tur, aktif_saniye / 60 as dakika
 --   from public.oturumlar o join public.profiles p on p.id = o.user_id

@@ -68,13 +68,18 @@ test.describe('Oyun ve XP', () => {
     expect(forced.error).toContain('XP yetersiz');
   });
 
-  test('n8n isteği oturum anahtarıyla gönderilir', async ({ page }) => {
+  test('kullanım süresi dış sunucuya (n8n) gönderilmez, 30 dk tebriki yerelde çalışır', async ({ page }) => {
     const app = await setupApp(page, { confirm: false });
     await register(page);
-    await page.evaluate(() => (window as any).UsageManager.syncToN8N('test'));
+    const r = await page.evaluate(() => {
+      const U = (window as any).UsageManager; let tebrik = 0;
+      U.showLocalNotification = () => { tebrik++; };
+      U.addUsage(31 * 60000);
+      return { tebrik, syncVar: typeof U.syncToN8N };
+    });
     await page.waitForTimeout(300);
-    expect(app.n8n.length).toBeGreaterThan(0);
-    expect(app.n8n[0]['authorization']).toMatch(/^Bearer /);
+    expect(r).toEqual({ tebrik: 1, syncVar: 'undefined' });
+    expect(app.n8n).toEqual([]);
   });
 
   test('her soru açılınca okunur ve her soruda tekrar dinle düğmesi çalışır', async ({ page }) => {

@@ -10,13 +10,13 @@ Görsel eşleştirmeyle dil öğreten web uygulaması. Arayüz Türkçe; öğret
   `quiz.js` (akış, doğru/yanlış, bölüm sonu), `question-types.js` (temel soru tipleri),
   `memory-match.js`, `falling-visuals.js`, `drag-drop-scene.js`, `winner-mode.js` (mini oyunlar).
 - `js/ui.js` ekranlar, `js/main.js` olaylar ve açılış, `js/store.js` kullanıcı ve XP/market
-  çağrıları, `js/auth.js` Supabase Auth girişi, `js/usage.js` n8n'e kullanım süresi,
+  çağrıları, `js/auth.js` Supabase Auth girişi, `js/usage.js` tarayıcıdaki günlük sayaç ve 30 dk tebriki, `js/oturum.js` sunucuda aktif süre (n8n kullanılmıyor),
   `js/speech.js` seslendirme.
 - Fonksiyonlar `window.` üzerinde global; dosyalar `<script>` sırasıyla yüklenir.
 - `images/` WebP görseller (yeni görsel: PNG koy, `python3 tools/convert_webp.py` çalıştır,
   koddaki yolu `.webp` yap), `audio/` sesler.
 - `supabase/`: `auth_fix.sql` (giriş + RLS), `xp_guvenlik.sql` (XP/market sunucu fonksiyonları),
-  `n8n_dogrulama.md`.
+  `oturum_takibi.sql` (giriş zamanı, aktif süre, günlük kullanım), `eposta_ayarlari.md`.
 
 ## Komutlar
 - Hepsi birden (her oturum başında): `node tools/kontrol.js` (`--hizli`: tarayıcısız)

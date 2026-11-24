@@ -24,7 +24,7 @@
       "baslik": "Oturum takibi SQL'ini çalıştır",
       "sahip": "kullanici",
       "oncelik": 1,
-      "kabul": "supabase/oturum_takibi.sql hatasız çalıştı; giriş yapınca oturumlar tablosuna satır düşüyor; kullanici_aktivite görünümünde ad, e-posta, son giriş ve toplam dakika görünüyor",
+      "kabul": "supabase/oturum_takibi.sql hatasız çalıştı; giriş yapınca oturumlar tablosuna satır düşüyor; kullanici_aktivite görünümünde ad, e-posta, son giriş ve toplam dakika görünüyor; gunluk_kullanim görünümünde gün, ad, aktif dakika ve hedef_tamam görünüyor",
       "durum": "kullanicida",
       "not": "2026-11-17: Kod hazır (js/oturum.js). SQL çalıştırılmadan önce de uygulama bozulmaz, sadece kayıt tutulmaz. KVKK: aydınlatma metninde giriş zamanı ve kullanım süresinin kaydedildiği belirtilmeli (LEGAL-1). 2026-11-24: Canlıda oturumlar tablosu ve oturum_baslat fonksiyonu yok; SQL hâlâ çalıştırılmamış."
     },
@@ -52,8 +52,8 @@
       "sahip": "kullanici",
       "oncelik": 2,
       "kabul": "supabase/n8n_dogrulama.md'deki adımlar uygulandı; başlıksız istek 401 ile duruyor",
-      "durum": "kullanicida",
-      "not": " 2026-11-24: n8n.brainfitnarlidere.com DNS'te yok (adres çözülmüyor); kullanım süresi hiç ulaşmıyor. Önce n8n'in gerçek adresi js/usage.js'e yazılmalı."
+      "durum": "tamam",
+      "not": " 2026-11-24: n8n.brainfitnarlidere.com DNS'te yok (adres çözülmüyor); kullanım süresi hiç ulaşmıyor. Önce n8n'in gerçek adresi js/usage.js'e yazılmalı. 2026-11-24: Kullanıcı isteğiyle n8n tamamen kaldırıldı; kullanım süresi Supabase'de (oturumlar + gunluk_kullanim görünümü). Çalışması için SUPA-3 SQL'i yeterli."
     },
     {
       "id": "LEGAL-1",

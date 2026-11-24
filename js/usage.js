@@ -3,16 +3,14 @@
 window.UsageManager = {
   LIMIT_MINUTES: 30,
   TRACK_INTERVAL_MS: 30000, 
-  SYNC_INTERVAL_MS: 300000, // Sync heartbeats every 5 mins
-  N8N_WEBHOOK_URL: 'https://n8n.brainfitnarlidere.com/webhook/lv-usage-sync',
+  // Kullanım süresi artık n8n'e gönderilmiyor: süreyi Supabase ölçüyor (js/oturum.js,
+  // supabase/oturum_takibi.sql → gunluk_kullanim görünümü). Bu dosya sadece tarayıcıdaki
+  // günlük sayaç ve 30 dk tebrik bildirimi için.
   
   init() {
     this.checkDayReset();
     this.startPeriodicCheck();
     this.requestNotificationPermission();
-    
-    // Periodic sync to n8n
-    setInterval(() => this.syncToN8N('heartbeat'), this.SYNC_INTERVAL_MS);
   },
   
   getTodayKey() {
@@ -38,7 +36,6 @@ window.UsageManager = {
   
   handleGoalReached() {
     this.showLocalNotification('Tebrikler! 🏆', 'Bugünkü 30 dakikalık İngilizce hedefini tamamladın!');
-    this.syncToN8N('goal_reached');
   },
   
   isLimitReached() {
@@ -59,42 +56,6 @@ window.UsageManager = {
     }
   },
   
-  async syncToN8N(event = 'heartbeat') {
-    if (!this.N8N_WEBHOOK_URL || !this.N8N_WEBHOOK_URL.includes('http')) return;
-    
-    // Use window.getCurrentUser if available
-    const user = typeof window.getCurrentUser === 'function' ? window.getCurrentUser() : null;
-    if (!user) return;
-
-    // n8n bu anahtarı Supabase'e sorarak isteğin gerçekten bu kullanıcıdan geldiğini
-    // doğrular (bkz. supabase/n8n_dogrulama.md). Oturum yoksa gönderme.
-    let token = null;
-    try {
-      const { data } = await window.supabase.auth.getSession();
-      token = data && data.session && data.session.access_token;
-    } catch (e) {}
-    if (!token) return;
-    
-    const payload = {
-      email: user.email,
-      name: user.name,
-      totalMinutes: Math.round(this.getTodayUsage() * 10) / 10,
-      event: event,
-      timestamp: new Date().toISOString()
-    };
-    
-    try {
-      await fetch(this.N8N_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify(payload)
-      });
-      console.log(`[Usage] Synced ${event} to n8n`);
-    } catch (e) {
-      console.warn('[Usage] Sync failed', e);
-    }
-  },
-  
   checkDayReset() {
     const key = this.getTodayKey();
     if (!localStorage.getItem(key)) {
@@ -112,7 +73,6 @@ window.UsageManager = {
     if (this.sessionStartTS) {
       this.addUsage(Date.now() - this.sessionStartTS);
       this.sessionStartTS = null;
-      this.syncToN8N('session_end');
     }
   },
   

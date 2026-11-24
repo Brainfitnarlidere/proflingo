@@ -3,6 +3,9 @@
 Her oturumun sonunda proje lideri en üste kısa bir kayıt ekler (en yeni üstte).
 Format: tarih — ne yapıldı — test sonucu — açık kalanlar. Eski kayıtlar silinmez.
 
+## 2026-11-24 — n8n kaldırıldı
+- Kullanıcı isteği: n8n yerine sürekli çalışan bir çözüm. js/usage.js artık dışarıya istek atmıyor (sadece yerel sayaç + 30 dk tebriki); süreyi zaten oturum takibi (Supabase) ölçüyor. oturum_takibi.sql'e gunluk_kullanim görünümü eklendi. n8n_dogrulama.md silindi. Testler 24/24.
+
 ## 2026-11-24 — Kayıt e-postası ve genel kontrol
 - Kayıtta e-posta gitmemesinin nedeni: Supabase'de Confirm email kapalı (mailer_autoconfirm=true) ve özel SMTP yok. Kod tarafı doğruydu; ayar adımları + Türkçe şablonlar: supabase/eposta_ayarlari.md (SUPA-2, kullanıcıda).
 - Eklendi: "Şifremi unuttum" (kodla ya da e-postadaki linkle yeni şifre), onay kodu 6-10 hane kabul ediliyor, giriş düğmesi yazısı düzeltildi. Testler 24/24 (3 yeni).
