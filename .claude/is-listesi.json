@@ -62,7 +62,7 @@
       "oncelik": 2,
       "kabul": "index.html'deki 4 bağlantı (href=\"#\") gerçek metin sayfalarına gidiyor; metinler kullanıcıdan alındı (ajanlar hukuki metin uydurmaz)",
       "durum": "kullanicida",
-      "not": "Metinleri kullanıcı sağlamalı Aydınlatma metni giriş zamanı ve aktif süre kaydını da (oturumlar tablosu) kapsamalı. 2026-11-24: Kullanıcı bağlantıların açılmadığını bildirdi. 4 sayfa (kvkk.html, gizlilik.html, cerez.html, kullanim-kosullari.html) kullanıcının kendi Brainfit metinlerinden uyarlanarak hazırlandı (veri sorumlusu Şavkı Şahan Yıldız), Prof Lingo'nun gerçek verilerine göre (oturum süresi, mikrofon, Supabase/Resend). Kullanıcı onayı bekleniyor."
+      "not": "Metinleri kullanıcı sağlamalı Aydınlatma metni giriş zamanı ve aktif süre kaydını da (oturumlar tablosu) kapsamalı. 2026-11-24: Kullanıcı bağlantıların açılmadığını bildirdi. 4 sayfa (kvkk.html, gizlilik.html, cerez.html, kullanim-kosullari.html) kullanıcının kendi Brainfit metinlerinden uyarlanarak hazırlandı (veri sorumlusu Şavkı Şahan Yıldız), Prof Lingo'nun gerçek verilerine göre (oturum süresi, mikrofon, Supabase/Resend). Kullanıcı onayı bekleniyor. Kullanıcı veri sorumlusunu onayladı ('aynı yazsın'). Duolingo politikası ve KVKK tebliğleriyle karşılaştırılıp yeniden yazıldı: veri kategorileri tablosu, md.5 hukuki sebepler, alıcılar, yurt dışı aktarım (md.9), saklama, 13+ yaş / 18 altı veli onayı, başvuru usulü (30 gün, Kurul'a şikâyet), değişiklikler. Avukat kontrolü önerildi; ayrı açık rıza kutusu gerekip gerekmediği avukata sorulmalı."
     },
     {
       "id": "ASSET-1",

@@ -128,7 +128,7 @@ test.describe('Giriş ve kayıt', () => {
     await page.click('#go-register');
     const linkler = await page.evaluate(() => [...document.querySelectorAll('label[for=reg-kvkk] a, .footer-link')]
       .map(a => ({ href: a.getAttribute('href'), target: a.getAttribute('target') })));
-    expect(linkler.map(l => l.href)).toEqual(['kvkk.html', 'gizlilik.html', 'cerez.html', 'kullanim-kosullari.html']);
+    expect(linkler.map(l => l.href)).toEqual(['kvkk.html', 'gizlilik.html', 'kullanim-kosullari.html', 'cerez.html', 'kullanim-kosullari.html']);
     expect(linkler.every(l => l.target === '_blank')).toBe(true);
     const [yeni] = await Promise.all([page.context().waitForEvent('page'), page.click('label[for=reg-kvkk] a[href="kvkk.html"]')]);
     await yeni.waitForLoadState();
