@@ -3716,7 +3716,7 @@ body {
   width: 100%;
 }
 .winner-timer-active .winner-timer-bar::after {
-  animation: timerDrain 30s linear forwards;
+  animation: timerDrain var(--winner-sure, 10s) linear forwards;
 }
 @keyframes timerDrain {
   from { width: 100%; }

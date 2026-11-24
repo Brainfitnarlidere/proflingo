@@ -2,6 +2,9 @@
 
 /* Winner Mode (hızlı eşleştirme) */
 
+// Winner Mode süresi (saniye). Kullanıcı isteği 2026-11-24: 8 → 10 sn.
+window.WINNER_SURESI = 10;
+
 window.startWinnerMode = function() {
   const ch = window.CHAPTER_DATA[window.gameState.chapterId];
   if (!ch) return window.renderQuestion();
@@ -24,13 +27,14 @@ window.startWinnerMode = function() {
   const draggables = window.shuffle([...selectedKeys]);
   const targets = window.shuffle([...selectedKeys]);
   let matchesMade = 0;
-  let timeLeft = 8;
+  let timeLeft = window.WINNER_SURESI;
   
   // Reset Timer UI
   timerBar.parentElement.classList.remove('winner-timer-active');
   void timerBar.offsetWidth; // Trigger reflow
   timerBar.parentElement.classList.add('winner-timer-active');
-  timerText.textContent = '8s';
+  timerText.textContent = window.WINNER_SURESI + 's';
+  timerBar.style.setProperty('--winner-sure', window.WINNER_SURESI + 's'); // çubuk süreyle aynı hızda azalsın
   
   const feverInterval = setInterval(() => {
     timeLeft--;

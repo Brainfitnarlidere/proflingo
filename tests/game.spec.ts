@@ -117,7 +117,7 @@ test.describe('Oyun ve XP', () => {
     expect(unread).toEqual([]);
   });
 
-  test('Winner Mode: canlar doluyken kazanılan her ekstra canda açılır', async ({ page }) => {
+  test('Winner Mode: canlar dolunca ve doluyken kazanılan her ekstra canda açılır', async ({ page }) => {
     await setupApp(page, { confirm: false });
     await register(page);
     const r = await page.evaluate(async () => {
@@ -131,10 +131,38 @@ test.describe('Oyun ve XP', () => {
       await new Promise(r => setTimeout(r, 1000));
       return { opened, steps, qIndex: g.qIndex };
     });
-    // 3. doğru: 4→5 can (Winner yok); 6. ve 9. doğru: canlar dolu → Winner iki kez
+    // 3. doğru: 4→5 can, canlar doldu → Winner; 6. ve 9. doğru: canlar dolu → Winner (toplam 3)
     expect(r.steps[2]).toBe(5);
-    expect(r.opened).toBe(2);
+    expect(r.opened).toBe(3);
     expect(r.qIndex).toBe(9);   // Winner sonrası sıradaki soruya geçilir
+  });
+
+  test('Winner Mode 10 saniye sürer, bitince canlar sıfırlanır, canlar yeniden dolunca tekrar açılır', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(async () => {
+      const w = window as any; let acilis = 0;
+      w.renderQuestion = () => {}; w.SOUNDS.correct.play = () => Promise.resolve(); w.playTTS = () => {};
+      w.startChapter(1); w.startQuizPhase();
+      const asil = w.startWinnerMode; w.startWinnerMode = () => { acilis++; asil(); };
+      const g = w.gameState; g.hearts = 5; g.consecutiveCorrects = 0; g.qIndex = 0;
+      for (let k = 0; k < 3; k++) w.correctAns(null, 'word');          // canlar doluyken +1 → Winner
+      await new Promise(r => setTimeout(r, 1000));
+      const sure = document.getElementById('winner-timer-text')!.textContent;
+      await new Promise(r => setTimeout(r, 9000));                       // 8 sn'de hâlâ açık olmalı
+      const sekizSnSonra = !document.getElementById('screen-winner-mode')!.classList.contains('hidden');
+      await new Promise(r => setTimeout(r, 2500));                       // 10 sn doldu → bitti
+      const bittiCan = g.hearts;
+      const adimlar: number[] = [];
+      for (let k = 0; k < 15; k++) { w.correctAns(null, 'word'); adimlar.push(g.hearts); }   // 15 doğru → 5 can
+      await new Promise(r => setTimeout(r, 1200));
+      return { acilis, sure, sekizSnSonra, bittiCan, son: adimlar[14] };
+    });
+    expect(r.sure).toBe('10s');
+    expect(r.sekizSnSonra).toBe(true);
+    expect(r.bittiCan).toBe(0);
+    expect(r.son).toBe(5);
+    expect(r.acilis).toBe(2);   // canlar yeniden dolunca ikinci kez açıldı
   });
 
   test('yavaş internette sesler üst üste binmez, geç gelen ses başka soruda çalmaz', async ({ page }) => {

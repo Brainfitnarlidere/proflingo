@@ -225,15 +225,17 @@ window.correctAns = function(btn, mode) {
   // Her 3 doğru cevaplık seride bir can kazanılır.
   const heartEarned = window.gameState.consecutiveCorrects % 3 === 0;
   const heartsWereFull = window.gameState.hearts >= 5;
+  let canlarDoldu = false;
   if (heartEarned && !heartsWereFull) {
     window.gameState.hearts++;
     window.renderHearts(window.gameState.hearts);
     window.showToast('toast-heart', '❤️ +1 Can! Harika!');
+    canlarDoldu = window.gameState.hearts >= 5;
   }
 
-  // Winner Mode: canlar doluyken bir can daha kazanılınca açılır — her seferinde
-  // (eskiden bölüm başına bir kez ve sadece 3. doğruda kontrol ediliyordu).
-  if (heartEarned && heartsWereFull) {
+  // Winner Mode: kazanılan canla bütün canlar dolunca (Winner Mode'dan sonra sıfırlanan canlar
+  // yeniden dolunca) ya da canlar zaten doluyken bir can daha kazanılınca açılır — her seferinde.
+  if (heartEarned && (heartsWereFull || canlarDoldu)) {
     if (btn) btn.classList.add(mode === 'word' ? 'option-correct' : 'option-correct-color');
     window.gameState.qIndex++; // Winner Mode bitince sıradaki soruya geçilsin
     setTimeout(() => { window.clearStyles(); window.startWinnerMode(); }, 800);

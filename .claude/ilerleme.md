@@ -11,6 +11,9 @@ Format: tarih — ne yapıldı — test sonucu — açık kalanlar. Eski kayıtl
 - Eklendi: "Şifremi unuttum" (kodla ya da e-postadaki linkle yeni şifre), onay kodu 6-10 hane kabul ediliyor, giriş düğmesi yazısı düzeltildi. Testler 24/24 (3 yeni).
 - Genel kontrol: canlı site yerelle aynı sürüm, RLS ve XP fonksiyonları girişsiz kapalı. Bulunan: oturumlar tablosu canlıda yok (SUPA-3), n8n.brainfitnarlidere.com DNS'te yok (N8N-1), DATA-1 uyarıları sürüyor. Ses tanıma testi yük altında bir kez kırıldı, tekrarda geçti (kararsız test).
 
+## 2026-11-24 — Winner Mode süresi ve yeniden açılma
+- Kullanıcı isteği: Winner Mode 8 → 10 sn (window.WINNER_SURESI; süre çubuğu da aynı süreyle azalıyor, eskiden CSS'te 30 sn'ydi). Bitince canlar 0 (değişmedi). Kazanılan canla bütün canlar dolunca Winner Mode yeniden açılır (eskiden dolduktan sonra bir can daha gerekiyordu). Bütün bölümler ve diller (ortak kod). Testler güncellendi/eklendi.
+
 ## 2026-11-24 — Seslerin daha hızlı gelmesi
 - Neden: her kayıt ilk çalışta ayrıca indiriliyordu (~0,5–0,8 sn). Şimdi bölüm açılınca (core.js startChapter → sesOnYukle) o bölümün kayıtları 2'şerli indirilip Web Audio ile çözülür, anında çalar; inmekte olan kayıt ikinci kez indirilmez. iPad'in askıya aldığı ses her dokunuşta yeniden açılır.
 - Soru-cevapta cevap sabit 2 sn yerine soru kaydı bitince +0,4 sn okunur (window.cevapBeklemesi).
