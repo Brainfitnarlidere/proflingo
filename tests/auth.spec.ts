@@ -123,6 +123,26 @@ test.describe('Giriş ve kayıt', () => {
     await expect(page.locator('#screen-home')).toBeVisible();
   });
 
+  test('KVKK, gizlilik, çerez ve kullanım koşulları bağlantıları gerçek sayfaları yeni sekmede açar', async ({ page }) => {
+    await setupApp(page);
+    await page.click('#go-register');
+    const linkler = await page.evaluate(() => [...document.querySelectorAll('label[for=reg-kvkk] a, .footer-link')]
+      .map(a => ({ href: a.getAttribute('href'), target: a.getAttribute('target') })));
+    expect(linkler.map(l => l.href)).toEqual(['kvkk.html', 'gizlilik.html', 'cerez.html', 'kullanim-kosullari.html']);
+    expect(linkler.every(l => l.target === '_blank')).toBe(true);
+    const [yeni] = await Promise.all([page.context().waitForEvent('page'), page.click('label[for=reg-kvkk] a[href="kvkk.html"]')]);
+    await yeni.waitForLoadState();
+    await expect(yeni.locator('h1')).toHaveText('KVKK Aydınlatma Metni');
+    await expect(yeni.locator('body')).toContainText('Veri Sorumlusu');
+    await expect(page.locator('#form-register')).toBeVisible();          // kayıt formu kaybolmaz
+    expect(await page.isChecked('#reg-kvkk')).toBe(false);               // bağlantıya tıklamak onay vermez
+    for (const s of ['gizlilik.html', 'cerez.html', 'kullanim-kosullari.html']) {
+      await yeni.goto('http://app/' + s);
+      await expect(yeni.locator('h1')).not.toBeEmpty();
+      await expect(yeni.locator('.yasal-nav a')).toHaveCount(4);
+    }
+  });
+
   test('Supabase oturumu olmayan eski yerel kayıt içeri alınmaz', async ({ page }) => {
     await setupApp(page);
     await page.evaluate(() => localStorage.setItem('lv_curr_user', JSON.stringify({ id: 'eski', name: 'Eski', xp: 5 })));

@@ -61,8 +61,8 @@
       "sahip": "ekip",
       "oncelik": 2,
       "kabul": "index.html'deki 4 bağlantı (href=\"#\") gerçek metin sayfalarına gidiyor; metinler kullanıcıdan alındı (ajanlar hukuki metin uydurmaz)",
-      "durum": "yapilacak",
-      "not": "Metinleri kullanıcı sağlamalı Aydınlatma metni giriş zamanı ve aktif süre kaydını da (oturumlar tablosu) kapsamalı."
+      "durum": "kullanicida",
+      "not": "Metinleri kullanıcı sağlamalı Aydınlatma metni giriş zamanı ve aktif süre kaydını da (oturumlar tablosu) kapsamalı. 2026-11-24: Kullanıcı bağlantıların açılmadığını bildirdi. 4 sayfa (kvkk.html, gizlilik.html, cerez.html, kullanim-kosullari.html) kullanıcının kendi Brainfit metinlerinden uyarlanarak hazırlandı (veri sorumlusu Şavkı Şahan Yıldız), Prof Lingo'nun gerçek verilerine göre (oturum süresi, mikrofon, Supabase/Resend). Kullanıcı onayı bekleniyor."
     },
     {
       "id": "ASSET-1",
