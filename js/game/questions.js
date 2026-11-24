@@ -10,7 +10,7 @@ window.makeQuestion = function(key, type, pool) {
   else if (type === 'image-choice') prompt = ch.imgPrompts ? window.rand(ch.imgPrompts)(key, window.gameState) : 'Find the image';
   else if (type === 'speak') prompt = window.rand(ch.speakPrompts);
   else prompt = "Listen closely 🔊";
-  return { key, type, options, prompt };
+  return { key, type, options, prompt: window.talimat(prompt) };
 };
 
 window.generateQuestions = function(keys) {
@@ -166,3 +166,11 @@ window.generateQuestions = function(keys) {
 
   return window.shuffle(qs);
 };
+
+// Ortak talimatlar öğretilen dilde (İtalyancada çevrilir; İngilizcede değişmez)
+(function () {
+  const uret = window.generateQuestions;
+  window.generateQuestions = function (keys) {
+    return uret(keys).map(q => (q && typeof q.prompt === 'string') ? Object.assign(q, { prompt: window.talimat(q.prompt) }) : q);
+  };
+})();

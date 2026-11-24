@@ -51,7 +51,7 @@ window.renderImageChoice = function(q) {
   const promptEl = window.$('quiz-prompt');
   if (promptEl) {
     const targetText = (ch.isQAMode ? d_target.sentence : d_target.word);
-    promptEl.textContent = `Find ${targetText}`;
+    promptEl.textContent = window.talimat('Find ') + targetText;
   }
   if (window.$('quiz-choose-image')) {
     const stim = window.$('quiz-choose-image').querySelector('.quiz-stimulus');
@@ -388,7 +388,7 @@ window.renderSpeakWord = function(q) {
     return;
   }
   const recognition = new SpeechRecognition();
-  recognition.lang = 'en-US';
+  recognition.lang = window.hedefDil && window.hedefDil() === 'it' ? 'it-IT' : 'en-US';
   recognition.maxAlternatives = 5;   // gürültüde doğru kelime çoğu zaman 2.-3. tahminde olur
   recognition.interimResults = false;
   recognition.continuous = false;

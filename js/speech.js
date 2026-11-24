@@ -83,10 +83,12 @@ window._kayitCalar.preload = 'auto';
 // Kaydı olmayan metinler (eksikleri bulmak için; tools/elevenlabs_uret.js'e eklenir)
 window.__eksikSesler = new Set();
 
+function aktifDil() { return window.hedefDil ? window.hedefDil() : 'en'; }
+
 function kayitDosyasi(text, rol, hiz) {
   const liste = window.SES_KAYITLARI;
   if (!liste || !window.sesKaydiAnahtari) return null;
-  const anahtar = window.sesKaydiAnahtari(text, rol, hiz);
+  const anahtar = window.sesKaydiAnahtari(text, rol, hiz, aktifDil());
   const dosya = liste[anahtar];
   if (!dosya && Object.keys(liste).length) window.__eksikSesler.add(anahtar);
   return dosya ? KAYIT_KLASORU + dosya : null;
@@ -113,6 +115,9 @@ function kayitCal(yol, yedek) {
 const SES_HIZI = 0.75;
 const ERKEK_SESLER = ['Alex', 'Google US English Male', 'Fred', 'Aaron', 'Arthur', 'James', 'Daniel'];
 const KADIN_SESLER = ['Samantha', 'Google US English Female', 'Ava', 'Allison', 'Karen', 'Victoria', 'Moira'];
+// İtalyanca yedek sesler (kaydı olmayan metinler için)
+const IT_ERKEK_SESLER = ['Luca', 'Google italiano', 'Diego', 'Cosimo'];
+const IT_KADIN_SESLER = ['Alice', 'Federica', 'Paola', 'Google italiano', 'Elsa'];
 
 // Aynı anda tek ses: yeni okuma başlarken (ve yeni soru açılırken) öncekini sustur.
 window.stopSpeech = function() {
@@ -124,15 +129,18 @@ window.stopSpeech = function() {
 // Her cinsiyet için bir kez seçilir ve hep o ses kullanılır (rastgele değil).
 window._sabitSesler = {};
 function sabitSes(gender) {
-  if (gender in window._sabitSesler) return window._sabitSesler[gender];
+  const dil = aktifDil(), anahtar = dil + '|' + gender;
+  if (anahtar in window._sabitSesler) return window._sabitSesler[anahtar];
   const voices = window.speechSynthesis.getVoices();
   if (!voices.length) return null; // henüz yüklenmedi; yüklenince seçilecek
-  const us = voices.filter(v => (v.lang || '').replace('_', '-').startsWith('en-US'));
-  const isimler = gender === 'female' ? KADIN_SESLER : ERKEK_SESLER;
+  const onek = dil === 'it' ? 'it' : 'en-US';
+  const us = voices.filter(v => (v.lang || '').replace('_', '-').startsWith(onek));
+  const isimler = dil === 'it' ? (gender === 'female' ? IT_KADIN_SESLER : IT_ERKEK_SESLER)
+    : (gender === 'female' ? KADIN_SESLER : ERKEK_SESLER);
   let secilen = null;
   for (const ad of isimler) { secilen = us.find(v => v.name.includes(ad)); if (secilen) break; }
-  if (!secilen) secilen = us[0] || voices.find(v => (v.lang || '').startsWith('en')) || null;
-  window._sabitSesler[gender] = secilen;
+  if (!secilen) secilen = us[0] || (dil === 'it' ? null : voices.find(v => (v.lang || '').startsWith('en'))) || null;
+  window._sabitSesler[anahtar] = secilen;
   return secilen;
 }
 if ('speechSynthesis' in window) {
@@ -162,7 +170,7 @@ function tarayiciSesi(text, rate, pitch, gender) {
   // Emojileri okumasın
   const cleanText = String(text).replace(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/g, '');
   const utterance = new SpeechSynthesisUtterance(cleanText);
-  utterance.lang = 'en-US';
+  utterance.lang = aktifDil() === 'it' ? 'it-IT' : 'en-US';
   utterance.rate = rate;
   utterance.pitch = pitch;
   utterance.volume = SES_DUZEYI;

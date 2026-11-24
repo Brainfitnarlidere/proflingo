@@ -16,15 +16,21 @@ const root = path.join(__dirname, '..');
 global.window = global;
 require(path.join(root, 'js/ses-anahtar.js'));
 require(path.join(root, 'js/content.js'));
+require(path.join(root, 'js/content_it.js'));
 const AYAR = JSON.parse(fs.readFileSync(path.join(__dirname, 'ses-ayarlari.json'), 'utf8'));
 const KLASOR = path.join(root, 'audio/tts');
 const LISTE_DOSYASI = path.join(root, 'js/ses-kayitlari.js');
 
 const arg = process.argv.slice(2);
 const kuru = arg.includes('--kuru');
+// --dil it: İtalyanca bölümler (CHAPTER_DATA_IT, sesler_it, İtalyanca talimatlar)
+const DIL = arg.includes('--dil') ? arg[arg.indexOf('--dil') + 1] : 'en';
+const VERI = DIL === 'it' ? window.CHAPTER_DATA_IT : window.CHAPTER_DATA;
+const SESLER = DIL === 'it' ? AYAR.sesler_it : AYAR.sesler;
+const cevir = m => (DIL === 'it' && window.TALIMAT_IT && window.TALIMAT_IT[m] !== undefined) ? window.TALIMAT_IT[m] : m;
 const bolumArg = arg.includes('--bolum') ? arg[arg.indexOf('--bolum') + 1] : null;
 const bolumler = arg.includes('--hepsi')
-  ? Object.keys(window.CHAPTER_DATA).map(Number)
+  ? Object.keys(VERI).map(Number)
   : (bolumArg || '').split(',').map(Number).filter(Boolean);
 if (!bolumler.length) { console.log('Bölüm seçin: --bolum 6  ya da  --hepsi'); process.exit(1); }
 
@@ -35,34 +41,34 @@ const CIFT_SORU_CEVAP = [33, 34, 38, 39, 40, 41, 42];   // soru erkek, cevap kad
 
 // Bir bölümde okunabilecek bütün metinler: [rol, hiz, metin]
 function bolumMetinleri(id) {
-  const ch = window.CHAPTER_DATA[id];
+  const ch = VERI[id];
   if (!ch) { console.log(`Bölüm ${id} yok, atlandı.`); return []; }
   const out = [];
   // Ses tarayıcıdaki kuralla aynı: cümle kadın, diğerleri erkek (rol verilmezse)
   const ekle = (rol, hiz, metin) => {
     if (!window.sesMetniTemizle(metin)) return;
-    out.push([rol || (window.cumleSesiMi(metin) ? 'f' : 'm'), hiz, metin]);
+    out.push([rol || (DIL === 'en' && window.cumleSesiMi(metin) ? 'f' : 'm'), hiz, metin]);
   };
   for (const d of Object.values(ch.items || {})) {
     const { word, sentence } = d;
     ekle(null, 'n', word);
     if (ch.isQAMode) {
-      ekle(null, 'n', sentence); ekle(null, 'n', 'Find ' + sentence);
+      ekle(null, 'n', sentence); ekle(null, 'n', cevir('Find ') + sentence);
       ekle(null, 's', word + ' ... ' + sentence);
       if (CIFT_SORU_CEVAP.includes(id)) { ekle('m', 'n', word); ekle('f', 'n', sentence); }
     } else {
-      ekle(null, 'n', 'Find ' + word);
+      ekle(null, 'n', cevir('Find ') + word);
       if (sentence) { ekle(null, 'n', sentence); ekle(null, 's', sentence); }
     }
     if (ch.isRepeatMode || ch.isSentenceMode) ekle(null, 's', word);
   }
   (ch.wordPrompts || []).forEach(p => ekle(null, 'n', p));
-  SABIT_TALIMATLAR.forEach(p => ekle(null, 'n', p));
+  SABIT_TALIMATLAR.forEach(p => ekle(null, 'n', cevir(p)));
   return out;
 }
 
 function dosyaAdi(rol, hiz, metin) {
-  const ses = AYAR.sesler[rol];
+  const ses = SESLER[rol];
   const iz = [AYAR.model, ses.id, AYAR.hiz[hiz], JSON.stringify(AYAR.ayar), window.sesMetniTemizle(metin)].join('|');
   return crypto.createHash('sha1').update(iz).digest('hex').slice(0, 16) + '.mp3';
 }
@@ -91,12 +97,13 @@ function anahtariBul() {
 }
 
 async function uret(anahtar, rol, hiz, metin, hedef) {
-  const url = `https://api.elevenlabs.io/v1/text-to-speech/${AYAR.sesler[rol].id}?output_format=${AYAR.format}`;
+  const url = `https://api.elevenlabs.io/v1/text-to-speech/${SESLER[rol].id}?output_format=${AYAR.format}`;
   for (let deneme = 1; deneme <= 4; deneme++) {
     const r = await fetch(url, {
       method: 'POST',
       headers: { 'xi-api-key': anahtar, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
       body: JSON.stringify({ text: window.sesMetniTemizle(metin), model_id: AYAR.model,
+        ...(DIL === 'it' ? { language_code: 'it' } : {}),
         voice_settings: { ...AYAR.ayar, speed: AYAR.hiz[hiz] } })
     });
     if (r.ok) { fs.writeFileSync(hedef, Buffer.from(await r.arrayBuffer())); return; }
@@ -112,7 +119,7 @@ async function uret(anahtar, rol, hiz, metin, hedef) {
   const gorulen = new Set(), isler = [];
   for (const id of bolumler) {
     for (const [rol, hiz, metin] of bolumMetinleri(id)) {
-      const anahtar = window.sesKaydiAnahtari(metin, rol, hiz);
+      const anahtar = window.sesKaydiAnahtari(metin, rol, hiz, DIL);
       if (gorulen.has(anahtar)) continue;
       gorulen.add(anahtar);
       const ad = dosyaAdi(rol, hiz, metin);
@@ -134,7 +141,8 @@ async function uret(anahtar, rol, hiz, metin, hedef) {
   if (arg.includes('--temizle') && arg.includes('--hepsi') && !kuru) {
     const kullanilan = new Set(gorulen);
     let silinen = 0;
-    for (const k of Object.keys(liste)) if (!kullanilan.has(k)) { delete liste[k]; silinen++; }
+    const buDil = k => (k.startsWith('it:') ? 'it' : 'en') === DIL;   // sadece seçili dilin kayıtları
+    for (const k of Object.keys(liste)) if (buDil(k) && !kullanilan.has(k)) { delete liste[k]; silinen++; }
     const dosyalar = new Set(Object.values(liste)), bekleyen = new Set(isler.map(i => i.ad));
     if (fs.existsSync(KLASOR)) for (const f of fs.readdirSync(KLASOR))
       if (!dosyalar.has(f) && !bekleyen.has(f)) { fs.unlinkSync(path.join(KLASOR, f)); silinen++; }

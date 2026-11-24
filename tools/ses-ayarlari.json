@@ -3,9 +3,31 @@
   "model": "eleven_multilingual_v2",
   "format": "mp3_44100_64",
   "sesler": {
-    "m": { "ad": "Liam", "id": "TX3LPaxmHKxFdv7VOQHJ" },
-    "f": { "ad": "Matilda", "id": "XrExE9yKIg1WjnnlVkGX" }
+    "m": {
+      "ad": "Liam",
+      "id": "TX3LPaxmHKxFdv7VOQHJ"
+    },
+    "f": {
+      "ad": "Matilda",
+      "id": "XrExE9yKIg1WjnnlVkGX"
+    }
   },
-  "hiz": { "n": 0.9, "s": 0.7 },
-  "ayar": { "stability": 0.6, "similarity_boost": 0.75 }
+  "hiz": {
+    "n": 0.9,
+    "s": 0.7
+  },
+  "ayar": {
+    "stability": 0.6,
+    "similarity_boost": 0.75
+  },
+  "sesler_it": {
+    "m": {
+      "ad": "Carmelo",
+      "id": "HuK8QKF35exsCh2e7fLT"
+    },
+    "f": {
+      "ad": "Ginevra",
+      "id": "QITiGyM4owEZrBEf0QV8"
+    }
+  }
 }

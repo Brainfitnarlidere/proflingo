@@ -7,8 +7,9 @@
   g.sesMetniTemizle = function (text) {
     return String(text == null ? '' : text).replace(EMOJI, '').replace(/\s+/g, ' ').trim();
   };
-  g.sesKaydiAnahtari = function (text, rol, hiz) {
-    return (rol === 'f' ? 'f' : 'm') + (hiz === 's' ? 's' : 'n') + '|' + g.sesMetniTemizle(text);
+  // dil: 'en' (varsayılan, öneksiz) | 'it' ("it:" öneki). Aynı yazılan kelime iki dilde ayrı kayıttır (Banana).
+  g.sesKaydiAnahtari = function (text, rol, hiz, dil) {
+    return (dil === 'it' ? 'it:' : '') + (rol === 'f' ? 'f' : 'm') + (hiz === 's' ? 's' : 'n') + '|' + g.sesMetniTemizle(text);
   };
   // Kim okur: bölümlerdeki cümleler (en az 3 kelimelik örnek cümle / cevap) kadın sesle (Matilda),
   // kelimeler, sorular ve talimatlar erkek sesle (Liam). Soru-cevap bölümlerinde soru erkek,
@@ -17,7 +18,7 @@
   g.cumleSesiMi = function (text) {
     if (!cumleler) {
       cumleler = new Set();
-      for (const ch of Object.values(g.CHAPTER_DATA || {})) {
+      for (const ch of Object.values(g.__ORIGINAL_EN_DATA || g.CHAPTER_DATA || {})) {
         for (const d of Object.values(ch.items || {})) {
           const c = g.sesMetniTemizle(d.sentence);
           if (c && !c.includes('[') && c.split(' ').length >= 3) cumleler.add(c);

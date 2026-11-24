@@ -11,6 +11,12 @@ Format: tarih — ne yapıldı — test sonucu — açık kalanlar. Eski kayıtl
 - Eklendi: "Şifremi unuttum" (kodla ya da e-postadaki linkle yeni şifre), onay kodu 6-10 hane kabul ediliyor, giriş düğmesi yazısı düzeltildi. Testler 24/24 (3 yeni).
 - Genel kontrol: canlı site yerelle aynı sürüm, RLS ve XP fonksiyonları girişsiz kapalı. Bulunan: oturumlar tablosu canlıda yok (SUPA-3), n8n.brainfitnarlidere.com DNS'te yok (N8N-1), DATA-1 uyarıları sürüyor. Ses tanıma testi yük altında bir kez kırıldı, tekrarda geçti (kararsız test).
 
+## 2026-11-24 — İtalyanca bölümler çalışır hâle getirildi ve seslendirildi
+- Bulunan: 7 İtalyanca bölümün hepsi açılırken çöküyordu (batches yoktu). content_it.js: gruplar, geçiş ekranları, İtalyanca soru yazıları, İngilizcedeki aynı nesnelerin resimleri (mutfak ve sayılarda emoji).
+- Ortak talimatlar İtalyancada çevrilir: window.talimat + TALIMAT_IT (Trova, Cosa vedi?, Abbina le coppie! ...). Ses tanıma ve yedek tarayıcı sesi İtalyancada it-IT.
+- Kayıt anahtarına dil eklendi ("it:" öneki; İngilizce anahtarlar değişmedi). tools/elevenlabs_uret.js --dil it; sesler Carmelo (erkek) + Ginevra (kadın, şimdilik İtalyanca cümle olmadığı için kullanılmıyor). 78 kayıt, 840 karakter.
+- Testler 27/27 (İtalyanca bölümler ve İtalyanca ses için 2 test).
+
 ## 2026-11-24 — Bütün bölümler ElevenLabs ile seslendirildi
 - 1.310 yeni kayıt (~19.900 karakter; toplam 1.338, ~19 MB). Kural: bölüm verisindeki en az 3 kelimelik cümleler Matilda, kelime/soru/talimat Liam; çift soru-cevap bölümlerinde soru erkek, cevap kadın.
 - Tarayıcı taraması: bütün bölümlerde 7.172 okuma kayıtla çaldı. 22 eksik çıktı; nedeni kart hoparlörünün iki kez bağlanmasıydı (main.js soru ve cevabı birleşik okuyordu), main.js'teki fazla dinleyici kaldırıldı, tekrar taramada eksik yok.

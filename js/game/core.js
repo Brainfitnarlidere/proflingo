@@ -125,6 +125,15 @@ window.pick3Wrong = function(k, pool) {
   return window.shuffle(pool.filter(x => x !== k)).slice(0, 3); 
 };
 
+// Öğretilen dil: 'en' | 'it'. Ortak talimatlar İtalyancada çevrilir (js/content_it.js TALIMAT_IT).
+window.hedefDil = function() {
+  return (window.gameState && window.gameState.targetLanguage === 'it') ? 'it' : 'en';
+};
+window.talimat = function(metin) {
+  if (window.hedefDil() !== 'it' || !window.TALIMAT_IT) return metin;
+  return Object.prototype.hasOwnProperty.call(window.TALIMAT_IT, metin) ? window.TALIMAT_IT[metin] : metin;
+};
+
 window.rand = function(arr) { 
   return arr[Math.floor(Math.random() * arr.length)]; 
 };

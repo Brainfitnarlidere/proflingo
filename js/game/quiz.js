@@ -146,10 +146,10 @@ window.renderQuestion = function() {
     } else if (q.type === 'word-choice') {
       // Görsel gösterilip kelimesi soruluyor: kelimeyi okumak cevabı vermek olur,
       // soruyu oku ("What do you see?"). Soru-cevap bölümlerinde hedef sorunun kendisi.
-      speech = ch.isQAMode ? { text: d_target.word } : { text: q.prompt || 'What do you see?', native: true };
+      speech = ch.isQAMode ? { text: d_target.word } : { text: q.prompt || window.talimat('What do you see?'), native: true };
     } else if (q.type === 'image-choice') {
       // Ekranda yazanı oku: tek hedef + ne yapılacağı ("Find Pig")
-      speech = { text: 'Find ' + (ch.isQAMode ? d_target.sentence : d_target.word) };
+      speech = { text: window.talimat('Find ') + (ch.isQAMode ? d_target.sentence : d_target.word) };
     } else if (q.type === 'word-ordering') {
       speech = { text: d_target.word, slow: true };
     } else if (q.type === 'speak' && !isDualQA) {

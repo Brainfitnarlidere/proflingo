@@ -191,6 +191,55 @@ test.describe('Oyun ve XP', () => {
     expect(r.kayitSayisi).toBe(0);                                              // dışarıdan ses kaydı yok
   });
 
+  test('İtalyanca: bütün bölümler açılır, talimatlar İtalyanca, her okuma İtalyanca kayıtla çalar', async ({ page }) => {
+    test.setTimeout(120_000);
+    const app = await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(async () => {
+      const w = window as any; const calinan: string[] = []; const tarayici: string[] = []; const hatalar: string[] = []; const yazilar = new Set<string>();
+      w._kayitCalar.play = () => { calinan.push(w._kayitCalar.src); return Promise.resolve(); };
+      w.speechSynthesis.speak = (u: any) => tarayici.push(u.text);
+      w.startWinnerMode = () => {}; w.onQuizDone = () => {};
+      w.selectLanguage('it');
+      for (const c of w.CHAPTERS) {
+        try { w.startChapter(c.id); } catch (e: any) { hatalar.push(c.id + ' başlat: ' + e.message); }
+        await new Promise(r => setTimeout(r, 150));
+        for (let i = 0; i < 6; i++) { try { w.nextCard(); } catch (e: any) { hatalar.push(c.id + ' kart: ' + e.message); } await new Promise(r => setTimeout(r, 150)); }
+        try { w.startQuizPhase(); } catch (e: any) { hatalar.push(c.id + ' quiz: ' + e.message); }
+        const qs = w.gameState.questions || [];
+        if (!qs.length) hatalar.push(c.id + ': soru yok');
+        for (let i = 0; i < qs.length; i++) {
+          try { w.gameState.qIndex = i; w.renderQuestion(); } catch (e: any) { hatalar.push(c.id + ' soru: ' + e.message); }
+          yazilar.add(qs[i].prompt); await new Promise(r => setTimeout(r, 30)); w.stopTimer && w.stopTimer();
+        }
+      }
+      return { hatalar, tarayici, eksik: Array.from(w.__eksikSesler), calinan: calinan.length, yazilar: Array.from(yazilar) };
+    });
+    expect(r.hatalar).toEqual([]);
+    expect(r.eksik).toEqual([]);
+    expect(r.tarayici).toEqual([]);
+    expect(r.calinan).toBeGreaterThan(30);
+    expect(r.yazilar.some((y: string) => /Match the pairs|Listen closely|What do you see/.test(y))).toBe(false);
+    expect(app.errors).toEqual([]);
+  });
+
+  test('İtalyanca kayıt yoksa tarayıcı İtalyanca okur; İngilizce kayıt İtalyancada çalmaz', async ({ page }) => {
+    await setupApp(page, { confirm: false });
+    await register(page);
+    const r = await page.evaluate(() => {
+      const w = window as any; const okunan: any[] = []; const calinan: string[] = [];
+      w._kayitCalar = { dataset: {}, play() { calinan.push(this.src); return Promise.resolve(); }, pause() {} };
+      w.SpeechSynthesisUtterance = function (this: any, t: string) { this.text = t; };
+      w.speechSynthesis.speak = (u: any) => okunan.push({ metin: u.text, dil: u.lang });
+      w.SES_KAYITLARI = { [w.sesKaydiAnahtari('Banana', 'm', 'n')]: 'ingilizce.mp3' };
+      w.gameState.targetLanguage = 'it'; w.playTTS('Banana');
+      w.gameState.targetLanguage = 'en'; w.playTTS('Banana');
+      return { okunan, calinan };
+    });
+    expect(r.okunan).toEqual([{ metin: 'Banana', dil: 'it-IT' }]);
+    expect(r.calinan).toEqual(['audio/tts/ingilizce.mp3']);
+  });
+
   test('günlük 30 dakika dolsa da bölüm açılır (süre sınırı yok)', async ({ page }) => {
     await setupApp(page, { confirm: false });
     await register(page);
