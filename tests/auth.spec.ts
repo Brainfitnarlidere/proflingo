@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { setupApp, boot, register, serverProfile } from './helpers/app';
+import { setupApp, boot, register, serverProfile, APP } from './helpers/app';
 
 test.describe('Giriş ve kayıt', () => {
   test('kayıt → onay kodu → ana ekran, oturum yenilemede korunur', async ({ page }) => {
@@ -54,6 +54,73 @@ test.describe('Giriş ve kayıt', () => {
     await register(page);
     await expect(page.locator('#reg-error')).toContainText('zaten kayıtlı');
     expect(app.errors).toEqual([]);
+  });
+
+  test('şifremi unuttum: kod + yeni şifre, sonra yeni şifreyle giriş', async ({ page }) => {
+    const app = await setupApp(page, { confirm: false });
+    await register(page);
+    await page.evaluate(() => document.getElementById('btn-logout')!.click());
+    await page.waitForTimeout(300);
+    await boot(page);
+
+    await page.fill('#login-email', 'Test@Example.com ');
+    await page.click('#go-forgot');
+    await expect(page.locator('#form-forgot')).toBeVisible();
+    await expect(page.locator('#form-login')).toBeHidden();
+    await expect(page.locator('#forgot-email')).toHaveValue('Test@Example.com');
+    await page.click('#btn-forgot-send');
+    await expect(page.locator('#form-reset')).toBeVisible();
+    await expect(page.locator('#reset-code-field')).toBeVisible();
+    expect(await page.evaluate(() => (window as any).__FAKE.calls.find((c: any) => c.reset)?.reset)).toBe('test@example.com');
+
+    await page.fill('#reset-code', '000000');
+    await page.fill('#reset-password', 'yeni123');
+    await page.click('#btn-reset-confirm');
+    await expect(page.locator('#reset-error')).toContainText('hatalı');
+
+    await page.fill('#reset-code', '123456');
+    await page.click('#btn-reset-confirm');
+    await expect(page.locator('#screen-home')).toBeVisible();
+
+    await page.evaluate(() => document.getElementById('btn-logout')!.click());
+    await page.waitForTimeout(300);
+    await boot(page);
+    await page.fill('#login-email', 'test@example.com');
+    await page.fill('#login-password', 'secret1');
+    await page.click('#btn-login');
+    await expect(page.locator('#login-error')).toContainText('E-posta veya şifre hatalı');
+    await page.fill('#login-password', 'yeni123');
+    await page.click('#btn-login');
+    await expect(page.locator('#screen-home')).toBeVisible();
+    expect(app.errors).toEqual([]);
+  });
+
+  test('e-postadaki sıfırlama linkiyle gelince sadece yeni şifre sorulur', async ({ page }) => {
+    const app = await setupApp(page, { confirm: false });
+    await register(page);                                   // linkten gelen oturumu taklit eder
+    await page.goto('about:blank');
+    await page.goto(APP + '#access_token=x&type=recovery');
+    await page.waitForTimeout(1800);
+    await expect(page.locator('#form-reset')).toBeVisible();
+    await expect(page.locator('#reset-code-field')).toBeHidden();
+    await expect(page.locator('#screen-home')).toBeHidden();
+    await page.fill('#reset-password', 'linkle99');
+    await page.click('#btn-reset-confirm');
+    await expect(page.locator('#screen-home')).toBeVisible();
+    expect(await page.evaluate(() => (window as any).__FAKE.users['test@example.com'].password)).toBe('linkle99');
+    expect(app.errors).toEqual([]);
+  });
+
+  test('8 haneli onay kodu da kabul edilir', async ({ page }) => {
+    await setupApp(page);
+    await page.evaluate(() => { const c = JSON.parse(localStorage.getItem('__fake_cfg')!); c.otp = '12345678'; localStorage.setItem('__fake_cfg', JSON.stringify(c)); });
+    await page.evaluate(() => localStorage.removeItem('__fake_db'));
+    await boot(page);
+    await register(page);
+    await expect(page.locator('#form-verify')).toBeVisible();
+    await page.fill('#verify-code', '12345678');
+    await page.click('#btn-verify-confirm');
+    await expect(page.locator('#screen-home')).toBeVisible();
   });
 
   test('Supabase oturumu olmayan eski yerel kayıt içeri alınmaz', async ({ page }) => {

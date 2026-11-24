@@ -17,7 +17,7 @@
       "oncelik": 1,
       "kabul": "Authentication ayarlarında 'Confirm email' açık; /auth/v1/settings mailer_autoconfirm=false; Site URL https://proflingo.com; Confirm signup şablonunda {{ .Token }} var; yeni kayıtta onay ekranı çıkıyor ve kod/link çalışıyor",
       "durum": "kullanicida",
-      "not": "2026-11-17 kontrolünde mailer_autoconfirm=true bulundu: kayıtta e-posta doğrulanmıyor."
+      "not": "2026-11-17 kontrolünde mailer_autoconfirm=true bulundu: kayıtta e-posta doğrulanmıyor. 2026-11-24: Hâlâ mailer_autoconfirm=true (kayıtta hiç e-posta gitmiyor). Kendi SMTP de gerekli (Supabase'in kendi servisi sadece ekip adreslerine gönderir). Adımlar ve Türkçe şablonlar: supabase/eposta_ayarlari.md. 'Şifremi unuttum' akışı eklendi; o da SMTP'ye bağlı."
     },
     {
       "id": "SUPA-3",
@@ -26,7 +26,7 @@
       "oncelik": 1,
       "kabul": "supabase/oturum_takibi.sql hatasız çalıştı; giriş yapınca oturumlar tablosuna satır düşüyor; kullanici_aktivite görünümünde ad, e-posta, son giriş ve toplam dakika görünüyor",
       "durum": "kullanicida",
-      "not": "2026-11-17: Kod hazır (js/oturum.js). SQL çalıştırılmadan önce de uygulama bozulmaz, sadece kayıt tutulmaz. KVKK: aydınlatma metninde giriş zamanı ve kullanım süresinin kaydedildiği belirtilmeli (LEGAL-1)."
+      "not": "2026-11-17: Kod hazır (js/oturum.js). SQL çalıştırılmadan önce de uygulama bozulmaz, sadece kayıt tutulmaz. KVKK: aydınlatma metninde giriş zamanı ve kullanım süresinin kaydedildiği belirtilmeli (LEGAL-1). 2026-11-24: Canlıda oturumlar tablosu ve oturum_baslat fonksiyonu yok; SQL hâlâ çalıştırılmamış."
     },
     {
       "id": "SUPA-4",
@@ -53,7 +53,7 @@
       "oncelik": 2,
       "kabul": "supabase/n8n_dogrulama.md'deki adımlar uygulandı; başlıksız istek 401 ile duruyor",
       "durum": "kullanicida",
-      "not": ""
+      "not": " 2026-11-24: n8n.brainfitnarlidere.com DNS'te yok (adres çözülmüyor); kullanım süresi hiç ulaşmıyor. Önce n8n'in gerçek adresi js/usage.js'e yazılmalı."
     },
     {
       "id": "LEGAL-1",

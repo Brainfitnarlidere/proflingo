@@ -9,6 +9,23 @@
  */
 
 const PENDING_KEY = 'pending_user';
+const RESET_KEY = 'pending_reset';
+
+// E-postadaki şifre sıfırlama linkiyle gelindiyse adres çubuğunda type=recovery olur;
+// supabase-js ayrıca PASSWORD_RECOVERY olayı yayınlar.
+// (Bu dosya supabase.js'ten önce çalışır; dinleyici authRestoreSession içinde bağlanır.)
+let recoveryMode = /type=recovery/.test(window.location.hash || '');
+let recoveryWatched = false;
+function watchRecovery() {
+  if (recoveryWatched) return;
+  recoveryWatched = true;
+  try {
+    window.supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') recoveryMode = true;
+    });
+  } catch (e) {}
+}
+window.authIsRecovery = function() { return recoveryMode; };
 
 function normEmail(email) {
   return String(email || '').trim().toLowerCase();
@@ -167,7 +184,8 @@ window.authVerifyCode = async function(inputCode) {
   if (!pending || !pending.email) return { error: 'Bekleyen kayıt bulunamadı. Lütfen giriş yapmayı deneyin.' };
 
   const token = String(inputCode || '').replace(/\s/g, '');
-  if (!/^\d{6}$/.test(token)) return { error: 'Lütfen 6 haneli kodu girin.' };
+  // Supabase kod uzunluğu ayardan 6-10 hane olabilir.
+  if (!/^\d{6,10}$/.test(token)) return { error: 'Lütfen e-postadaki kodu eksiksiz girin.' };
 
   const { data, error } = await window.supabase.auth.verifyOtp({
     email: pending.email,
@@ -198,6 +216,7 @@ window.authResendCode = async function() {
 // döndürür, yoksa yerel kaydı temizler. (E-postadaki onay linkine tıklanınca
 // gelen oturum da burada yakalanır.)
 window.authRestoreSession = async function() {
+  watchRecovery();
   try {
     const { data } = await window.supabase.auth.getSession();
     if (data && data.session && data.session.user) {
@@ -208,6 +227,61 @@ window.authRestoreSession = async function() {
   }
   window.clearCurrentUser();
   return null;
+};
+
+// --- Şifre sıfırlama ---
+// Supabase "Reset Password" e-postası gönderir. Şablonda {{ .Token }} varsa kullanıcı
+// kodu girer; linke tıklarsa site type=recovery ile açılır ve sadece yeni şifre sorulur.
+window.authSendReset = async function(email) {
+  email = normEmail(email);
+  if (!email.includes('@')) return { error: 'Geçerli bir e-posta girin.' };
+  const { error } = await window.supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname
+  });
+  if (error) return { error: trError(error) };
+  try { localStorage.setItem(RESET_KEY, email); } catch (e) {}
+  // Adres kayıtlı olmasa da aynı yanıt verilir (kayıtlı e-postalar dışarıdan öğrenilemesin).
+  return { success: true, message: '📧 Kayıtlı bir hesapsa sıfırlama kodu e-postanıza gönderildi.' };
+};
+
+window.authResendReset = async function() {
+  let email = null;
+  try { email = localStorage.getItem(RESET_KEY); } catch (e) {}
+  if (!email) return { error: 'Önce e-posta adresinizi girin.' };
+  return window.authSendReset(email);
+};
+
+window.authConfirmReset = async function(inputCode, newPassword) {
+  newPassword = String(newPassword || '');
+  if (newPassword.length < 6) return { error: 'Şifre en az 6 karakter olmalı.' };
+
+  if (!recoveryMode) {
+    let email = null;
+    try { email = localStorage.getItem(RESET_KEY); } catch (e) {}
+    if (!email) return { error: 'Sıfırlama isteği bulunamadı. Lütfen tekrar kod isteyin.' };
+    const token = String(inputCode || '').replace(/\s/g, '');
+    if (!/^\d{6,10}$/.test(token)) return { error: 'Lütfen e-postadaki kodu eksiksiz girin.' };
+    const { error } = await window.supabase.auth.verifyOtp({ email, token, type: 'recovery' });
+    if (error) return { error: trError(error) };
+  }
+
+  const { data, error } = await window.supabase.auth.updateUser({ password: newPassword });
+  if (error) {
+    if (/different from the old|same.*password/i.test(error.message || '')) {
+      return { error: 'Yeni şifre eskisiyle aynı olamaz.' };
+    }
+    return { error: trError(error) };
+  }
+  recoveryMode = false;
+  try { localStorage.removeItem(RESET_KEY); } catch (e) {}
+  if (window.location.hash) {
+    try { history.replaceState(null, '', window.location.pathname + window.location.search); } catch (e) {}
+  }
+  try {
+    return { user: await finishLogin(data.user, 'giris') };
+  } catch (e) {
+    return { error: e.message };
+  }
 };
 
 window.authHasPending = function() {

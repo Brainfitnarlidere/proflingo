@@ -23,6 +23,58 @@ window.initEvents = function() {
   on('go-register', 'click', window.showRegisterForm);
   on('go-login', 'click', window.showLoginForm);
   on('verify-back-login', 'click', window.showLoginForm);
+  on('go-forgot', 'click', () => {
+    window.showForgotForm();
+    const girilen = window.$('login-email').value.trim();
+    if (girilen) window.$('forgot-email').value = girilen;
+  });
+  on('forgot-back-login', 'click', window.showLoginForm);
+  on('reset-back-login', 'click', window.showLoginForm);
+
+  on('btn-forgot-send', 'click', async () => {
+    window.clearErrors();
+    const btn = window.$('btn-forgot-send');
+    btn.textContent = 'Gönderiliyor...';
+    btn.disabled = true;
+    try {
+      const res = await window.authSendReset(window.$('forgot-email').value);
+      if (res.error) return window.showError('forgot-error', res.error);
+      window.showResetForm(true);
+      window.showToast('toast-heart', res.message);
+    } catch (e) {
+      window.showError('forgot-error', 'Bir bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+    } finally {
+      btn.textContent = 'Sıfırlama Kodu Gönder';
+      btn.disabled = false;
+    }
+  });
+
+  on('btn-reset-resend', 'click', async () => {
+    window.clearErrors();
+    const res = await window.authResendReset();
+    if (res.error) return window.showError('reset-error', res.error);
+    window.showToast('toast-heart', '📧 Kod tekrar gönderildi.');
+  });
+
+  on('btn-reset-confirm', 'click', async () => {
+    window.clearErrors();
+    const btn = window.$('btn-reset-confirm');
+    btn.textContent = 'Kaydediliyor...';
+    btn.disabled = true;
+    try {
+      const res = await window.authConfirmReset(window.$('reset-code').value, window.$('reset-password').value);
+      if (res.error) return window.showError('reset-error', res.error);
+      window.showToast('toast-heart', '✅ Şifreniz yenilendi.');
+      window.updateUserUI(res.user);
+      window.showHeader();
+      window.renderHome(res.user, window.gameState, window.startChapter);
+    } catch (e) {
+      window.showError('reset-error', 'Bir bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+    } finally {
+      btn.textContent = 'Şifreyi Kaydet ve Giriş Yap';
+      btn.disabled = false;
+    }
+  });
   on('btn-close-auth', 'click', () => {
     window.showLoginForm();
     window.showToast('toast-heart', 'Lütfen devam etmek için giriş yapın.');
@@ -40,7 +92,7 @@ window.initEvents = function() {
 
     const res = await window.authLogin(email, pass);
     
-    window.$('btn-login').textContent = 'Giriş Yap';
+    window.$('btn-login').textContent = 'Hemen Giriş Yap';
     window.$('btn-login').disabled = false;
 
     if (res.error) { window.showError('login-error', res.error); return; }
@@ -262,7 +314,11 @@ window.init = function() {
     const user = window.authRestoreSession
       ? await window.authRestoreSession()
       : null;
-    if (user) {
+    if (user && window.authIsRecovery && window.authIsRecovery()) {
+      // Şifre sıfırlama linkiyle gelindi: önce yeni şifre iste.
+      window.showScreen('auth');
+      window.showResetForm(false);
+    } else if (user) {
       window.updateUserUI(user);
       window.showHeader();
       window.renderHome(user, window.gameState, window.startChapter);

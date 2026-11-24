@@ -72,6 +72,9 @@
       },
       async verifyOtp({email,token}){ const u=S.users[email]; if(!u||token!==S.otp) return {data:{},error:{message:'Token has expired or is invalid'}}; u.confirmed=true; S.session={user:u}; persist(); return {data:{user:u,session:S.session},error:null}; },
       async resend(){ return {error:null}; },
+      async resetPasswordForEmail(email){ S.calls.push({reset:email}); return {data:{},error:null}; },
+      async updateUser({password}){ if(!S.session) return {data:{},error:{message:'Auth session missing'}}; const u=S.users[S.session.user.email]; if(u.password===password) return {data:{},error:{message:'New password should be different from the old password.'}}; u.password=password; persist(); return {data:{user:u},error:null}; },
+      onAuthStateChange(){ return {data:{subscription:{unsubscribe(){}}}}; },
       async getSession(){ return {data:{session:S.session}}; },
       async signOut(){ S.session=null; persist(); return {error:null}; }
     }

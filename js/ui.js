@@ -79,29 +79,32 @@ window.nextSlide = function(onFinish) {
   }
 };
 
-window.showLoginForm = function() {
-  window.show(window.$('form-login'));
-  window.hide(window.$('form-register'));
-  window.hide(window.$('form-verify'));
-  window.clearErrors();
-};
+const AUTH_FORMS = ['form-login', 'form-register', 'form-verify', 'form-forgot', 'form-reset'];
 
-window.showRegisterForm = function() {
-  window.hide(window.$('form-login'));
-  window.show(window.$('form-register'));
-  window.hide(window.$('form-verify'));
+function showAuthForm(id) {
+  AUTH_FORMS.forEach(f => (f === id ? window.show : window.hide)(window.$(f)));
   window.clearErrors();
-};
+}
 
-window.showVerifyForm = function() {
-  window.hide(window.$('form-login'));
-  window.hide(window.$('form-register'));
-  window.show(window.$('form-verify'));
-  window.clearErrors();
+window.showLoginForm = function() { showAuthForm('form-login'); };
+window.showRegisterForm = function() { showAuthForm('form-register'); };
+window.showVerifyForm = function() { showAuthForm('form-verify'); };
+window.showForgotForm = function() { showAuthForm('form-forgot'); };
+
+// kodla: e-postadaki kod + yeni şifre; kodsuz: e-postadaki linkle gelindi, sadece yeni şifre
+window.showResetForm = function(kodla) {
+  showAuthForm('form-reset');
+  const alan = window.$('reset-code-field');
+  if (alan) alan.classList.toggle('hidden', !kodla);
+  const bilgi = window.$('reset-info');
+  if (bilgi) bilgi.textContent = kodla
+    ? 'E-postanıza gelen kodu ve yeni şifrenizi girin.'
+    : 'Yeni şifrenizi belirleyin.';
 };
 
 window.clearErrors = function() {
-  [window.$('login-error'), window.$('reg-error'), window.$('verify-error')].forEach(el => {
+  ['login-error', 'reg-error', 'verify-error', 'forgot-error', 'reset-error'].forEach(id => {
+    const el = window.$(id);
     if (el) { el.textContent = ''; el.classList.add('hidden'); }
   });
   document.querySelectorAll('.field input').forEach(i => i.classList.remove('invalid'));

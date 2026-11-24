@@ -143,6 +143,7 @@
           </div>
           <p id="login-error" class="form-error hidden"></p>
           <button id="btn-login" class="btn btn-primary btn-full">Hemen Giriş Yap</button>
+          <p class="auth-switch"><button id="go-forgot" class="link-btn" type="button">Şifremi unuttum</button></p>
           <p class="auth-switch">Hesabın yok mu? <button id="go-register" class="link-btn">Kayıt Ol</button></p>
           <p class="auth-footer-tagline">Hesabınızla saniyeler içinde kaldığınız yerden devam edin.</p>
         </div>
@@ -182,17 +183,54 @@
         <div id="form-verify" class="auth-form hidden">
           <h2 class="form-heading">Son Bir Adım! 🚀</h2>
           <p class="form-subtext" style="text-align: center; font-size: 0.95rem; margin: 1rem 0; color: var(--text-main); font-weight: 500;">
-            E-posta adresinize gönderilen <strong>6 haneli kodu</strong> girin.<br>
+            E-posta adresinize gönderilen <strong>onay kodunu</strong> girin.<br>
             <span style="font-weight: 400; font-size: 0.85rem;">(Mailde bir onay linki varsa ona tıklamanız da yeterli.)</span>
           </p>
           <div class="field">
             <label>Onay Kodu</label>
-            <input type="text" id="verify-code" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="one-time-code">
+            <input type="text" id="verify-code" inputmode="numeric" maxlength="10" placeholder="••••••" autocomplete="one-time-code">
           </div>
           <p id="verify-error" class="form-error hidden"></p>
           <button id="btn-verify-confirm" class="btn btn-primary btn-full">Hesabı Onayla</button>
           <p class="auth-switch">Mail gelmedi mi? <button id="btn-resend-code" class="link-btn">Tekrar Gönder</button></p>
           <p class="auth-switch"><button id="verify-back-login" class="link-btn">Giriş ekranına dön</button></p>
+        </div>
+
+        <!-- Şifre sıfırlama: 1) e-posta, 2) koddan sonra yeni şifre -->
+        <div id="form-forgot" class="auth-form hidden">
+          <h2 class="form-heading">Şifremi Unuttum</h2>
+          <p class="form-subtext" style="text-align: center; font-size: 0.95rem; margin: 1rem 0; color: var(--text-main);">
+            Kayıt olduğunuz e-posta adresini yazın, size şifre sıfırlama kodu gönderelim.
+          </p>
+          <div class="field">
+            <label>E-posta Adresiniz</label>
+            <input type="email" id="forgot-email" placeholder="ornek@mail.com" autocomplete="email">
+          </div>
+          <p id="forgot-error" class="form-error hidden"></p>
+          <button id="btn-forgot-send" class="btn btn-primary btn-full">Sıfırlama Kodu Gönder</button>
+          <p class="auth-switch"><button id="forgot-back-login" class="link-btn" type="button">Giriş ekranına dön</button></p>
+        </div>
+
+        <div id="form-reset" class="auth-form hidden">
+          <h2 class="form-heading">Yeni Şifre Belirle</h2>
+          <p id="reset-info" class="form-subtext" style="text-align: center; font-size: 0.95rem; margin: 1rem 0; color: var(--text-main);">
+            E-postanıza gelen kodu ve yeni şifrenizi girin.
+          </p>
+          <div class="field" id="reset-code-field">
+            <label>Sıfırlama Kodu</label>
+            <input type="text" id="reset-code" inputmode="numeric" maxlength="10" placeholder="••••••" autocomplete="one-time-code">
+          </div>
+          <div class="field">
+            <label>Yeni Şifreniz</label>
+            <div class="input-wrap">
+              <input type="password" id="reset-password" placeholder="En az 6 karakter" autocomplete="new-password">
+              <button class="toggle-pw" data-target="reset-password" type="button">👁</button>
+            </div>
+          </div>
+          <p id="reset-error" class="form-error hidden"></p>
+          <button id="btn-reset-confirm" class="btn btn-primary btn-full">Şifreyi Kaydet ve Giriş Yap</button>
+          <p class="auth-switch">Kod gelmedi mi? <button id="btn-reset-resend" class="link-btn" type="button">Tekrar Gönder</button></p>
+          <p class="auth-switch"><button id="reset-back-login" class="link-btn" type="button">Giriş ekranına dön</button></p>
         </div>
 
       </div>
@@ -639,8 +677,8 @@
   <script src="js/ses-kayitlari.js?v=cd507842"></script>
   <script src="js/speech.js?v=79e89d20"></script>
   <script src="js/oturum.js?v=4b043f3e"></script>
-  <script src="js/auth.js?v=02a871c3"></script>
-  <script src="js/ui.js?v=0ae70b2b"></script>
+  <script src="js/auth.js?v=5da24f41"></script>
+  <script src="js/ui.js?v=c5cfa132"></script>
   <script src="js/game/core.js?v=b3d9b5b8"></script>
   <script src="js/game/questions.js?v=90e9287c"></script>
   <script src="js/game/quiz.js?v=a0d72ebd"></script>
@@ -649,7 +687,7 @@
   <script src="js/game/falling-visuals.js?v=01832010"></script>
   <script src="js/game/drag-drop-scene.js?v=74f4d71e"></script>
   <script src="js/game/winner-mode.js?v=db8724ca"></script>
-  <script src="js/main.js?v=0c24b9cb"></script>
+  <script src="js/main.js?v=3a323b46"></script>
 
   <script>
     // Global error handler
