@@ -16,8 +16,8 @@
       "sahip": "kullanici",
       "oncelik": 1,
       "kabul": "Authentication ayarlarında 'Confirm email' açık; /auth/v1/settings mailer_autoconfirm=false; Site URL https://proflingo.com; Confirm signup şablonunda {{ .Token }} var; yeni kayıtta onay ekranı çıkıyor ve kod/link çalışıyor",
-      "durum": "kullanicida",
-      "not": "2026-11-17 kontrolünde mailer_autoconfirm=true bulundu: kayıtta e-posta doğrulanmıyor. 2026-11-24: Hâlâ mailer_autoconfirm=true (kayıtta hiç e-posta gitmiyor). Kendi SMTP de gerekli (Supabase'in kendi servisi sadece ekip adreslerine gönderir). Adımlar ve Türkçe şablonlar: supabase/eposta_ayarlari.md. 'Şifremi unuttum' akışı eklendi; o da SMTP'ye bağlı."
+      "durum": "tamam",
+      "not": "2026-11-17 kontrolünde mailer_autoconfirm=true bulundu: kayıtta e-posta doğrulanmıyor. 2026-11-24: Hâlâ mailer_autoconfirm=true (kayıtta hiç e-posta gitmiyor). Kendi SMTP de gerekli (Supabase'in kendi servisi sadece ekip adreslerine gönderir). Adımlar ve Türkçe şablonlar: supabase/eposta_ayarlari.md. 'Şifremi unuttum' akışı eklendi; o da SMTP'ye bağlı. 2026-11-24: Resend SMTP bağlandı, Confirm email açık (mailer_autoconfirm=false doğrulandı), Türkçe şablonlar yüklendi; kullanıcı deneme kaydında e-postanın geldiğini doğruladı."
     },
     {
       "id": "SUPA-3",
